@@ -11,19 +11,19 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_area :title %>
+  <div class="field">
+    <%= form.label :title, class: "label" %>
+    <div class="control"><%= form.text_field :title, class: "input", placeholder: "Project's title" %></div>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+  <div class="field">
+    <%= form.label :description, class: "label" %>
+    <div class="control"><%= form.text_area :description, class: "textarea", placeholder: "A brief explanation of what's the project is about" %></div>
   </div>
 
-  <div>
-    <%= form.label :url, style: "display: block" %>
-    <%= form.text_area :url %>
+  <div class="field">
+    <%= form.label :url, class: "label" %>
+    <div class="control"><%= form.url_field :url, class: "input", placeholder: "Project's repo, e.g. on Github" %></div>
   </div>
 
   <div>

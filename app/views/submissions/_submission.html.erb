@@ -9,9 +9,12 @@
     <%= submission.description %>
   </p>
 
-  <p>
-    <strong>Url:</strong>
-    <%= submission.url %>
-  </p>
-
+  <% if submission.decorated? && submission.github_repo? %>
+    <%= submission.github_repo_card %>
+  <% else %>
+    <p>
+      <strong>Url:</strong>
+      <%= link_to submission.url, submission.url, target: "_blank", rel: "nofollow" %>
+    </p>
+  <% end %>
 </div>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Submissions</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -11,6 +12,10 @@
   </head>
 
   <body>
-    <%= yield %>
+    <section class="section">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
   </body>
 </html>

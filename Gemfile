@@ -53,6 +53,11 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
+  gem 'guard' # To allow watching for files changes in dev with `bundle exec guard`
+  gem 'guard-rails', require: false # To teach guard to run and restart the Rails server
+  gem 'guard-livereload', require: false # To trigger a browser refresh when files are changed
+  gem "rack-livereload" # To embed the livereload.js script in the app
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 

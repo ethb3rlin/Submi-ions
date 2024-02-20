@@ -64,6 +64,9 @@ group :development do
   gem 'guard-livereload', require: false # To trigger a browser refresh when files are changed
   gem "rack-livereload" # To embed the livereload.js script in the app
 
+  gem "better_errors"
+  gem "binding_of_caller"
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 

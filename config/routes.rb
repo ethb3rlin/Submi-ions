@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   post '/auth/:provider/callback', to: 'sessions#create'
   post '/auth/ethereum', to: 'sessions#new'
-  get '/login', to: 'sessions#index'
+  delete '/logout', to: 'sessions#destroy', as: 'logout'
 
   resources :submissions
   root 'submissions#index'

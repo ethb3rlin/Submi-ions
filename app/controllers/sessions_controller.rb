@@ -3,7 +3,18 @@ class SessionsController < ApplicationController
 
   def create
     if request.env['omniauth.auth']
-      flash[:notice] = "Logged in"
+      session[:eth_address] = request[:eth_address]
+
+      address = EthereumAddress.find_by(address: request[:eth_address])
+      user = if address
+        address.user
+      else
+        user = User.create
+        address = EthereumAddress.create(address: request[:eth_address], user: user)
+        user
+      end
+
+      flash[:notice] = "Logged in as user #{user.id}"
     else
       flash[:notice] = "Unable to log in"
     end
@@ -11,7 +22,9 @@ class SessionsController < ApplicationController
     redirect_to '/'
   end
 
-  def index
-    render inline: "<%= button_to 'Sign in', auth_ethereum_path, data: {turbo: false} %>", layout: true
+  def destroy
+    reset_session
+    flash[:notice] = "Logged out"
+    redirect_to '/'
   end
 end

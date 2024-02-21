@@ -2,6 +2,21 @@
 
 <h1>Submissions</h1>
 
+<% if !current_user %>
+  <p>
+    You must be logged in to submit a new post.
+    <%= button_to "Log in with Ethereum", auth_ethereum_path, data: {turbo: false} %>
+  </p>
+<% else %>
+  <p>
+    <%= button_to "Log out", logout_path, method: :delete, data: {turbo: false} %>
+  </p>
+<% end %>
+
+<p>
+<%= current_user.try(:id) || 'anonymous' %>
+</p>
+
 <div id="submissions">
   <% @submissions.each do |submission| %>
     <%= render submission %>

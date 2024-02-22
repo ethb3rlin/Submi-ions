@@ -50,6 +50,8 @@ gem 'omniauth'
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-ethereum' # To allow users to sign in with their Ethereum wallet
 
+gem 'pundit' # We probably can skip Devise, since Ethereum is the only auth mechanism we need
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]

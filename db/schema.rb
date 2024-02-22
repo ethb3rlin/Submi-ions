@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_20_113836) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_21_224929) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_113836) do
     t.string "github_handle"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "super_admin", default: false, null: false
   end
 
   add_foreign_key "ethereum_addresses", "users"

@@ -21,7 +21,7 @@
   <% @submissions.each do |submission| %>
     <%= render submission %>
     <p>
-      <%= link_to "Show this submission", submission %>
+      <%= link_to "Show this submission", submission if policy(submission).show? %>
     </p>
   <% end %>
 </div>

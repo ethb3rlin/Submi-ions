@@ -13,6 +13,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions/new
   def new
     @submission = Submission.new
+    authorize @submission
   end
 
   # GET /submissions/1/edit
@@ -22,6 +23,7 @@ class SubmissionsController < ApplicationController
   # POST /submissions or /submissions.json
   def create
     @submission = Submission.new(submission_params)
+    authorize @submission
 
     respond_to do |format|
       if @submission.save
@@ -61,6 +63,7 @@ class SubmissionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_submission
       @submission = Submission.find(params[:id]).decorate
+      authorize @submission
     end
 
     # Only allow a list of trusted parameters through.

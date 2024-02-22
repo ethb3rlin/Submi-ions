@@ -77,4 +77,6 @@ Rails.application.configure do
 
   # Embed the livereload.js script in the app
   config.middleware.insert_after ActionDispatch::Static, Rack::LiveReload
+
+  config.hosts << "2c0a-185-209-196-227.ngrok-free.app" # Allow ngrok tunnel to work
 end

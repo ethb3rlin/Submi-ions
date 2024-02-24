@@ -50,6 +50,8 @@ gem 'siwe' # Let's roll the "Sign in with Ethereum" functionality out manually
 
 gem 'pundit' # We probably can skip Devise, since Ethereum is the only auth mechanism we need
 
+gem 'seedbank' # To have development-specific seeds in db/seeds/development
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]

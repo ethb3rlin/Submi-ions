@@ -3,18 +3,18 @@
 <h1>Submissions</h1>
 
 <% if !current_user %>
-  <p>
-    You must be logged in to submit a new post.
-    <%= button_to "Log in with Ethereum", auth_ethereum_path, data: {turbo: false} %>
-  </p>
+  <div data-controller="ethereum">
+    <div>You must be logged in to submit a new post.</div>
+    <button data-action="click->ethereum#signin">Log in with Ethereum</button>
+  </div>
 <% else %>
   <p>
-    <%= button_to "Log out", logout_path, method: :delete, data: {turbo: false} %>
+    <%= button_to "Log out", sign_out_path, method: :delete, data: {turbo: false} %>
   </p>
 <% end %>
 
 <p>
-<%= current_user.try(:id) || 'anonymous' %>
+  Hello, <code><%= current_user.ethereum_addresses.first.address rescue 'anonymous' %></code>!
 </p>
 
 <div id="submissions">

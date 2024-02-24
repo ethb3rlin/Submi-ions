@@ -46,9 +46,7 @@ gem "bootsnap", require: false
 
 gem 'draper' # To add decorators to models
 
-gem 'omniauth'
-gem "omniauth-rails_csrf_protection"
-gem 'omniauth-ethereum' # To allow users to sign in with their Ethereum wallet
+gem 'siwe' # Let's roll the "Sign in with Ethereum" functionality out manually
 
 gem 'pundit' # We probably can skip Devise, since Ethereum is the only auth mechanism we need
 

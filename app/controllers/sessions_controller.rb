@@ -1,31 +1,51 @@
+require 'siwe'
+
 class SessionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: :create
-  skip_after_action :verify_authorized
+  skip_before_action :verify_authenticity_token, only: %i[sign_in]
+  skip_after_action :verify_authorized # Doesn't make sense to authorize this controller
 
-  def create
-    if request.env['omniauth.auth']
-      session[:eth_address] = request[:eth_address]
-
-      address = EthereumAddress.find_by(address: request[:eth_address])
-      user = if address
-        address.user
-      else
-        user = User.create
-        address = EthereumAddress.create(address: request[:eth_address], user: user)
-        user
-      end
-
-      flash[:notice] = "Logged in as user #{user.id}"
-    else
-      flash[:notice] = "Unable to log in"
-    end
-
-    redirect_to '/'
+  # Not actually routed, but is required by verify_authorized
+  def index
   end
 
-  def destroy
-    reset_session
-    flash[:notice] = "Logged out"
-    redirect_to '/'
+  def sign_in
+    message = Siwe::Message.from_message params.require(:message).gsub(/\r\n|\r|\n/, "\n").strip
+
+    signature = params.require(:signature)
+    nonce = session[:nonce]
+    timestamp = session[:timestamp]
+
+    domain = request.host
+    port = request.port
+    domain = "#{domain}:#{port}" unless port == 80 || port == 443
+    protocol = request.protocol
+
+    if message.verify(params.require(:signature), "#{domain}", message.issued_at, message.nonce)
+      session[:nonce] = nil
+      session[:timestamp] = nil
+
+      cookies.delete :nonce
+      cookies.delete :timestamp
+
+      session[:address] = message.address
+
+      address_record = EthereumAddress.find_or_create_by(address: message.address)
+      User.create(ethereum_addresses: [address_record]) unless address_record.user
+
+      # Let's redirect with Javascript, otherwise cookies won't be set
+      render html: "<script>window.location = '/';</script>".html_safe
+    else
+      head :bad_request
+    end
+  end
+
+  def sign_out
+    if current_user
+      current_user.save
+      session[:address] = nil
+      redirect_to root_path, notice: "You have been logged out."
+    else
+      head :unauthorized
+    end
   end
 end

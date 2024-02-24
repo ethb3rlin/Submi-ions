@@ -64,6 +64,8 @@ group :development do
   gem 'guard-livereload', require: false # To trigger a browser refresh when files are changed
   gem "rack-livereload" # To embed the livereload.js script in the app
 
+  gem 'annotaterb'
+
   gem "better_errors"
   gem "binding_of_caller"
 

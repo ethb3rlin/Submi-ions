@@ -67,10 +67,15 @@ guard 'livereload' do
       path = m[1]
       "/assets/#{path}.#{type}"
     end
+
+    notification :off
   end
 
   # file needing a full reload of the page anyway
   watch(%r{app/views/.+\.(#{rails_view_exts * '|'})$})
   watch(%r{app/helpers/.+\.rb})
   watch(%r{config/locales/.+\.yml})
+
+  # watch for changes in config/routes.rb and run `annotaterb routes`
+  watch(%r{config/routes.rb}) { `bundle exec annotaterb routes` }
 end

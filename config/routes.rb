@@ -1,6 +1,22 @@
 # == Route Map
 #
 #                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
+#                              admin_users GET    /admin/users(.:format)                                                                            admin/users#index
+#                                          POST   /admin/users(.:format)                                                                            admin/users#create
+#                           new_admin_user GET    /admin/users/new(.:format)                                                                        admin/users#new
+#                          edit_admin_user GET    /admin/users/:id/edit(.:format)                                                                   admin/users#edit
+#                               admin_user GET    /admin/users/:id(.:format)                                                                        admin/users#show
+#                                          PATCH  /admin/users/:id(.:format)                                                                        admin/users#update
+#                                          PUT    /admin/users/:id(.:format)                                                                        admin/users#update
+#                                          DELETE /admin/users/:id(.:format)                                                                        admin/users#destroy
+#                        admin_submissions GET    /admin/submissions(.:format)                                                                      admin/submissions#index
+#                                          POST   /admin/submissions(.:format)                                                                      admin/submissions#create
+#                     new_admin_submission GET    /admin/submissions/new(.:format)                                                                  admin/submissions#new
+#                    edit_admin_submission GET    /admin/submissions/:id/edit(.:format)                                                             admin/submissions#edit
+#                         admin_submission GET    /admin/submissions/:id(.:format)                                                                  admin/submissions#show
+#                                          PATCH  /admin/submissions/:id(.:format)                                                                  admin/submissions#update
+#                                          PUT    /admin/submissions/:id(.:format)                                                                  admin/submissions#update
+#                                          DELETE /admin/submissions/:id(.:format)                                                                  admin/submissions#destroy
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
 #                                 sign_out DELETE /sign_out(.:format)                                                                               sessions#sign_out
 #                              submissions GET    /submissions(.:format)                                                                            submissions#index
@@ -41,6 +57,11 @@
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 
 Rails.application.routes.draw do
+
+  namespace :admin do
+    resources :users
+    resources :submissions
+  end
 
   post 'sign_in' => 'sessions#sign_in'
   delete 'sign_out' => 'sessions#sign_out'

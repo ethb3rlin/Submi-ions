@@ -1,0 +1,25 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>URL</th>
+      <th>Created At</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <% @submissions.each do |submission| %>
+    <tr>
+      <td><%= submission.id %></td>
+      <td><%= submission.title %></td>
+      <td><%= submission.description.truncate(30) %></td>
+      <td><%= link_to submission.url %></td>
+      <td><%= submission.created_at %></td>
+      <td><%= link_to 'Show', admin_submission_path(submission) %></td>
+      <td><%= link_to 'Edit', edit_admin_submission_path(submission) %></td>
+      <td><%= link_to 'Destroy', admin_submission_path(submission), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>

@@ -5,3 +5,4 @@ if address.user.nil?
     super_admin: true
   )
 end
+address.save!

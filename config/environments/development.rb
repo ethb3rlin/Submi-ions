@@ -79,4 +79,5 @@ Rails.application.configure do
   config.middleware.insert_after ActionDispatch::Static, Rack::LiveReload
 
   config.hosts << "ethberlin.serveo.net" # Best tonneling service found so far; see https://serveo.net/ for docs
+  config.hosts << "ethberlin.loca.lt"
 end

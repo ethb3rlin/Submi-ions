@@ -1,0 +1,11 @@
+<div id="<%= dom_id vote, :editable %>">
+  <p>
+    <strong>User:</strong>
+    <code><%= vote.user.ethereum_addresses.first.address %></code>
+  </p>
+
+  <div data-controller="vote" data-vote-path-value="<%= vote_path(vote) %>">
+    <input type="range" min="0" max="100" step="0.1" value="<%= vote.mark %>" data-vote-target="slider" data-action="input->vote#handleUpdate">
+    <span data-vote-target="field"><%= vote.mark %></span>
+  </div>
+</div>

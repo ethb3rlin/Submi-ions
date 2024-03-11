@@ -1,6 +1,14 @@
 # == Route Map
 #
 #                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
+#                                    votes GET    /votes(.:format)                                                                                  votes#index
+#                                          POST   /votes(.:format)                                                                                  votes#create
+#                                 new_vote GET    /votes/new(.:format)                                                                              votes#new
+#                                edit_vote GET    /votes/:id/edit(.:format)                                                                         votes#edit
+#                                     vote GET    /votes/:id(.:format)                                                                              votes#show
+#                                          PATCH  /votes/:id(.:format)                                                                              votes#update
+#                                          PUT    /votes/:id(.:format)                                                                              votes#update
+#                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
 #                              admin_users GET    /admin/users(.:format)                                                                            admin/users#index
 #                                          POST   /admin/users(.:format)                                                                            admin/users#create
 #                           new_admin_user GET    /admin/users/new(.:format)                                                                        admin/users#new
@@ -57,6 +65,7 @@
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 
 Rails.application.routes.draw do
+  resources :votes
 
   namespace :admin do
     resources :users

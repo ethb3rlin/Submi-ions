@@ -1,0 +1,8 @@
+<div id="<%= dom_id vote %>">
+  <p>
+    <strong>User:</strong>
+    <code><%= vote.user.ethereum_addresses.first.address %></code>
+  </p>
+
+  <p><%= vote.mark || "Hadn't voted yet" %></p>
+</div>

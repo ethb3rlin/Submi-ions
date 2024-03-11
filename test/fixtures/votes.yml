@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mark: 1.5
+  user: one
+  submission: one
+
+two:
+  mark: 1.5
+  user: two
+  submission: two

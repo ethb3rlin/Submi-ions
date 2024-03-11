@@ -1,28 +1,42 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Submissions</h1>
-
-<% if !current_user %>
-  <div data-controller="ethereum">
-    <div>You must be logged in to submit a new post.</div>
-    <button data-action="click->ethereum#signin">Log in with Ethereum</button>
+<div class="level">
+  <div class="level-left tile is-vertical">
+    <h1 class="title">Submißions</h1>
+  
+    <% if !!current_user %>
+      <h2 class="subtitle"><%= link_to "Proceed to voting", votes_path %></h2>
+    <% end %>
   </div>
-<% else %>
-  <p>
-    <%= button_to "Log out", sign_out_path, method: :delete, data: {turbo: false} %>
-  </p>
-<% end %>
-
-<p>
-  Hello, <code><%= current_user.ethereum_addresses.first.address rescue 'anonymous' %></code>!
-</p>
+  
+  <div class="level-right">
+    <div class="level-item tile is-vertical">
+      <p>
+        Hello, <code><%= current_user.ethereum_addresses.first.address rescue 'anonymous' %></code>!
+      </p>
+      <% if !current_user %>
+        <div data-controller="ethereum">
+          <button data-action="click->ethereum#signin" class="button is-primary">Log in with Ethereum</button>
+        </div>
+      <% else %>
+        <div>
+          <%= button_to "Log out", sign_out_path, method: :delete, data: {turbo: false}, class: [:button, "is-warning", "is-light"] %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <div id="submissions">
   <% @submissions.each do |submission| %>
-    <%= render submission %>
-    <p>
-      <%= link_to "Show this submission", submission if policy(submission).show? %>
-    </p>
+    <div class="tile is-6 notification">
+      <div>
+        <%= render submission %>
+        <p>
+          <%= link_to "Show this submission", submission if policy(submission).show? %>
+        </p>
+      </div>
+    </div>
   <% end %>
 </div>
 

@@ -1,0 +1,24 @@
+---
+include:
+- "**/*.rb"
+exclude:
+- spec/**/*
+- test/**/*
+- vendor/**/*
+- ".bundle/**/*"
+require: []
+domains: []
+reporters:
+- rubocop
+- require_not_found
+formatter:
+  rubocop:
+    cops: safe
+    except: []
+    only: []
+    extra_args: []
+require_paths: []
+plugins:
+  - solargraph-rails
+  - solargraph-rails-patch-for-rails71  # Hopefully will get fixed in solargraph-rails soon
+max_files: 5000

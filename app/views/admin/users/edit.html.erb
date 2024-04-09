@@ -1,0 +1,10 @@
+<!-- Form for editing a user. -->
+
+<%= form_with model: @user, url: admin_user_path(@user) do |form| %>
+  <%= form.text_field :email, as: :email %>
+  <%= form.text_field :name, as: :string %>
+  <%= form.select :type, User.subclasses.map(&:name), include_blank: false %>
+  <%= form.submit %>
+<% end %>
+
+<%= link_to "Back to users", admin_users_path %>

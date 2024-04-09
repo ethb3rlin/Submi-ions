@@ -3,7 +3,9 @@
     <tr>
       <th>ID</th>
       <th>Email</th>
-      <th>Super Admin</th>
+      <th>Name</th>
+      <th>Ethereum address</th>
+      <th>Type</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -11,7 +13,9 @@
     <tr class="<%= class_names( "is-selected" => user.id == current_user.id ) %>">
       <td><%= user.id %></td>
       <td><%= user.email %></td>
-      <td><%= user.super_admin? %></td>
+      <td><%= user.name %></td>
+      <td><%= user.ethereum_addresses.pluck(:address).join(", ") %></td>
+      <td><%= user.type %></td>
       <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
       <td><%= link_to 'Destroy', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } unless user.id == current_user.id %></td>
     </tr>

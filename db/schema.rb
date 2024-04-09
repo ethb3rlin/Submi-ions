@@ -10,9 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_11_120426) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_09_192041) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "user_type", ["Hacker", "Judge", "Organizer"]
 
   create_table "ethereum_addresses", force: :cascade do |t|
     t.string "address"
@@ -37,7 +41,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_120426) do
     t.string "github_handle"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "super_admin", default: false, null: false
+    t.enum "type", default: "Hacker", null: false, enum_type: "user_type"
+    t.index ["type"], name: "index_users_on_type"
   end
 
   create_table "votes", force: :cascade do |t|

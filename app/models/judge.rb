@@ -14,10 +14,5 @@
 #
 #  index_users_on_type  (type)
 #
-class User < ApplicationRecord
-    has_many :ethereum_addresses
-
-    def super_admin?
-        type == 'Organizer'
-    end
+class Judge < User
 end

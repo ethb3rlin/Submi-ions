@@ -4,11 +4,11 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present?
+    user.present? && user.type == 'Hacker'
   end
 
   def new?
-    user.present?
+    user.present? && user.type == 'Hacker'
   end
 
   def show?

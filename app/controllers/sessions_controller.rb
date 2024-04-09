@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
       session[:address] = message.address
 
       address_record = EthereumAddress.find_or_create_by(address: message.address)
-      User.create(ethereum_addresses: [address_record]) unless address_record.user
+      Hacker.create(ethereum_addresses: [address_record]) unless address_record.user
 
       # Let's redirect with Javascript, otherwise cookies won't be set
       render html: "<script>window.location = '/';</script>".html_safe

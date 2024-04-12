@@ -19,7 +19,6 @@ class Admin::UsersController < ApplicationController
 
   private
   def user_params
-    kind = params.keys.intersection(%w{user hacker organizer judge}).first
-    params.require(kind).permit(:name, :email, :github_handle, :type)
+    params.require(:user).permit(:name, :email, :github_handle, :kind)
   end
 end

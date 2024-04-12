@@ -16,7 +16,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_09_192041) do
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum "user_type", ["Hacker", "Judge", "Organizer"]
+  create_enum "user_kind", ["hacker", "judge", "organizer"]
 
   create_table "ethereum_addresses", force: :cascade do |t|
     t.string "address"
@@ -41,8 +41,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_09_192041) do
     t.string "github_handle"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.enum "type", default: "Hacker", null: false, enum_type: "user_type"
-    t.index ["type"], name: "index_users_on_type"
+    t.enum "kind", default: "hacker", null: false, enum_type: "user_kind"
+    t.index ["kind"], name: "index_users_on_kind"
   end
 
   create_table "votes", force: :cascade do |t|

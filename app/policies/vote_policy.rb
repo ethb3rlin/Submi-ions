@@ -16,10 +16,10 @@ class VotePolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && (record.user == user || user.super_admin?)
+    user.present? && (record.user == user || user.organizer?)
   end
 
   def destroy?
-    user.present? && (record.user == user || user.super_admin?)
+    user.present? && (record.user == user || user.organizer?)
   end
 end

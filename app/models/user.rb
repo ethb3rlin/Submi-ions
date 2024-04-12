@@ -19,8 +19,4 @@ class User < ApplicationRecord
 
 
     enum :kind, { hacker: 'hacker', judge: 'judge', organizer: 'organizer' }
-
-    def super_admin?
-        organizer?
-    end
 end

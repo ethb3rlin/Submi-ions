@@ -1,10 +1,52 @@
 <!-- Form for editing a user. -->
 
 <%= form_with model: @user, url: admin_user_path(@user) do |form| %>
-  <%= form.text_field :email, as: :email %>
-  <%= form.text_field :name, as: :string %>
-  <%= form.select :kind, User.kinds.values, include_blank: false %>
-  <%= form.submit %>
-<% end %>
+  <div class="field">
+    <div class="label">Email</div>
+    <div class="control"><%= form.text_field :email, as: :email, type: :email, class: 'input' %></div>
+  </div>
 
-<%= link_to "Back to users", admin_users_path %>
+  <div class="field">
+    <div class="label">Name</div>
+    <div class="control">
+      <%= form.text_field :name, class: 'input' %>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label">Role</div>
+    <div class="control">
+      <% if current_user.id == @user.id %>
+        <fieldset disabled>
+      <% end %>
+
+      <div class="select">
+        <%= form.select :kind, User.kinds.values, include_blank: false %>
+      </div>
+
+      <% if current_user.id == @user.id %>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="label">Ethereum addresses</div>
+    <ul>
+      <% @user.ethereum_addresses.each do |address| %>
+        <li class="is-family-monospace"><%= address.address %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <%= link_to "← Back to users", admin_users_path, class: ['button', 'is-link', 'is-light'] %>
+    </div>
+
+    <div class="control">
+      <%= form.submit class: ['button', 'is-primary'] %>
+    </div>
+
+  </div>
+<% end %>

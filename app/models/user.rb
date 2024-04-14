@@ -5,7 +5,7 @@
 #  id            :bigint           not null, primary key
 #  email         :string
 #  github_handle :string
-#  kind          :enum             default(NULL), not null
+#  kind          :enum             default("hacker"), not null
 #  name          :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

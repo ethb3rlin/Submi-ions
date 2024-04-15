@@ -10,6 +10,8 @@
 #                                          PUT    /votes/:id(.:format)                                                                              votes#update
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
 #                               admin_root GET    /admin(.:format)                                                                                  admin/admin#index
+#              admin_user_ethereum_address POST   /admin/users/:user_id/ethereum_address(.:format)                                                  admin/ethereum_addresses#create
+#      admin_user_destroy_ethereum_address DELETE /admin/users/:user_id/ethereum_address/:id(.:format)                                              admin/ethereum_addresses#destroy
 #                              admin_users GET    /admin/users(.:format)                                                                            admin/users#index
 #                                          POST   /admin/users(.:format)                                                                            admin/users#create
 #                           new_admin_user GET    /admin/users/new(.:format)                                                                        admin/users#new
@@ -79,7 +81,11 @@ Rails.application.routes.draw do
   namespace :admin do
     root 'admin#index'
 
-    resources :users
+    resources :users do
+      post 'ethereum_address' => 'ethereum_addresses#create'
+      delete 'ethereum_address/:id' => 'ethereum_addresses#destroy', as: :destroy_ethereum_address
+    end
+
     resources :submissions
     resources :judging_teams
   end

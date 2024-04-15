@@ -1,0 +1,16 @@
+  <div class="content">
+    <ul>
+      <% @user.ethereum_addresses.each do |address| %>
+        <li class="is-family-monospace">
+          <a href="https://etherscan.io/address/<%= address.address %>"><%= address.address %></a>
+          <%= form_with model: address, url: admin_user_destroy_ethereum_address_path(@user,address), method: :delete do |form| %>
+            <%= form.hidden_field :address, value: address.address %>
+            <%= form.hidden_field :_method, value: :delete %>
+            <%= form.button class: %w[button is-danger is-outlined is-small] do %>
+              <%= lucide_icon('trash-2', size: 16) %>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>

@@ -1,5 +1,6 @@
-<!-- Form for editing a user. -->
+<div class="columns">
 
+  <div class="column is-5">
 <%= form_with model: @user, url: admin_user_path(@user) do |form| %>
   <div class="field">
     <div class="label">Email</div>
@@ -30,14 +31,6 @@
     </div>
   </div>
 
-  <div class="content">
-    <div class="label">Ethereum addresses</div>
-    <ul>
-      <% @user.ethereum_addresses.each do |address| %>
-        <li class="is-family-monospace"><%= address.address %></li>
-      <% end %>
-    </ul>
-  </div>
 
   <% if @user.judging_team %>
     <div class="content">
@@ -54,6 +47,24 @@
     <div class="control">
       <%= form.submit class: ['button', 'is-primary'] %>
     </div>
+      </div>
+    <% end %>
+  </div>
 
+  <div class="column is-1"></div>
+
+  <div class="column is-6">
+    <div class="label">Ethereum addresses</div>
+    <%= render partial: 'admin/users/ethereum_addresses' %>
+    <%= form_with model: @user.ethereum_addresses.new, url: admin_user_ethereum_address_path(@user) do |form| %>
+      <div class="field has-addons">
+        <div class="control">
+          <%= form.text_field :address, class: 'input', placeholder: '0x...' %>
+        </div>
+        <div class="control">
+          <%= form.submit 'Add', class: ['button', 'is-primary'] %>
+        </div>
   </div>
 <% end %>
+  </div>
+</div>

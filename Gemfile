@@ -83,3 +83,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "lucide-rails", "~> 0.4.0"

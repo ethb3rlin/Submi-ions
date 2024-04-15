@@ -39,6 +39,13 @@
     </ul>
   </div>
 
+  <% if @user.judging_team %>
+    <div class="content">
+      <div class="label">Judging team</div>
+      <%= link_to "Judging team ##{@user.judging_team.id}", edit_admin_judging_team_path(@user.judging_team) %></li>
+    </div>
+  <% end %>
+
   <div class="field is-grouped">
     <div class="control">
       <%= link_to "← Back to users", admin_users_path, class: ['button', 'is-link', 'is-light'] %>

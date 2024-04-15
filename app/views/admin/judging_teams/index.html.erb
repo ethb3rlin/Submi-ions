@@ -1,0 +1,28 @@
+<div class="content">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Team ID</th>
+        <th>Preferred Track</th>
+        <th>Technical Judge</th>
+        <th>Product Judge</th>
+        <th>Concept Judge</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @judging_teams.each do |team| %>
+        <tr>
+          <td><%= team.id %></td>
+          <td><%= team.decorate.track %></td>
+          <td><%= team.technical_judge ? link_to(team.technical_judge.name, edit_admin_user_path(team.technical_judge)) : '--' %></td>
+          <td><%= team.product_judge ? link_to(team.product_judge.name, edit_admin_user_path(team.product_judge)) : '--' %></td>
+          <td><%= team.concept_judge ? link_to(team.concept_judge.name, edit_admin_user_path(team.concept_judge)) : '--' %></td>
+          <td>
+            <%= link_to "Edit", edit_admin_judging_team_path(team), class: ['button', 'is-light'] %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+</div>

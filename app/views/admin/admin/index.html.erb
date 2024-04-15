@@ -1,11 +1,16 @@
 <div class="content">
   <section class="section">
-  <h2>Users</h2>
-  <%= link_to "Edit users", admin_users_path, class: ['button', 'is-light'] %>
+    <h2><%= User.count %> Users</h2>
+    <%= link_to "Edit users", admin_users_path, class: ['button', 'is-light'] %>
+    </section>
+
+  <section class="section">
+    <h2><%= JudgingTeam.count %> Judging Teams</h2>
+    <%= link_to "Edit judging teams", admin_judging_teams_path, class: ['button', 'is-warning', 'is-light'] %>
   </section>
 
   <section class="section">
-  <h2>Submissions</h2>
-  <%= link_to "Edit submissions", admin_submissions_path, class: ['button', 'is-info', 'is-light'] %>
+    <h2><%= Submission.count %> Submissions</h2>
+    <%= link_to "Edit submissions", admin_submissions_path, class: ['button', 'is-info', 'is-light'] %>
   </section>
 </div>

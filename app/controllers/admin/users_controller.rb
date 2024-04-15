@@ -4,6 +4,21 @@ class Admin::UsersController < ApplicationController
     authorize @users
   end
 
+  def new
+    @user = User.new
+    authorize @user
+  end
+
+  def create
+    @user = User.new(user_params)
+    authorize @user
+    if @user.save
+      redirect_to edit_admin_user_path(@user), notice: "User created"
+    else
+      render :new, alert: "Failed to create user: " + @user.errors.full_messages.join(", ")
+    end
+  end
+
   def edit
     @user = User.find(params[:id])
     authorize @user

@@ -3,6 +3,14 @@ class UserPolicy < ApplicationPolicy
     user.organizer?
   end
 
+  def new?
+    user.organizer?
+  end
+
+  def create?
+    user.organizer?
+  end
+
   def edit?
     user.organizer?
   end

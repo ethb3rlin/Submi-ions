@@ -1,54 +1,7 @@
 <div class="columns">
 
   <div class="column is-5">
-<%= form_with model: @user, url: admin_user_path(@user) do |form| %>
-  <div class="field">
-    <div class="label">Email</div>
-    <div class="control"><%= form.text_field :email, as: :email, type: :email, class: 'input' %></div>
-  </div>
-
-  <div class="field">
-    <div class="label">Name</div>
-    <div class="control">
-      <%= form.text_field :name, class: 'input' %>
-    </div>
-  </div>
-
-  <div class="field">
-    <div class="label">Role</div>
-    <div class="control">
-      <% if current_user.id == @user.id %>
-        <fieldset disabled>
-      <% end %>
-
-      <div class="select">
-        <%= form.select :kind, User.kinds.values, include_blank: false %>
-      </div>
-
-      <% if current_user.id == @user.id %>
-        </fieldset>
-      <% end %>
-    </div>
-  </div>
-
-
-  <% if @user.judging_team %>
-    <div class="content">
-      <div class="label">Judging team</div>
-      <%= link_to "Judging team ##{@user.judging_team.id}", edit_admin_judging_team_path(@user.judging_team) %></li>
-    </div>
-  <% end %>
-
-  <div class="field is-grouped">
-    <div class="control">
-      <%= link_to "← Back to users", admin_users_path, class: ['button', 'is-link', 'is-light'] %>
-    </div>
-
-    <div class="control">
-      <%= form.submit class: ['button', 'is-primary'] %>
-    </div>
-      </div>
-    <% end %>
+    <%= render partial: 'admin/users/user_form' %>
   </div>
 
   <div class="column is-1"></div>
@@ -64,7 +17,7 @@
         <div class="control">
           <%= form.submit 'Add', class: ['button', 'is-primary'] %>
         </div>
-  </div>
-<% end %>
+      </div>
+    <% end %>
   </div>
 </div>

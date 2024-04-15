@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   def index
-    @users = User.all
+    @users = User.order(:id).all
     authorize @users
   end
 

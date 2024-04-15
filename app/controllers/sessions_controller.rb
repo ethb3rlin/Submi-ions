@@ -33,7 +33,11 @@ class SessionsController < ApplicationController
       Hacker.create(ethereum_addresses: [address_record]) unless address_record.user
 
       # Let's redirect with Javascript, otherwise cookies won't be set
-      render html: "<script>window.location = '/';</script>".html_safe
+      if address_record.user.organizer?
+        render html: "<script>window.location = '/admin';</script>".html_safe
+      else
+        render html: "<script>window.location = '/';</script>".html_safe
+      end
     else
       head :bad_request
     end

@@ -15,7 +15,7 @@
 #  index_users_on_kind  (kind)
 #
 class User < ApplicationRecord
-    has_many :ethereum_addresses
+    has_many :ethereum_addresses, dependent: :destroy
 
     enum :kind, { hacker: 'hacker', judge: 'judge', organizer: 'organizer' }
     validates :kind, presence: true

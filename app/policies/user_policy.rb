@@ -18,4 +18,8 @@ class UserPolicy < ApplicationPolicy
   def update?
     user.organizer?
   end
+
+  def destroy?
+    user.organizer?
+  end
 end

@@ -31,6 +31,12 @@ class Admin::UsersController < ApplicationController
     redirect_to edit_admin_user_path(@user), notice: "User updated"
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    authorize @user
+    @user.destroy
+    redirect_to admin_users_path, notice: "User deleted"
+  end
 
   private
   def user_params

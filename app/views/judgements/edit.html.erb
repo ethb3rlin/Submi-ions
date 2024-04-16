@@ -2,7 +2,7 @@
   <h1 class="title"><%= @submission.title %></h1>
   <p><%= @submission.description %></p>
 
-  <div class="columns">
+  <div class="columns" id="votes">
     <div class="column is-4">
       <% if current_user == @judging_team.technical_judge %>
         <%= render 'votes/editable_vote', vote: @judgement.technical_vote, kind: :technical %>

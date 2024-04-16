@@ -30,7 +30,7 @@ class VotesController < ApplicationController
   # PATCH/PUT /votes/1 or /votes/1.json
   def update
     respond_to do |format|
-      if @vote.update(vote_params.merge(completed: false))
+      if @vote.update(vote_params)
         format.html { redirect_to vote_url(@vote), notice: "Vote was successfully updated." }
         format.json { render :show, status: :ok, location: @vote }
       else
@@ -54,6 +54,10 @@ class VotesController < ApplicationController
     @vote = Vote.find(params[:id])
     authorize @vote
     @vote.update!(completed: true)
+
+    if @vote.judgement.completed?
+      redirect_to judgements_url, notice: "Judgement was successfully completed."
+    end
   end
 
   private
@@ -65,6 +69,6 @@ class VotesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def vote_params
-      params.require(:vote).permit(:mark)
+      params.require(:vote).permit(:mark, :completed)
     end
 end

@@ -15,5 +15,5 @@
     <span data-vote-target="field"><%= vote.mark %></span>
   </div>
 
-  <%= button_to "Complete", complete_vote_path(vote), class: "button is-primary", data: { turbo_frame: dom_id(vote) } %>
+  <%= button_to "Complete", complete_vote_path(vote), class: ["button", !vote.completed ? "is-primary" : nil], data: { turbo_frame: dom_id(vote) } %>
 </div>

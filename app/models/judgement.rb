@@ -37,4 +37,8 @@ class Judgement < ApplicationRecord
 
   validates :judging_team, presence: true
   validates :submission, presence: true
+
+  def completed?
+    technical_vote.completed && product_vote.completed && concept_vote.completed
+  end
 end

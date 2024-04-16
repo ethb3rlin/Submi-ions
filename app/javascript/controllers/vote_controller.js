@@ -22,7 +22,7 @@ export default class extends Controller {
           'Accept': 'application/json',
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
-        body: JSON.stringify({ vote: { mark: this.sliderTarget.value } })
+        body: JSON.stringify({ vote: { mark: this.sliderTarget.value, completed: false } })
       })
     }, 500);
   }

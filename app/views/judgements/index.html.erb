@@ -1,3 +1,33 @@
 <div class="content">
+  <% if @judgements.empty? %>
+    <p>
+      You have not judged any projects yet.
+    </p>
+  <% else %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th></th>
+          <th>Technical Score</th>
+          <th>Product Score</th>
+          <th>Concept Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @judgements.each do |judgement| %>
+          <%= turbo_stream_from judgement, :votes %>
+          <tr>
+            <td><%= link_to judgement.submission.title, submission_path(judgement.submission) %></td>
+            <td><%= link_to lucide_icon('pencil', class: 'icon is-small'), edit_judgement_path(judgement) %></td>
+            <td><%= render 'votes/editable_vote_mini', vote: judgement.technical_vote %></td>
+            <td><%= render 'votes/editable_vote_mini', vote: judgement.product_vote %></td>
+            <td><%= render 'votes/editable_vote_mini', vote: judgement.concept_vote %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
   <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
 </div>

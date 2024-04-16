@@ -1,6 +1,7 @@
 class JudgementsController < ApplicationController
   def index
-    authorize Judgement
+    @judgements = Judgement.where(judging_team: current_user.judging_team)
+    authorize @judgements
 
     if current_user.judging_team.current_judgement.present? && !current_user.judging_team.current_judgement.completed?
       redirect_to edit_judgement_path(current_user.judging_team.current_judgement)

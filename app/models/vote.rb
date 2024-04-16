@@ -46,9 +46,10 @@ class Vote < ApplicationRecord
 
     if association[:judgement].completed?
       broadcast_append_to association[:judgement], :votes, html: "<script>window.location = '/judgements';</script>".html_safe
-    else
-      broadcast_replace_to association[:judgement], :votes, locals: {kind: association[:kind]}
-      broadcast_replace_to association[:judgement], :votes, target: dom_id(self, :editable), partial: "votes/editable_vote", locals: {kind: association[:kind]}
     end
+
+    broadcast_replace_to association[:judgement], :votes, locals: {kind: association[:kind]}
+    broadcast_replace_to association[:judgement], :votes, target: dom_id(self, :editable), partial: "votes/editable_vote", locals: {kind: association[:kind]}
+    broadcast_replace_to association[:judgement], :votes, target: dom_id(self, :mini), partial: "votes/editable_vote_mini"
   end
 end

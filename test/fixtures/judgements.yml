@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  technical_score: 1
+  product_score: 1
+  concept_score: 1
+  judging_team: one
+  submission: one
+
+two:
+  technical_score: 1
+  product_score: 1
+  concept_score: 1
+  judging_team: two
+  submission: two

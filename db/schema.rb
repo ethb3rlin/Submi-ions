@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_15_123145) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_16_011832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_123145) do
     t.index ["user_id"], name: "index_ethereum_addresses_on_user_id"
   end
 
+  create_table "judgements", force: :cascade do |t|
+    t.bigint "judging_team_id", null: false
+    t.bigint "submission_id", null: false
+    t.bigint "technical_vote_id"
+    t.bigint "product_vote_id"
+    t.bigint "concept_vote_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["concept_vote_id"], name: "index_judgements_on_concept_vote_id"
+    t.index ["judging_team_id"], name: "index_judgements_on_judging_team_id"
+    t.index ["product_vote_id"], name: "index_judgements_on_product_vote_id"
+    t.index ["submission_id"], name: "index_judgements_on_submission_id"
+    t.index ["technical_vote_id"], name: "index_judgements_on_technical_vote_id"
+  end
+
   create_table "judging_teams", force: :cascade do |t|
     t.enum "track", null: false, enum_type: "judging_track"
     t.bigint "technical_judge_id"
@@ -35,7 +50,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_123145) do
     t.bigint "concept_judge_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "current_judgement_id"
     t.index ["concept_judge_id"], name: "index_judging_teams_on_concept_judge_id"
+    t.index ["current_judgement_id"], name: "index_judging_teams_on_current_judgement_id"
     t.index ["product_judge_id"], name: "index_judging_teams_on_product_judge_id"
     t.index ["technical_judge_id"], name: "index_judging_teams_on_technical_judge_id"
   end
@@ -61,17 +78,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_123145) do
   create_table "votes", force: :cascade do |t|
     t.float "mark"
     t.bigint "user_id", null: false
-    t.bigint "submission_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["submission_id"], name: "index_votes_on_submission_id"
     t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
   add_foreign_key "ethereum_addresses", "users"
+  add_foreign_key "judgements", "judging_teams"
+  add_foreign_key "judgements", "submissions"
+  add_foreign_key "judgements", "votes", column: "concept_vote_id"
+  add_foreign_key "judgements", "votes", column: "product_vote_id"
+  add_foreign_key "judgements", "votes", column: "technical_vote_id"
+  add_foreign_key "judging_teams", "judgements", column: "current_judgement_id"
   add_foreign_key "judging_teams", "users", column: "concept_judge_id"
   add_foreign_key "judging_teams", "users", column: "product_judge_id"
   add_foreign_key "judging_teams", "users", column: "technical_judge_id"
-  add_foreign_key "votes", "submissions"
   add_foreign_key "votes", "users"
 end

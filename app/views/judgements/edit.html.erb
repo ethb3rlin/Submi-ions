@@ -1,0 +1,30 @@
+<div class="content">
+  <h1 class="title"><%= @submission.title %></h1>
+  <p><%= @submission.description %></p>
+
+  <div class="columns">
+    <div class="column is-4">
+      <% if current_user == @judging_team.technical_judge %>
+        <%= render 'votes/editable_vote', vote: @judgement.technical_vote, kind: :technical %>
+      <% else %>
+        <%= render 'votes/vote', vote: @judgement.technical_vote, kind: :technical %>
+      <% end %>
+    </div>
+    <div class="column is-4">
+      <% if current_user == @judging_team.product_judge %>
+        <%= render 'votes/editable_vote', vote: @judgement.product_vote, kind: :product %>
+      <% else %>
+        <%= render 'votes/vote', vote: @judgement.product_vote, kind: :product %>
+      <% end %>
+    </div>
+    <div class="column is-4">
+      <% if current_user == @judging_team.concept_judge %>
+        <%= render 'votes/editable_vote', vote: @judgement.concept_vote, kind: :concept %>
+      <% else %>
+        <%= render 'votes/vote', vote: @judgement.concept_vote, kind: :concept %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= turbo_stream_from @judgement, :votes %>

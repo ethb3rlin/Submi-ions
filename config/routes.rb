@@ -9,6 +9,14 @@
 #                                          PATCH  /votes/:id(.:format)                                                                              votes#update
 #                                          PUT    /votes/:id(.:format)                                                                              votes#update
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
+#                               judgements GET    /judgements(.:format)                                                                             judgements#index
+#                                          POST   /judgements(.:format)                                                                             judgements#create
+#                            new_judgement GET    /judgements/new(.:format)                                                                         judgements#new
+#                           edit_judgement GET    /judgements/:id/edit(.:format)                                                                    judgements#edit
+#                                judgement GET    /judgements/:id(.:format)                                                                         judgements#show
+#                                          PATCH  /judgements/:id(.:format)                                                                         judgements#update
+#                                          PUT    /judgements/:id(.:format)                                                                         judgements#update
+#                                          DELETE /judgements/:id(.:format)                                                                         judgements#destroy
 #                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
 #                                     user PATCH  /users/:id(.:format)                                                                              users#update
 #                                          PUT    /users/:id(.:format)                                                                              users#update
@@ -80,6 +88,8 @@
 
 Rails.application.routes.draw do
   resources :votes
+
+  resources :judgements
 
   resources :users, only: %i[edit update]
 

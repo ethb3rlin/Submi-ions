@@ -1,8 +1,10 @@
 <div id="<%= dom_id vote %>">
   <p>
-    <strong>User:</strong>
-    <code><%= vote.user.ethereum_addresses.first.address %></code>
+    <%= kind.to_s.titleize %>
   </p>
+  <p><em>
+    <%= vote.user.decorate.readable_name %>
+  </em></p>
 
   <p><%= vote.mark || "Hadn't voted yet" %></p>
 </div>

@@ -3,16 +3,22 @@
 <div class="level">
   <div class="level-left tile is-vertical">
     <h1 class="title">Submißions</h1>
-  
-    <% if !!current_user %>
+
+    <% if current_user.try :judge? %>
       <h2 class="subtitle"><%= link_to "Proceed to voting", votes_path %></h2>
     <% end %>
+    <% if current_user.try :organizer? %>
+      <h2 class="subtitle"><%= link_to "Admin panel", admin_root_path %></h2>
+    <% end %>
   </div>
-  
+
   <div class="level-right">
     <div class="level-item tile is-vertical">
       <p>
-        Hello, <code><%= current_user.ethereum_addresses.first.address rescue 'anonymous' %></code>!
+        Hello, <%= current_user.decorate.readable_name rescue 'Anonymous' %>!
+        <% if current_user %>
+          <%= link_to lucide_icon('user-cog', size: 16), edit_user_path(current_user), class: 'button is-white is-small' %>
+        <% end %>
       </p>
       <% if !current_user %>
         <div data-controller="ethereum">

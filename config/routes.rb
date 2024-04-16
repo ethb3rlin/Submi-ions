@@ -9,6 +9,9 @@
 #                                          PATCH  /votes/:id(.:format)                                                                              votes#update
 #                                          PUT    /votes/:id(.:format)                                                                              votes#update
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
+#                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
+#                                     user PATCH  /users/:id(.:format)                                                                              users#update
+#                                          PUT    /users/:id(.:format)                                                                              users#update
 #                               admin_root GET    /admin(.:format)                                                                                  admin/admin#index
 #              admin_user_ethereum_address POST   /admin/users/:user_id/ethereum_address(.:format)                                                  admin/ethereum_addresses#create
 #      admin_user_destroy_ethereum_address DELETE /admin/users/:user_id/ethereum_address/:id(.:format)                                              admin/ethereum_addresses#destroy
@@ -77,6 +80,8 @@
 
 Rails.application.routes.draw do
   resources :votes
+
+  resources :users, only: %i[edit update]
 
   namespace :admin do
     root 'admin#index'

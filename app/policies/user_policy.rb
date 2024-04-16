@@ -12,11 +12,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.organizer?
+    user.organizer? || user == record
   end
 
   def update?
-    user.organizer?
+    user.organizer? || user == record
   end
 
   def destroy?

@@ -1,0 +1,17 @@
+<div class="content">
+  <h1 class="title">Please introduce yourself</h1>
+  <%= form_with model: @user, local: true do |form| %>
+
+    <div class="field">
+      <%= form.label :name, class: 'label' %>
+      <div class="control"><%= form.text_field :name, class: 'input' %></div>
+    </div>
+
+    <div class="field">
+      <%= form.label :email, class: 'label' %>
+      <div class="control"><%= form.email_field :email, type: :email, class: 'input' %></div>
+    </div>
+
+    <div class="field"><%= form.submit class: %w[button is-primary]%></div>
+  <% end %>
+</div>

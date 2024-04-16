@@ -30,7 +30,14 @@ class SessionsController < ApplicationController
       session[:address] = message.address
 
       address_record = EthereumAddress.find_or_create_by(address: message.address)
-      User.create(ethereum_addresses: [address_record]) unless address_record.user
+      if !address_record.user
+        user = User.create(ethereum_addresses: [address_record])
+        return render html: "<script>window.location = '#{edit_user_path(user)}';</script>".html_safe
+      end
+
+      if address_record.user.name.empty?
+        return render html: "<script>window.location = '#{edit_user_path(address_record.user)}';</script>".html_safe
+      end
 
       # Let's redirect with Javascript, otherwise cookies won't be set
       if address_record.user.organizer?

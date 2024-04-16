@@ -30,7 +30,7 @@ class VotesController < ApplicationController
   # PATCH/PUT /votes/1 or /votes/1.json
   def update
     respond_to do |format|
-      if @vote.update(vote_params)
+      if @vote.update(vote_params.merge(completed: false))
         format.html { redirect_to vote_url(@vote), notice: "Vote was successfully updated." }
         format.json { render :show, status: :ok, location: @vote }
       else
@@ -50,6 +50,12 @@ class VotesController < ApplicationController
     end
   end
 
+  def complete
+    @vote = Vote.find(params[:id])
+    authorize @vote
+    @vote.update!(completed: true)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_vote
@@ -59,6 +65,6 @@ class VotesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def vote_params
-      params.require(:vote).permit(:mark, :submission_id)
+      params.require(:vote).permit(:mark)
     end
 end

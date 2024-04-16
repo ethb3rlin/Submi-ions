@@ -15,6 +15,10 @@ class VotePolicy < ApplicationPolicy
     true
   end
 
+  def complete?
+    user.present? && record.user == user
+  end
+
   def update?
     user.present? && (record.user == user || user.organizer?)
   end

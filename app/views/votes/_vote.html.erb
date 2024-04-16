@@ -6,5 +6,9 @@
     <%= vote.user.decorate.readable_name %>
   </em></p>
 
+  <% if vote.completed %>
+    <%= lucide_icon "circle-check-big", class: "has-text-success" %>
+  <% end %>
+
   <p><%= vote.mark || "Hadn't voted yet" %></p>
 </div>

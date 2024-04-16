@@ -3,6 +3,7 @@
 # Table name: votes
 #
 #  id         :bigint           not null, primary key
+#  completed  :boolean          default(FALSE)
 #  mark       :float
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

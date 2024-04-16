@@ -83,6 +83,5 @@ test:
 #
 production:
   <<: *default
-  database: submissions_production
-  # username: submissions
-  # password: <%= ENV["SUBMISSIONS_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>

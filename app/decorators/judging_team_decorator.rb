@@ -10,7 +10,7 @@ class JudgingTeamDecorator < Draper::Decorator
   #     end
   #   end
 
-  def track
+  def track_name
     case object.track
     when "transact"
       "Freedom to Transact"
@@ -21,17 +21,5 @@ class JudgingTeamDecorator < Draper::Decorator
     when "social"
       "Social Tech"
     end
-  end
-
-  def technical_judge
-    object.technical_judge&.name
-  end
-
-  def product_judge
-    object.product_judge&.name
-  end
-
-  def concept_judge
-    object.concept_judge&.name
   end
 end

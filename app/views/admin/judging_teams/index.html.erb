@@ -15,7 +15,7 @@
       <% @judging_teams.each do |team| %>
         <tr>
           <td><%= team.id %></td>
-          <td><%= team.decorate.track %></td>
+          <td><%= team.decorate.track_name %></td>
           <td><%= team.technical_judge ? link_to(team.technical_judge.name, edit_admin_user_path(team.technical_judge)) : '--' %></td>
           <td><%= team.product_judge ? link_to(team.product_judge.name, edit_admin_user_path(team.product_judge)) : '--' %></td>
           <td><%= team.concept_judge ? link_to(team.concept_judge.name, edit_admin_user_path(team.concept_judge)) : '--' %></td>
@@ -25,4 +25,7 @@
         </tr>
       <% end %>
     </tbody>
+  </table>
+
+  <%= link_to "New Judging Team", new_admin_judging_team_path, class: ['button', 'is-primary'] %>
 </div>

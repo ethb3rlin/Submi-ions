@@ -1,0 +1,46 @@
+  <%= form_for [:admin, @judging_team] do |f| %>
+    <div class="field">
+      <%= f.label :track, class: "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :track, JudgingTeam.tracks.keys, class: "select" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :technical_judge, class: "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :technical_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :product_judge, class: "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :product_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :concept_judge, class: "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :concept_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <%= link_to "← Back to Judging Teams", admin_judging_teams_path, class: "button is-light" %>
+      </div>
+      <div class="control">
+        <%= f.submit "Update", class: "button is-primary" %>
+      </div>
+    </div>
+  <% end %>

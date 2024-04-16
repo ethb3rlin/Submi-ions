@@ -29,4 +29,8 @@ class User < ApplicationRecord
     def judging_team
         JudgingTeam.where('technical_judge_id = :id OR product_judge_id = :id OR concept_judge_id = :id', id: self.id).first
     end
+
+    def self.unassigned_judges
+        User.judge.where.not(id: JudgingTeam.pluck(:technical_judge_id).compact + JudgingTeam.pluck(:product_judge_id).compact + JudgingTeam.pluck(:concept_judge_id).compact).order(:name)
+    end
 end

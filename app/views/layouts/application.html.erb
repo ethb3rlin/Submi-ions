@@ -12,6 +12,68 @@
   </head>
 
   <body>
+    <nav class="navbar <%= current_user && current_user.decorate.navbar_class %>" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" id="navbar-logo-header" href="/">
+          <%= lucide_icon "land-plot", size: 28, "stroke-width": 1.6 %>
+          <span>Submißions</span>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="submissionsNavbar">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="submissionsNavbar" class="navbar-menu">
+        <div class="navbar-start">
+          <% if policy(:admin).index? %>
+            <a class="navbar-item <%= active_class(admin_root_path) %>" href="<%= admin_root_path %>">
+              Admin panel
+            </a>
+          <% end %>
+
+          <% if policy(Judgement).create? %>
+            <a class="navbar-item <%= active_class(judgements_path) %>" href="<%= judgements_path %>">
+              Judging UI
+            </a>
+          <% end %>
+        </div>
+
+        <div class="navbar-end">
+          <% if current_user %>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a href="" class="navbar-link">
+                Hello, <%= current_user.decorate.readable_name rescue 'Anonymous' %>!
+              </a>
+
+              <div class="navbar-dropdown is-right">
+                <%= link_to edit_user_path(current_user), class: ["navbar-item", active_class(edit_user_path(current_user))] do %>
+                  <%= lucide_icon 'user-cog', size: 16 %>
+                  <span>Edit user profile</span>
+                <% end %>
+                <%= link_to sign_out_path, data: {turbo_method: :delete}, class: 'navbar-item is-warning is-light' do %>
+                  <%= lucide_icon 'log-out', size: 16 %>
+                  <span>Log out</span>
+                <% end %>
+              </div>
+
+            </div>
+          <% else %>
+            <div class="navbar-item">
+              <div class="buttons">
+                <div data-controller="ethereum">
+                  <button data-action="click->ethereum#signin" class="button is-primary">Log in with Ethereum</button>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
     <section class="section">
       <div class="container">
           <% flash.each do |type, msg| %>

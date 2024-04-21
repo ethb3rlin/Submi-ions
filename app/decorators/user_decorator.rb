@@ -21,4 +21,14 @@ class UserDecorator < Draper::Decorator
     end
   end
 
+  def navbar_class
+    if object.organizer?
+      'is-primary'
+    elsif object.judge?
+      'is-dark'
+    else
+      'is-light'
+    end
+  end
+
 end

@@ -1,0 +1,20 @@
+.navbar-brand {
+  align-items: baseline;
+}
+
+.navbar-brand .navbar-item {
+  gap: 3px;
+}
+
+#navbar-logo-header svg {
+  margin-top: -6px;
+}
+
+#navbar-logo-header span {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 1.5em;
+}
+
+.navbar-dropdown .navbar-item {
+  gap: 5px;
+}

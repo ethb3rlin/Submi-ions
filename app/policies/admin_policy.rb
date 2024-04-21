@@ -2,6 +2,6 @@
 
 class AdminPolicy < ApplicationPolicy
   def index?
-    user.present? && user.organizer?
+    user.try :organizer?
   end
 end

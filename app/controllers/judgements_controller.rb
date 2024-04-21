@@ -3,7 +3,7 @@ class JudgementsController < ApplicationController
     @judgements = Judgement.where(judging_team: current_user.judging_team)
     authorize @judgements
 
-    if current_user.judging_team.current_judgement.present? && !current_user.judging_team.current_judgement.completed?
+    if current_user.judging_team.present? && current_user.judging_team.current_judgement.present? && !current_user.judging_team.current_judgement.completed?
       redirect_to edit_judgement_path(current_user.judging_team.current_judgement)
     end
   end

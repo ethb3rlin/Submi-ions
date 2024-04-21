@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
         return render html: "<script>window.location = '#{edit_user_path(user)}';</script>".html_safe
       end
 
-      if address_record.user.name.empty?
+      if address_record.user.name.blank?
         return render html: "<script>window.location = '#{edit_user_path(address_record.user)}';</script>".html_safe
       end
 

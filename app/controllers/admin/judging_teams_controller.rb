@@ -8,7 +8,7 @@ class Admin::JudgingTeamsController < ApplicationController
     @judging_team = JudgingTeam.new
     authorize @judging_team
 
-    @judges = User.unassigned_judges + [@judging_team.technical_judge, @judging_team.product_judge, @judging_team.concept_judge].compact
+    @judges = User.unassigned_judges + [@judging_team.technical_judge, @judging_team.product_judge, @judging_team.concept_judge].compact.uniq
   end
 
   def create
@@ -25,7 +25,7 @@ class Admin::JudgingTeamsController < ApplicationController
     @judging_team = JudgingTeam.find(params[:id]).decorate
     authorize @judging_team
 
-    @judges = User.unassigned_judges + [@judging_team.technical_judge, @judging_team.product_judge, @judging_team.concept_judge].compact
+    @judges = User.unassigned_judges + [@judging_team.technical_judge, @judging_team.product_judge, @judging_team.concept_judge].compact.uniq
   end
 
   def update

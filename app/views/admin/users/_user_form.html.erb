@@ -14,7 +14,7 @@
   <div class="field">
     <div class="label">Role</div>
     <div class="control">
-      <% if current_user.id == @user.id %>
+      <% if @user.current_user? %>
         <fieldset disabled>
       <% end %>
 
@@ -22,7 +22,7 @@
         <%= form.select :kind, User.kinds.values, include_blank: false %>
       </div>
 
-      <% if current_user.id == @user.id %>
+      <% if @user.current_user? %>
         </fieldset>
       <% end %>
     </div>

@@ -15,6 +15,7 @@ class Admin::UsersController < ApplicationController
       @user.kind = params[:role]
     end
     authorize @user
+    @user = @user.decorate
   end
 
   def create
@@ -30,6 +31,7 @@ class Admin::UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     authorize @user
+    @user = @user.decorate
   end
 
   def update

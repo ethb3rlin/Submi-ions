@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <nav class="navbar <%= current_user && current_user.decorate.navbar_class %>" role="navigation" aria-label="main navigation">
+    <nav class="navbar <%= current_user.try :navbar_class %>" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" id="navbar-logo-header" href="/">
           <%= lucide_icon "land-plot", size: 28, "stroke-width": 1.6 %>
@@ -46,7 +46,7 @@
           <% if current_user %>
             <div class="navbar-item has-dropdown is-hoverable">
               <a href="" class="navbar-link">
-                Hello, <%= current_user.decorate.readable_name rescue 'Anonymous' %>!
+                Hello, <%= current_user.readable_name %>!
               </a>
 
               <div class="navbar-dropdown is-right">

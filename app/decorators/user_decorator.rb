@@ -10,6 +10,10 @@ class UserDecorator < Draper::Decorator
   #     end
   #   end
 
+  def current_user?
+    object == h.current_user
+  end
+
   def readable_name
     if object.name.present?
       object.name
@@ -32,12 +36,20 @@ class UserDecorator < Draper::Decorator
   end
 
   def role_icon
-    if object.organizer?
+    if object == h.current_user
+      'person-standing'
+    elsif object.organizer?
       'shield'
     elsif object.judge?
       'scale'
     else
       'user'
     end
+  end
+
+  def rendered_ethereum_addresses
+    object.ethereum_addresses.map do |ea|
+      helpers.content_tag :code, ea.address, class: 'is-size-7'
+    end.join(', ').html_safe
   end
 end

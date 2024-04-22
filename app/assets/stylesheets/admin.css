@@ -13,3 +13,13 @@
 .admin-users-ui .email::after {
   content: '>';
 }
+
+.ethereum-addresses .panel-block .fullwidth {
+  flex-grow: 1;
+  flex-shrink: 1;
+  width: 100%;
+}
+
+.ethereum-addresses .address-link {
+  margin-left: 9px;
+}

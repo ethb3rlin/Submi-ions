@@ -7,17 +7,25 @@
   <div class="column is-1"></div>
 
   <div class="column is-6">
-    <div class="label">Ethereum addresses</div>
-    <%= render partial: 'admin/users/ethereum_addresses' %>
-    <%= form_with model: @user.ethereum_addresses.new, url: admin_user_ethereum_address_path(@user) do |form| %>
-      <div class="field has-addons">
-        <div class="control">
-          <%= form.text_field :address, class: 'input', placeholder: '0x...' %>
-        </div>
-        <div class="control">
-          <%= form.submit 'Add', class: ['button', 'is-primary'] %>
-        </div>
+    <div class="panel ethereum-addresses">
+      <p class="panel-heading">Ethereum Addresses</p>
+      <% @user.ethereum_addresses.each do |address| %>
+        <%= render partial: 'admin/users/ethereum_address_panel_block', locals: {address: address} %>
+      <% end %>
+      <div class="panel-block">
+        <%= form_with model: @user.ethereum_addresses.new, url: admin_user_ethereum_address_path(@user), class: "fullwidth" do |form| %>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <%= form.text_field :address, class: 'input', placeholder: '0x...' %>
+            </div>
+            <div class="control">
+              <%= form.submit 'Add', class: ['button', 'is-primary'] %>
+            </div>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
+
+
   </div>
 </div>

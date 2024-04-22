@@ -1,25 +1,55 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Email</th>
-      <th>Name</th>
-      <th>Ethereum address</th>
-      <th>Type</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-  <% @users.each do |user| %>
-    <tr class="<%= class_names( "is-selected" => user.id == current_user.id ) %>">
-      <td><%= user.id %></td>
-      <td><%= user.email %></td>
-      <td><%= user.name %></td>
-      <td><%= user.ethereum_addresses.pluck(:address).join(", ") %></td>
-      <td><%= user.kind %></td>
-      <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
-      <td><%= button_to lucide_icon('trash-2', size:9), admin_user_path(user), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: %w[button is-small is-danger is-outlined] unless user.id == current_user.id %></td>
-    </tr>
-  <% end %>
-</table>
+<nav class="panel is-info admin-users-ui" data-controller="filterable-users">
+  <p class="panel-heading">Users</p>
+  <p class="panel-tabs">
+    <%= link_to admin_users_path, class: class_names("is-active" => params[:role].blank?) do %>
+      All
+    <% end %>
+    <%= link_to admin_users_path(role: :hacker), class: class_names("is-active" => params[:role]=='hacker') do %>
+      Hackers
+    <% end %>
+    <%= link_to admin_users_path(role: :judge), class: class_names("is-active" => params[:role]=='judge') do %>
+      Judges
+    <% end %>
+    <%= link_to admin_users_path(role: :organizer), class: class_names("is-active" => params[:role]=='organizer') do %>
+      Organizers
+    <% end %>
+  </p>
+  <div class="panel-block">
+    <div class="control has-icons-left">
+      <input class="input" type="text" placeholder="Filter" data-action="filterable-users#filter"/>
+      <span class="icon is-left">
+        <%= lucide_icon 'search', size: 16 %>
+      </span>
+    </div>
+  </div>
 
-<%= link_to 'New User', new_admin_user_path %>
+  <div class="users-list list">
+    <% @users.each do |user| %>
+      <% if user.id == current_user.id %>
+        <div class="panel-block is-active">
+          <span class="panel-icon">
+            <%= lucide_icon 'person-standing', size: 16 %>
+          </span>
+          <span class="name"><%= user.name %></span>
+          <span class="email"><%= user.email %></span>
+          <code class="ethereum-addresses is-size-7"><%= user.ethereum_addresses.pluck(:address).join(", ") %></code>
+        </div>
+      <% else %>
+        <%= link_to edit_admin_user_path(user), class: "panel-block" do %>
+          <span class="panel-icon">
+            <%= lucide_icon user.role_icon, size: 16 %>
+          </span>
+          <span class="name"><%= user.name %></span>
+          <span class="email"><%= user.email %></span>
+          <span class="ethereum-addresses is-size-7">
+            <%= safe_join user.ethereum_addresses.pluck(:address).map(
+              &->(address) { tag.code(address) }
+            ), ", " %>
+          </span>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</nav>
+
+<%= link_to 'New User', new_admin_user_path(role: params[:role]) %>

@@ -1,0 +1,15 @@
+.admin-users-ui .users-list>.panel-block{
+  column-gap: 0.8em;
+}
+
+.admin-users-ui .email {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.admin-users-ui .email::before {
+  content: '<';
+}
+
+.admin-users-ui .email::after {
+  content: '>';
+}

@@ -31,4 +31,13 @@ class UserDecorator < Draper::Decorator
     end
   end
 
+  def role_icon
+    if object.organizer?
+      'shield'
+    elsif object.judge?
+      'scale'
+    else
+      'user'
+    end
+  end
 end

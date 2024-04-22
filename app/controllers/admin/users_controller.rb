@@ -1,11 +1,19 @@
 class Admin::UsersController < ApplicationController
   def index
-    @users = User.order(:id).all
+    @users = if params[:role]
+      User.where(kind: params[:role]).order(:id).all
+    else
+      User.order(:id).all
+    end
     authorize @users
+    @users = @users.decorate
   end
 
   def new
     @user = User.new
+    if params[:role]
+      @user.kind = params[:role]
+    end
     authorize @user
   end
 

@@ -11,13 +11,14 @@ class JudgementsController < ApplicationController
   def create
     @judging_team = current_user.judging_team
 
-    return redirect_to judgements_path unless @judging_team.present?
-    return redirect_to edit_judgement_path(@judging_team.current_judgement) if @judging_team.current_judgement.present?
 
     @submission = Submission.left_outer_joins(:judgement).where(judgements: { id: nil }).first
 
     @judgement = Judgement.new(submission: @submission, judging_team: @judging_team)
     authorize @judgement
+
+    return redirect_to judgements_path unless @judging_team.present?
+    return redirect_to edit_judgement_path(@judging_team.current_judgement) if @judging_team.current_judgement.present?
 
     @judgement.technical_vote = Vote.create!(user: @judging_team.technical_judge, mark: 50)
     @judgement.product_vote = Vote.create!(user: @judging_team.product_judge, mark: 50)

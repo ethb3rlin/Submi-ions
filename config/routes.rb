@@ -1,7 +1,6 @@
 # == Route Map
 #
 #                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
-#                            complete_vote POST   /votes/:id/complete(.:format)                                                                     votes#complete
 #                                    votes GET    /votes(.:format)                                                                                  votes#index
 #                                          POST   /votes(.:format)                                                                                  votes#create
 #                                 new_vote GET    /votes/new(.:format)                                                                              votes#new
@@ -10,6 +9,7 @@
 #                                          PATCH  /votes/:id(.:format)                                                                              votes#update
 #                                          PUT    /votes/:id(.:format)                                                                              votes#update
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
+#                       complete_judgement POST   /judgements/:id/complete(.:format)                                                                judgements#complete
 #                               judgements GET    /judgements(.:format)                                                                             judgements#index
 #                                          POST   /judgements(.:format)                                                                             judgements#create
 #                            new_judgement GET    /judgements/new(.:format)                                                                         judgements#new
@@ -88,13 +88,13 @@
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 
 Rails.application.routes.draw do
-  resources :votes do
+  resources :votes
+
+  resources :judgements do
     member do
       post 'complete'
     end
   end
-
-  resources :judgements
 
   resources :users, only: %i[edit update]
 

@@ -1,5 +1,5 @@
 <tr>
-  <td class="project-title"><%= link_to judgement.submission.title, edit_judgement_path(judgement, no_redirect: true), class: 'is-size-5' %></td>
+  <td class="project-title"><%= link_to judgement.submission.title, judgement, class: 'is-size-5' %></td>
   <td class="<%= 'editable' if judgement.technical_vote.user == current_user %>"><%= render judgement.technical_vote, kind: :technical %></td>
   <td class="<%= 'editable' if judgement.product_vote.user == current_user %>"><%= render judgement.product_vote, kind: :product %></td>
   <td class="<%= 'editable' if judgement.concept_vote.user == current_user %>"><%= render judgement.concept_vote, kind: :concept %></td>

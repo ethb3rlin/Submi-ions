@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" id="judgements">
   <% if @judgements.empty? %>
     <p>
       You have not judged any projects yet.
@@ -21,3 +21,5 @@
 
   <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
 </div>
+
+<%= turbo_stream_from @judging_team, :judgements_redirects %>

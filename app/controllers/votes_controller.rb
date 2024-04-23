@@ -1,5 +1,5 @@
 class VotesController < ApplicationController
-  before_action :set_vote, only: %i[ update destroy complete ]
+  before_action :set_vote, only: %i[ update destroy ]
 
   def create
     @vote = Vote.new(vote_params)
@@ -14,10 +14,6 @@ class VotesController < ApplicationController
   def destroy
     @vote.destroy!
     redirect_to votes_url, notice: "Vote was successfully destroyed."
-  end
-
-  def complete
-    @vote.toggle!(:completed)
   end
 
   private

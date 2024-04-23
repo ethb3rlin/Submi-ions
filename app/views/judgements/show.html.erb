@@ -1,0 +1,31 @@
+<div class="content" id="<%= dom_id @judgement %>">
+  <h1 class="title"><%= @submission.title %></h1>
+  <p><%= @submission.description %></p>
+
+  <div class="grid" id="votes">
+    <div class="cell <%= 'editable' if @judgement.technical_vote.user == current_user %>">
+      <%= render @judgement.technical_vote, kind: :technical %>
+    </div>
+    <div class="cell <%= 'editable' if @judgement.product_vote.user == current_user %>">
+      <%= render @judgement.product_vote, kind: :product %>
+    </div>
+    <div class="cell <%= 'editable' if @judgement.concept_vote.user == current_user %>">
+      <%= render @judgement.concept_vote, kind: :concept %>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <% if @judgement.completed? || current_user.organizer? %>
+      <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
+        <%= lucide_icon "arrow-big-left" %>
+        <span>Back</span>
+      <% end %>
+    <% end %>
+    <%= button_to complete_judgement_path(@judgement), class: "button is-success", data: { turbo_frame: dom_id(@judgement) } do %>
+      <%= lucide_icon "circle-check-big" %>
+      <span>I'm done</span>
+    <% end %>
+  </div>
+</div>
+
+<%= turbo_stream_from @judgement, :votes %>

@@ -7,7 +7,11 @@ class JudgementPolicy < ApplicationPolicy
     user.try :judge?
   end
 
-  def edit?
+  def show?
     user.present? && ((user.judge? && record.judging_team == user.judging_team) || user.organizer?)
+  end
+
+  def complete?
+    user.present? && user.judge? && record.judging_team == user.judging_team
   end
 end

@@ -37,3 +37,7 @@ td .maxi {
 td.project-title {
   vertical-align: middle !important;
 }
+
+.mini .panel-block.display-mark {
+  border: 0;
+}

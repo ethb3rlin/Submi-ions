@@ -6,7 +6,7 @@ class JudgementsController < ApplicationController
     authorize @judgements
 
     if @judging_team.present? && @judging_team.current_judgement.present? && !@judging_team.current_judgement.completed?
-      redirect_to edit_judgement_path(@judging_team.current_judgement)
+      redirect_to @judging_team.current_judgement
     end
   end
 
@@ -19,7 +19,7 @@ class JudgementsController < ApplicationController
     authorize @judgement
 
     return redirect_to judgements_path unless @judging_team.present?
-    return redirect_to edit_judgement_path(@judging_team.current_judgement) if @judging_team.current_judgement.present?
+    return redirect_to @judging_team.current_judgement if @judging_team.current_judgement.present?
 
     @judgement.technical_vote = Vote.create!(user: @judging_team.technical_judge, mark: 50)
     @judgement.product_vote = Vote.create!(user: @judging_team.product_judge, mark: 50)
@@ -28,14 +28,27 @@ class JudgementsController < ApplicationController
 
     @judging_team.update(current_judgement: @judgement)
 
-    redirect_to edit_judgement_path(@judgement)
+    redirect_to @judgement
   end
 
-  def edit
+  def show
     @judgement = Judgement.find(params[:id])
     authorize @judgement
 
     @judging_team = @judgement.judging_team
     @submission = @judgement.submission
+  end
+
+  def complete
+    @judgement = Judgement.find(params[:id])
+    authorize @judgement
+
+    @judgement.complete_for(current_user)
+
+    if @judgement.completed?
+      redirect_to judgements_path
+    else
+      redirect_to @judgement
+    end
   end
 end

@@ -49,10 +49,6 @@ class Vote < ApplicationRecord
       {judgement: concept_vote_judgement, kind: :concept}
     end
 
-    if association[:judgement].completed?
-      broadcast_append_to association[:judgement], :votes, html: '<script>if (window.location.pathname.match(/^\/judgements\/\d+\/edit$/) && CURRENT_USER_ROLE==="judge") { window.location = "/judgements"; }</script>'.html_safe
-    end
-
     broadcast_replace_to association[:judgement], :votes, locals: {kind: association[:kind]}
   end
 

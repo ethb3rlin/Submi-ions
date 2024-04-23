@@ -29,6 +29,7 @@
 #
 class Judgement < ApplicationRecord
   include ActionView::RecordIdentifier # We need this for dom_id to work
+  include Rails.application.routes.url_helpers # Add route helpers
 
   belongs_to :judging_team
   belongs_to :submission
@@ -42,6 +43,18 @@ class Judgement < ApplicationRecord
 
   after_create_commit :broadcast_new_judgement
 
+  def complete_for(user)
+    technical_vote.update!(completed: true) if technical_vote.user == user
+    product_vote.update!(completed: true) if product_vote.user == user
+    concept_vote.update!(completed: true) if concept_vote.user == user
+
+    if completed?
+      broadcast_append_to self, :votes,
+        html: "<script>if (window.location.pathname.match('#{ judgement_path(self) }') && CURRENT_USER_ROLE==='judge') { window.location = '#{judgements_path}'; }</script>".html_safe,
+        target: dom_id(self)
+    end
+  end
+
   def completed?
     technical_vote.completed && product_vote.completed && concept_vote.completed
   end
@@ -49,5 +62,6 @@ class Judgement < ApplicationRecord
   private
   def broadcast_new_judgement
     broadcast_append_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(judging_team, :judgements)
+    broadcast_append_to judging_team, :judgements_redirects, html: "<script>if (window.location.pathname.match('#{ judgements_path }') && CURRENT_USER_ROLE==='judge') { window.location = '#{judgement_path(self)}'; }</script>".html_safe
   end
 end

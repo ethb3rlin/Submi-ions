@@ -8,17 +8,19 @@ class JudgementsController < ApplicationController
     if @judging_team.present? && @judging_team.current_judgement.present? && !@judging_team.current_judgement.completed?
       redirect_to @judging_team.current_judgement
     end
+
+    @there_are_more_to_judge = @judging_team.pending_submissions.any?
   end
 
   def create
     @judging_team = current_user.judging_team
 
-    @submission = Submission.left_outer_joins(:judgement).where(judgements: { id: nil }).first
+    @submission = @judging_team.pending_submissions.first
 
     @judgement = Judgement.new(submission: @submission, judging_team: @judging_team)
     authorize @judgement
 
-    return redirect_to judgements_path unless @judging_team.present?
+    return redirect_to judgements_path unless @judging_team.present? && @submission.present?
     return redirect_to @judging_team.current_judgement if @judging_team.current_judgement.present?
 
     @judgement.technical_vote = Vote.create!(user: @judging_team.technical_judge, mark: 50)

@@ -19,7 +19,11 @@
     </table>
   <% end %>
 
-  <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
+  <% if @there_are_more_to_judge %>
+    <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
+  <% else %>
+    <p>Congrats, you have judged everything!</p>
+  <% end %>
 </div>
 
 <%= turbo_stream_from @judging_team, :judgements_redirects %>

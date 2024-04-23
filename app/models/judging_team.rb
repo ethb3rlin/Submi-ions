@@ -37,4 +37,9 @@ class JudgingTeam < ApplicationRecord
   enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
+
+  def pending_submissions
+    # TODO filter this by track (and account for multi-teams) when Submission will have a track column
+    Submission.left_outer_joins(:judgement).where(judgements: { id: nil })
+  end
 end

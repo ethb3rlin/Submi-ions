@@ -1,14 +1,30 @@
 <div id="<%= dom_id vote %>">
-  <p>
-    <%= kind.to_s.titleize %>
-  </p>
-  <p><em>
-    <%= vote.user.decorate.readable_name %>
-  </em></p>
+  <div class="maxi panel is-light">
+    <div class="panel-heading is-size-6 is-block">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <%= kind.to_s.titleize %>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <%= lucide_icon "circle-check-big", size: 16, class: "has-text-success" if vote.completed %>
+          </div>
+          <div class="level-item">
+            <span class="is-italic has-text-weight-normal">
+              <%= vote.user.decorate.readable_name %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render "votes/display_mark", vote: vote %>
+    <%= render "votes/edit_mark", vote: vote %>
+  </div>
 
-  <% if vote.completed %>
-    <%= lucide_icon "circle-check-big", class: "has-text-success" %>
-  <% end %>
-
-  <p><%= vote.mark || "Hadn't voted yet" %></p>
+  <div class="mini">
+    <%= render "votes/display_mark", vote: vote %>
+    <%= render "votes/edit_mark", vote: vote %>
+  </div>
 </div>

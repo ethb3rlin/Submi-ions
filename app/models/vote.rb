@@ -34,6 +34,10 @@ class Vote < ApplicationRecord
     technical_vote_judgement || product_vote_judgement || concept_vote_judgement
   end
 
+  def padded_mark
+    format("%.1f", self.mark)
+  end
+
   private
   def broadcast_update
     association = if technical_vote_judgement.present?
@@ -45,11 +49,9 @@ class Vote < ApplicationRecord
     end
 
     if association[:judgement].completed?
-      broadcast_append_to association[:judgement], :votes, html: "<script>window.location = '/judgements';</script>".html_safe
+      broadcast_append_to association[:judgement], :votes, html: '<script>if (window.location.pathname.match(/\A\/judgements\/\d+\/edit\z/)) { window.location = "/judgements"; }</script>'.html_safe
     end
 
     broadcast_replace_to association[:judgement], :votes, locals: {kind: association[:kind]}
-    broadcast_replace_to association[:judgement], :votes, target: dom_id(self, :editable), partial: "votes/editable_vote", locals: {kind: association[:kind]}
-    broadcast_replace_to association[:judgement], :votes, target: dom_id(self, :mini), partial: "votes/editable_vote_mini"
   end
 end

@@ -1,0 +1,17 @@
+<div class="panel-block edit-mark">
+  <div class="level" data-controller="vote" data-vote-path-value="<%= vote_path(vote) %>">
+    <div class="level-left is-flex-grow-1">
+      <div class="level-item is-flex-grow-1">
+        <input type="range" class="slider is-fullwidth is-link" min="0" max="100" step="0.1" value="<%= vote.padded_mark %>" data-vote-target="slider" data-action="input->vote#updateNumber mouseup->vote#submitValue">
+      </div>
+    </div>
+    <div class="level-right">
+      <div class="level-item"><span data-vote-target="field"><%= vote.padded_mark %></span></div>
+      <div class="level-item completion-button">
+        <%= button_to complete_vote_path(vote), class: ["button", !vote.completed ? "is-primary" : nil], data: { turbo_frame: dom_id(vote) } do %>
+          <%= lucide_icon "circle-check-big", size: 16 %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

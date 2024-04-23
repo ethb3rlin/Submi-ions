@@ -1,0 +1,39 @@
+.level-left.is-flex-grow-1 {
+  padding-right: 12px;
+}
+
+.cell .mini {
+  display: none !important;
+}
+
+td .maxi {
+  display: none !important;
+}
+
+.display-mark {
+  display: block !important;
+}
+
+.edit-mark {
+  display: none !important;
+}
+
+.editable .display-mark {
+  display: none !important;
+}
+
+.editable .edit-mark {
+  display: block !important;
+}
+
+.mini .completion-button {
+  display: none !important;
+}
+
+.display-mark progress.progress {
+  margin: 18.85px 0;
+}
+
+td.project-title {
+  vertical-align: middle !important;
+}

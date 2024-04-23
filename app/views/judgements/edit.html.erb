@@ -2,29 +2,24 @@
   <h1 class="title"><%= @submission.title %></h1>
   <p><%= @submission.description %></p>
 
-  <div class="columns" id="votes">
-    <div class="column is-4">
-      <% if current_user == @judging_team.technical_judge %>
-        <%= render 'votes/editable_vote', vote: @judgement.technical_vote, kind: :technical %>
-      <% else %>
-        <%= render 'votes/vote', vote: @judgement.technical_vote, kind: :technical %>
-      <% end %>
+  <div class="grid" id="votes">
+    <div class="cell <%= 'editable' if @judgement.technical_vote.user == current_user %>">
+      <%= render 'votes/vote', vote: @judgement.technical_vote, kind: :technical %>
     </div>
-    <div class="column is-4">
-      <% if current_user == @judging_team.product_judge %>
-        <%= render 'votes/editable_vote', vote: @judgement.product_vote, kind: :product %>
-      <% else %>
-        <%= render 'votes/vote', vote: @judgement.product_vote, kind: :product %>
-      <% end %>
+    <div class="cell <%= 'editable' if @judgement.product_vote.user == current_user %>">
+      <%= render 'votes/vote', vote: @judgement.product_vote, kind: :product %>
     </div>
-    <div class="column is-4">
-      <% if current_user == @judging_team.concept_judge %>
-        <%= render 'votes/editable_vote', vote: @judgement.concept_vote, kind: :concept %>
-      <% else %>
-        <%= render 'votes/vote', vote: @judgement.concept_vote, kind: :concept %>
-      <% end %>
+    <div class="cell <%= 'editable' if @judgement.concept_vote.user == current_user %>">
+      <%= render 'votes/vote', vote: @judgement.concept_vote, kind: :concept %>
     </div>
   </div>
+
+  <% if @judgement.completed? %>
+    <%= link_to judgements_path, class: "button is-primary" do %>
+      <%= lucide_icon "arrow-big-left" %>
+      <span>Back to judgements</span>
+    <% end %>
+  <% end %>
 </div>
 
 <%= turbo_stream_from @judgement, :votes %>

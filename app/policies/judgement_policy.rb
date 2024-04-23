@@ -8,6 +8,6 @@ class JudgementPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.present && user.judge? && record.judging_team == user.judging_team
+    user.present? && user.judge? && record.judging_team == user.judging_team
   end
 end

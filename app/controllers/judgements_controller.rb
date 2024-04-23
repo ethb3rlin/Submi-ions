@@ -1,16 +1,17 @@
 class JudgementsController < ApplicationController
   def index
-    @judgements = Judgement.where(judging_team: current_user.judging_team)
+    @judging_team = current_user.judging_team
+
+    @judgements = Judgement.where(judging_team: @judging_team).order(:created_at)
     authorize @judgements
 
-    if current_user.judging_team.present? && current_user.judging_team.current_judgement.present? && !current_user.judging_team.current_judgement.completed?
-      redirect_to edit_judgement_path(current_user.judging_team.current_judgement)
+    if @judging_team.present? && @judging_team.current_judgement.present? && !@judging_team.current_judgement.completed?
+      redirect_to edit_judgement_path(@judging_team.current_judgement)
     end
   end
 
   def create
     @judging_team = current_user.judging_team
-
 
     @submission = Submission.left_outer_joins(:judgement).where(judgements: { id: nil }).first
 

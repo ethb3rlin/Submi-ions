@@ -37,7 +37,10 @@
 
     <div class="field is-grouped">
       <div class="control">
-        <%= link_to "← Back to Judging Teams", admin_judging_teams_path, class: "button is-light" %>
+        <%= link_to "javascript:history.back()", class: "button is-light" do %>
+          <%= lucide_icon "arrow-big-left" %>
+          <span>Back</span>
+        <% end %>
       </div>
       <div class="control">
         <%= f.submit "Update", class: "button is-primary" %>

@@ -21,7 +21,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (concept_judge_id => users.id)
-#  fk_rails_...  (current_judgement_id => judgements.id)
+#  fk_rails_...  (current_judgement_id => judgements.id) ON DELETE => nullify
 #  fk_rails_...  (product_judge_id => users.id)
 #  fk_rails_...  (technical_judge_id => users.id)
 #

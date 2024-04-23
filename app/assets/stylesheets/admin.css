@@ -23,3 +23,7 @@
 .ethereum-addresses .address-link {
   margin-left: 9px;
 }
+
+.panel-block.judging-team .column {
+  align-content: center;
+}

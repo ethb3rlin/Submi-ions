@@ -14,12 +14,13 @@
     </div>
   </div>
 
-  <% if @judgement.completed? %>
-    <%= link_to judgements_path, class: "button is-primary" do %>
+  <% if @judgement.completed? || current_user.organizer? %>
+    <%= link_to "javascript:history.back()", class: "button is-light" do %>
       <%= lucide_icon "arrow-big-left" %>
-      <span>Back to judgements</span>
+      <span>Back</span>
     <% end %>
   <% end %>
-</div>
 
-<%= turbo_stream_from @judgement, :votes %>
+  <%= turbo_stream_from @judgement, :votes %>
+
+</div>

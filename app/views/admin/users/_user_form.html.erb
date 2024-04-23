@@ -32,13 +32,16 @@
   <% if @user.judging_team %>
     <div class="content">
       <div class="label">Judging team</div>
-      <%= link_to "Judging team ##{@user.judging_team.id}", edit_admin_judging_team_path(@user.judging_team) %></li>
+      <%= link_to "Judging team ##{@user.judging_team.id}", admin_judging_teams_path(id: @user.judging_team.id) %></li>
     </div>
   <% end %>
 
   <div class="field is-grouped">
     <div class="control">
-      <%= link_to "← Back to users", admin_users_path, class: ['button', 'is-link', 'is-light'] %>
+      <%= link_to "javascript:history.back()", class: "button is-light" do %>
+        <%= lucide_icon "arrow-big-left" %>
+        <span>Back</span>
+      <% end %>
     </div>
 
     <div class="control">

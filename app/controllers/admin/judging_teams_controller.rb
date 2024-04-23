@@ -2,6 +2,10 @@ class Admin::JudgingTeamsController < ApplicationController
   def index
     @judging_teams = JudgingTeam.order(:id).all
     authorize @judging_teams
+
+    @current_team = JudgingTeam.find(params[:id]) rescue @judging_teams.first
+
+    @judgements = @current_team.judgements.order(:created_at)
   end
 
   def new

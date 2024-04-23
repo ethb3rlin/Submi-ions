@@ -21,24 +21,33 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (concept_vote_id => votes.id)
+#  fk_rails_...  (concept_vote_id => votes.id) ON DELETE => nullify
 #  fk_rails_...  (judging_team_id => judging_teams.id)
-#  fk_rails_...  (product_vote_id => votes.id)
+#  fk_rails_...  (product_vote_id => votes.id) ON DELETE => nullify
 #  fk_rails_...  (submission_id => submissions.id)
-#  fk_rails_...  (technical_vote_id => votes.id)
+#  fk_rails_...  (technical_vote_id => votes.id) ON DELETE => nullify
 #
 class Judgement < ApplicationRecord
+  include ActionView::RecordIdentifier # We need this for dom_id to work
+
   belongs_to :judging_team
   belongs_to :submission
 
-  belongs_to :technical_vote, class_name: "Vote"
-  belongs_to :product_vote, class_name: "Vote"
-  belongs_to :concept_vote, class_name: "Vote"
+  belongs_to :technical_vote, class_name: "Vote", dependent: :destroy
+  belongs_to :product_vote, class_name: "Vote", dependent: :destroy
+  belongs_to :concept_vote, class_name: "Vote", dependent: :destroy
 
   validates :judging_team, presence: true
   validates :submission, presence: true
 
+  after_create_commit :broadcast_new_judgement
+
   def completed?
     technical_vote.completed && product_vote.completed && concept_vote.completed
+  end
+
+  private
+  def broadcast_new_judgement
+    broadcast_append_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(judging_team, :judgements)
   end
 end

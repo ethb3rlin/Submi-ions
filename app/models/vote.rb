@@ -22,13 +22,14 @@ class Vote < ApplicationRecord
 
   belongs_to :user
 
-  has_one :technical_vote_judgement, class_name: "Judgement", foreign_key: "technical_vote_id"
-  has_one :product_vote_judgement, class_name: "Judgement", foreign_key: "product_vote_id"
-  has_one :concept_vote_judgement, class_name: "Judgement", foreign_key: "concept_vote_id"
+  has_one :technical_vote_judgement, class_name: "Judgement", foreign_key: "technical_vote_id", dependent: :destroy
+  has_one :product_vote_judgement, class_name: "Judgement", foreign_key: "product_vote_id", dependent: :destroy
+  has_one :concept_vote_judgement, class_name: "Judgement", foreign_key: "concept_vote_id", dependent: :destroy
 
   validates :mark, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
   after_update_commit :broadcast_update
+  after_save_commit :check_judgement_completion
 
   def judgement
     technical_vote_judgement || product_vote_judgement || concept_vote_judgement
@@ -49,9 +50,14 @@ class Vote < ApplicationRecord
     end
 
     if association[:judgement].completed?
-      broadcast_append_to association[:judgement], :votes, html: '<script>if (window.location.pathname.match(/^\/judgements\/\d+\/edit$/)) { window.location = "/judgements"; }</script>'.html_safe
+      broadcast_append_to association[:judgement], :votes, html: '<script>if (window.location.pathname.match(/^\/judgements\/\d+\/edit$/) && CURRENT_USER_ROLE==="judge") { window.location = "/judgements"; }</script>'.html_safe
     end
 
     broadcast_replace_to association[:judgement], :votes, locals: {kind: association[:kind]}
   end
+
+  def check_judgement_completion
+    judgement.judging_team.update!(current_judgement: nil) if judgement.try :completed?
+  end
+
 end

@@ -17,7 +17,7 @@
     <%= javascript_importmap_tags %>
 
     <script>
-      const CURRENT_USER_ROLE = "<%= current_user.kind %>";
+      const CURRENT_USER_ROLE = "<%= current_user.try :kind %>";
     </script>
   </head>
 

@@ -15,7 +15,7 @@
   </div>
 
   <% if @judgement.completed? || current_user.organizer? %>
-    <%= link_to "javascript:history.back()", class: "button is-light" do %>
+    <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
       <%= lucide_icon "arrow-big-left" %>
       <span>Back</span>
     <% end %>

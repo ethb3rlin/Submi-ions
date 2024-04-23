@@ -25,3 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+window.navigateBackOrUp = function() {
+  if (history.length > 2) {
+      // If history is not empty, go back
+      history.back();
+  } else {
+    // If history is empty, modify the URL to remove the last segment and go there
+    window.location.href = window.location.href.replace(/\/\d+\D*$/,'')
+  }
+}

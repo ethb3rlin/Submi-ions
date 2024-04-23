@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_16_032958) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_23_165330) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -87,10 +87,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_032958) do
   add_foreign_key "ethereum_addresses", "users"
   add_foreign_key "judgements", "judging_teams"
   add_foreign_key "judgements", "submissions"
-  add_foreign_key "judgements", "votes", column: "concept_vote_id"
-  add_foreign_key "judgements", "votes", column: "product_vote_id"
-  add_foreign_key "judgements", "votes", column: "technical_vote_id"
-  add_foreign_key "judging_teams", "judgements", column: "current_judgement_id"
+  add_foreign_key "judgements", "votes", column: "concept_vote_id", on_delete: :nullify
+  add_foreign_key "judgements", "votes", column: "product_vote_id", on_delete: :nullify
+  add_foreign_key "judgements", "votes", column: "technical_vote_id", on_delete: :nullify
+  add_foreign_key "judging_teams", "judgements", column: "current_judgement_id", on_delete: :nullify
   add_foreign_key "judging_teams", "users", column: "concept_judge_id"
   add_foreign_key "judging_teams", "users", column: "product_judge_id"
   add_foreign_key "judging_teams", "users", column: "technical_judge_id"

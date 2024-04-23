@@ -15,15 +15,16 @@
   </div>
 
   <div class="buttons">
-    <% if @judgement.completed? || current_user.organizer? %>
+    <% if policy(@judgement).complete? %>
+      <%= button_to complete_judgement_path(@judgement), class: "button is-success", data: { turbo_frame: dom_id(@judgement) } do %>
+        <%= lucide_icon "circle-check-big" %>
+        <span>I'm done</span>
+      <% end %>
+    <% else %>
       <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
         <%= lucide_icon "arrow-big-left" %>
         <span>Back</span>
       <% end %>
-    <% end %>
-    <%= button_to complete_judgement_path(@judgement), class: "button is-success", data: { turbo_frame: dom_id(@judgement) } do %>
-      <%= lucide_icon "circle-check-big" %>
-      <span>I'm done</span>
     <% end %>
   </div>
 </div>

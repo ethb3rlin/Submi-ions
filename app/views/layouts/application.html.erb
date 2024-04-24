@@ -61,11 +61,11 @@
 
               <div class="navbar-dropdown is-right">
                 <%= link_to edit_user_path(current_user), class: ["navbar-item", active_class(edit_user_path(current_user))] do %>
-                  <%= lucide_icon 'user-cog', size: 16 %>
+                  <%= lucide_icon 'user-cog', size: 16, class: "icon is-small" %>
                   <span>Edit user profile</span>
                 <% end %>
                 <%= link_to sign_out_path, data: {turbo_method: :delete}, class: 'navbar-item is-warning is-light' do %>
-                  <%= lucide_icon 'log-out', size: 16 %>
+                  <%= lucide_icon 'log-out', size: 16, class: "icon is-small" %>
                   <span>Log out</span>
                 <% end %>
               </div>

@@ -17,12 +17,12 @@
   <div class="buttons">
     <% if policy(@judgement).complete? %>
       <%= button_to complete_judgement_path(@judgement), class: "button is-success", data: { turbo_frame: dom_id(@judgement) } do %>
-        <%= lucide_icon "circle-check-big" %>
+        <%= lucide_icon "circle-check-big", class: "icon is-small" %>
         <span>I'm done</span>
       <% end %>
     <% else %>
       <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
-        <%= lucide_icon "arrow-big-left" %>
+        <%= lucide_icon "arrow-big-left", class: 'icon is-small' %>
         <span>Back</span>
       <% end %>
     <% end %>

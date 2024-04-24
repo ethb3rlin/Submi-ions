@@ -1,0 +1,15 @@
+<tr id="<%= dom_id submission %>">
+  <td class="submission-title"><strong><%= submission.title %></strong></td>
+  <td class="description"><%= submission.description.truncate(350) %></td>
+  <td class="url"><%= link_to submission.url, submission.url, target: '_blank' %></td>
+  <td>
+    <% if submission.judgement %>
+      <code><%= submission.judgement&.technical_vote&.padded_mark %></code>;
+      <code><%= submission.judgement&.product_vote&.padded_mark %></code>;
+      <code><%= submission.judgement&.concept_vote&.padded_mark %></code>
+    <% end %>
+  </td>
+  <td><%= link_to 'Show',
+    submission.judgement ? judgement_path(submission.judgement) : submission_path(submission),
+    class: 'button is-small' %></td>
+</tr>

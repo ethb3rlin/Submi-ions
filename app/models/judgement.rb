@@ -63,5 +63,7 @@ class Judgement < ApplicationRecord
   def broadcast_new_judgement
     broadcast_append_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(judging_team, :judgements)
     broadcast_append_to judging_team, :judgements_redirects, html: "<script>if (window.location.pathname.match('#{ judgements_path }') && CURRENT_USER_ROLE==='judge') { window.location = '#{judgement_path(self)}'; }</script>".html_safe
+
+    broadcast_replace_to 'submissions', target: dom_id(submission), partial: 'submissions/tr', locals: { submission: submission }
   end
 end

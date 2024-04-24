@@ -13,11 +13,18 @@
 class Submission < ApplicationRecord
   has_one :judgement
 
+  after_create_commit :broadcast
+
   def github_repo?
     url.present? && url.include?('github.com')
   end
 
   def user
     nil
+  end
+
+  private
+  def broadcast
+    broadcast_append_to 'submissions', partial: 'submissions/tr', locals: { submission: self }
   end
 end

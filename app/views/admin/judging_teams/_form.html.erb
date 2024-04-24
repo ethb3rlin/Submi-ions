@@ -1,49 +1,56 @@
-  <%= form_for [:admin, @judging_team] do |f| %>
-    <div class="field">
-      <%= f.label :track, class: "label" %>
-      <div class="control">
-        <div class="select">
-          <%= f.select :track, JudgingTeam.tracks.keys, class: "select" %>
+<%= form_for [:admin, @judging_team] do |f| %>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <%= f.label :track, class: "label" %>
+        <div class="control">
+          <div class="select">
+            <%= f.select :track, JudgingTeam::HUMAN_READABLE_TRACKS.map{|k,v| [v,k]}, class: "select" %>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="field">
-      <%= f.label :technical_judge, class: "label" %>
-      <div class="control">
-        <div class="select">
-          <%= f.select :technical_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+    <div class="column">
+      <div class="field">
+        <%= f.label :technical_judge, class: "label" %>
+        <div class="control">
+          <div class="select">
+            <%= f.select :technical_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="field">
-      <%= f.label :product_judge, class: "label" %>
-      <div class="control">
-        <div class="select">
-          <%= f.select :product_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+    <div class="column">
+      <div class="field">
+        <%= f.label :product_judge, class: "label" %>
+        <div class="control">
+          <div class="select">
+            <%= f.select :product_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="field">
-      <%= f.label :concept_judge, class: "label" %>
-      <div class="control">
-        <div class="select">
-          <%= f.select :concept_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+    <div class="column">
+      <div class="field">
+        <%= f.label :concept_judge, class: "label" %>
+        <div class="control">
+          <div class="select">
+            <%= f.select :concept_judge_id, @judges.map { |judge| [judge.name, judge.id] }, include_blank: true, class: "select" %>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="field is-grouped">
-      <div class="control">
-        <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
-          <%= lucide_icon "arrow-big-left" %>
-          <span>Back</span>
-        <% end %>
-      </div>
-      <div class="control">
-        <%= f.submit "Update", class: "button is-primary" %>
-      </div>
+  <div class="field is-grouped">
+    <div class="control">
+      <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
+        <%= lucide_icon "arrow-big-left" %>
+        <span>Back</span>
+      <% end %>
     </div>
-  <% end %>
+    <div class="control">
+      <%= f.submit "Update", class: "button is-primary" %>
+    </div>
+  </div>
+<% end %>

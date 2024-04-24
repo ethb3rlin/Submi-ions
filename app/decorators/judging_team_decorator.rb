@@ -11,15 +11,6 @@ class JudgingTeamDecorator < Draper::Decorator
   #   end
 
   def track_name
-    case object.track
-    when "transact"
-      "Freedom to Transact"
-    when "infra"
-      "Infrastructure"
-    when "tooling"
-      "Defensive Tooling"
-    when "social"
-      "Social Tech"
-    end
+    JudgingTeam::HUMAN_READABLE_TRACKS[object.track.to_sym]
   end
 end

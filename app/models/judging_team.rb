@@ -38,6 +38,14 @@ class JudgingTeam < ApplicationRecord
   belongs_to :current_judgement, class_name: "Judgement", optional: true
 
   enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
+
+  HUMAN_READABLE_TRACKS = {
+    transact: "Freedom to Transact",
+    infra: "Infrastructure",
+    tooling: "Defensive Tooling",
+    social: "Social Tech"
+  }
+
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
 

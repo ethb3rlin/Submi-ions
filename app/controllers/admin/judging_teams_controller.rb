@@ -15,6 +15,21 @@ class Admin::JudgingTeamsController < ApplicationController
     @judges = User.unassigned_judges + [@judging_team.technical_judge, @judging_team.product_judge, @judging_team.concept_judge].compact.uniq
   end
 
+  def show
+    @judging_team = JudgingTeam.find(params[:id])
+    authorize @judging_team
+    @judgements = @judging_team.judgements.order(:created_at)
+
+    respond_to do |format|
+      format.csv do
+        headers['Pragma'] = 'public'
+        headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
+        headers['Expires'] = "0"
+        send_data @judging_team.to_csv, type: "text/csv", filename: @judging_team.decorate.track_name + "_judgements.csv"
+      end
+    end
+  end
+
   def create
     @judging_team = JudgingTeam.new(judging_team_params)
     authorize @judging_team

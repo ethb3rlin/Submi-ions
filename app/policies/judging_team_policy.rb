@@ -11,6 +11,10 @@ class JudgingTeamPolicy < ApplicationPolicy
     user.organizer?
   end
 
+  def show?
+    user.organizer?
+  end
+
   def edit?
     user.organizer?
   end

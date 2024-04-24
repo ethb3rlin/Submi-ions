@@ -25,7 +25,18 @@
     </table>
   </div>
 
-  <%= link_to "New Judging Team", new_admin_judging_team_path, class: ['button', 'is-primary'] %>
+  <div class="level">
+    <div class="level-left">
+    <%= link_to "New Judging Team", new_admin_judging_team_path, class: ['button', 'is-primary'] %>
+
+    </div>
+    <div class="level-right">
+    <%= link_to admin_judging_team_path(@current_team, format: :csv), class: ['button', 'is-outlined', 'is-black'] do %>
+        <%= lucide_icon "file-down", class: "icon is-small" %>
+        <span>Export as CSV</span>
+      <% end %>
+    </div>
+  </div>
 
   <%= turbo_stream_from @current_team, :judgements %>
 

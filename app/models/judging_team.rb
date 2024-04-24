@@ -25,6 +25,9 @@
 #  fk_rails_...  (product_judge_id => users.id)
 #  fk_rails_...  (technical_judge_id => users.id)
 #
+
+require 'csv'
+
 class JudgingTeam < ApplicationRecord
   belongs_to :technical_judge, class_name: "User", optional: true
   belongs_to :product_judge, class_name: "User", optional: true
@@ -41,5 +44,25 @@ class JudgingTeam < ApplicationRecord
   def pending_submissions
     # TODO filter this by track (and account for multi-teams) when Submission will have a track column
     Submission.left_outer_joins(:judgement).where(judgements: { id: nil })
+  end
+
+  def to_csv
+    attributes = %w{team_name project repository technical_judge product_judge concept_judge}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      csv << [nil, nil, nil, technical_judge.name, product_judge.name, concept_judge.name]
+
+      judgements.order(:created_at).find_each do |judgement|
+        csv << [
+          nil, # TODO judgement.submission.team_name,
+          judgement.submission.title,
+          judgement.submission.url,
+          judgement.technical_vote.completed ? judgement.technical_vote.padded_mark : nil,
+          judgement.product_vote.completed ? judgement.product_vote.padded_mark : nil,
+          judgement.concept_vote.completed ? judgement.concept_vote.padded_mark : nil
+        ]
+      end
+    end
   end
 end

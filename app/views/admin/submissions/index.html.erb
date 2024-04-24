@@ -1,25 +1,52 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>URL</th>
-      <th>Created At</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="content admin-submissions-ui" data-controller="filterable-submissions">
+  <div class="columns">
+    <div class="column is-5 is-offset-7">
+      <div class="control has-icons-left">
+        <input class="filter-input input search" type="text" placeholder="Filter" data-action="filterable-submissions#filter"/>
+        <span class="icon is-left">
+          <%= lucide_icon 'search', size: 16 %>
+        </span>
+      </div>
+    </div>
+  </div>
 
-  <% @submissions.each do |submission| %>
-    <tr>
-      <td><%= submission.id %></td>
-      <td><%= submission.title %></td>
-      <td><%= submission.description.truncate(30) %></td>
-      <td><%= link_to submission.url %></td>
-      <td><%= submission.created_at %></td>
-      <td><%= link_to 'Show', admin_submission_path(submission) %></td>
-      <td><%= link_to 'Edit', edit_admin_submission_path(submission) %></td>
-      <td><%= link_to 'Destroy', admin_submission_path(submission), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-  <% end %>
-</table>
+  <table class="table is-hoverable is-fullwidth">
+    <colgroup>
+      <col span="1" style="width: 15%;">
+      <col span="1" style="width: 50%;">
+      <col span="1" style="width: 15%;">
+      <col span="1" style="width: 15%;">
+      <col span="1" style="width: 5%;">
+    </colgroup>
+
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>URL</th>
+        <th>Scores</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody class="list">
+      <% @submissions.each do |submission| %>
+        <tr>
+          <td class="submission-title"><strong><%= submission.title %></strong></td>
+          <td class="description"><%= submission.description.truncate(350) %></td>
+          <td class="url"><%= link_to submission.url %></td>
+          <td>
+            <% if submission.judgement %>
+              <code><%= submission.judgement&.technical_vote&.padded_mark %></code>;
+              <code><%= submission.judgement&.product_vote&.padded_mark %></code>;
+              <code><%= submission.judgement&.concept_vote&.padded_mark %></code>
+            <% end %>
+          </td>
+          <td><%= link_to 'Show',
+            submission.judgement ? judgement_path(submission.judgement) : submission_path(submission),
+            class: 'button is-small' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

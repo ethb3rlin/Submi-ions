@@ -35,3 +35,7 @@ window.navigateBackOrUp = function() {
     window.location.href = window.location.href.replace(/\/\d+\D*$/,'')
   }
 }
+
+document.addEventListener('turbo:load', () => {
+  document.querySelector('.filter-input')?.focus();
+});

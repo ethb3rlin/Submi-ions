@@ -32,7 +32,12 @@ window.navigateBackOrUp = function() {
       history.back();
   } else {
     // If history is empty, modify the URL to remove the last segment and go there
-    window.location.href = window.location.href.replace(/\/\d+\D*$/,'')
+    let newLocation = window.location.href.replace(/\/\d+\D*$/,'');
+    if (newLocation === window.location.href) {
+      // If the URL didn't change, go up one level
+      newLocation = window.location.href.replace(/\/[^\/]+$/,'');
+    }
+    window.location.href = newLocation;
   }
 }
 

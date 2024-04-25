@@ -1,0 +1,2 @@
+module HackingTeamsHelper
+end

@@ -58,6 +58,14 @@
 #                                          PATCH  /submissions/:id(.:format)                                                                        submissions#update
 #                                          PUT    /submissions/:id(.:format)                                                                        submissions#update
 #                                          DELETE /submissions/:id(.:format)                                                                        submissions#destroy
+#                            hacking_teams GET    /teams(.:format)                                                                                  hacking_teams#index
+#                                          POST   /teams(.:format)                                                                                  hacking_teams#create
+#                         new_hacking_team GET    /teams/new(.:format)                                                                              hacking_teams#new
+#                        edit_hacking_team GET    /teams/:id/edit(.:format)                                                                         hacking_teams#edit
+#                             hacking_team GET    /teams/:id(.:format)                                                                              hacking_teams#show
+#                                          PATCH  /teams/:id(.:format)                                                                              hacking_teams#update
+#                                          PUT    /teams/:id(.:format)                                                                              hacking_teams#update
+#                                          DELETE /teams/:id(.:format)                                                                              hacking_teams#destroy
 #                       rails_health_check GET    /up(.:format)                                                                                     rails/health#show
 #                                     root GET    /                                                                                                 submissions#index
 #         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
@@ -114,6 +122,10 @@ Rails.application.routes.draw do
   delete 'sign_out' => 'sessions#sign_out'
 
   resources :submissions
+
+  resources :hacking_teams, path: :teams
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

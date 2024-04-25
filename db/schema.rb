@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_25_204203) do
 
   create_table "hacking_teams", force: :cascade do |t|
     t.string "name"
+    t.text "agenda"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -105,6 +106,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_25_204203) do
   add_foreign_key "judging_teams", "users", column: "product_judge_id"
   add_foreign_key "judging_teams", "users", column: "technical_judge_id"
   add_foreign_key "submissions", "hacking_teams"
-  add_foreign_key "users", "hacking_teams"
+  add_foreign_key "users", "hacking_teams", on_delete: :nullify
   add_foreign_key "votes", "users"
 end

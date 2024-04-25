@@ -1,0 +1,35 @@
+<%= form_with model: team do |form| %>
+  <% if team.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:</h2>
+
+      <ul>
+        <% team.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, class: "label" %>
+    <div class="control"><%= form.text_field :name, class: "input", placeholder: "Team's name" %></div>
+  </div>
+
+  <div class="field">
+    <%= form.label :agenda, class: "label" %>
+    <div class="control"><%= form.text_area :agenda, class: "textarea", placeholder: "A brief explanation of what's the team is about" %></div>
+  </div>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
+        <%= lucide_icon "arrow-big-left", class: "icon is-small" %>
+        <span>Back</span>
+      <% end %>
+    </div>
+    <div class="control">
+      <%= form.submit class: "button is-primary" %>
+    </div>
+  </div>
+<% end %>

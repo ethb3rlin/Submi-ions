@@ -18,7 +18,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (hacking_team_id => hacking_teams.id)
+#  fk_rails_...  (hacking_team_id => hacking_teams.id) ON DELETE => nullify
 #
 class User < ApplicationRecord
     has_many :ethereum_addresses, dependent: :destroy

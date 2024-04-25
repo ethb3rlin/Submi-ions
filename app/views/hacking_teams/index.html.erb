@@ -1,2 +1,31 @@
-<h1>HackingTeams#index</h1>
-<p>Find me in app/views/hacking_teams/index.html.erb</p>
+<% if @teams.present? %>
+  <div class="teams">
+
+    <div class="columns">
+      <div class="column is-6">
+        <div class="control has-icons-left">
+          <input class="filter-input input search" type="text" placeholder="Filter" data-action="filterable-submissions#filter"/>
+          <span class="icon is-left">
+            <%= lucide_icon 'search', size: 16 %>
+          </span>
+        </div>
+      </div>
+
+      <div class="column is-2 is-offset-4">
+        <%= link_to "Create a new team", new_hacking_team_path, class: "button is-primary" if policy(HackingTeam).new? %>
+      </div>
+    </div>
+
+    <% @teams.each do |team| %>
+      <div class="team" id="<%= dom_id team %>">
+        <h2><%= team.name %></h2>
+        <p><%= team.agenda %></p>
+      </div>
+    <% end %>
+  </div>
+
+<% else %>
+  <p class="is-size-5">There are no teams yet. Maybe
+    <%= link_to 'create your own', new_hacking_team_path %>?
+  </p>
+<% end %>

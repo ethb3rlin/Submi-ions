@@ -32,7 +32,7 @@
   <% if @user.judging_team %>
     <div class="content">
       <div class="label">Judging team</div>
-      <%= link_to "Judging team ##{@user.judging_team.id}", admin_judging_teams_path(id: @user.judging_team.id) %></li>
+      <%= link_to @user.judging_team, admin_judging_teams_path(id: @user.judging_team.id) %></li>
     </div>
   <% end %>
 

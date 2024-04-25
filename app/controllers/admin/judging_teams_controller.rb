@@ -25,7 +25,7 @@ class Admin::JudgingTeamsController < ApplicationController
         headers['Pragma'] = 'public'
         headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
         headers['Expires'] = "0"
-        send_data @judging_team.to_csv, type: "text/csv", filename: @judging_team.decorate.track_name + " Judgements.csv"
+        send_data @judging_team.to_csv, type: "text/csv", filename: @judging_team.to_s + " Judgements.csv"
       end
     end
   end
@@ -34,7 +34,7 @@ class Admin::JudgingTeamsController < ApplicationController
     @judging_team = JudgingTeam.new(judging_team_params)
     authorize @judging_team
     if @judging_team.save
-      redirect_to admin_judging_teams_path, notice: "Judging team #{@judging_team.id} created"
+      redirect_to admin_judging_teams_path, notice: "#{@judging_team} created"
     else
       render :new, alert: "Failed to create judging team: " + @judging_team.errors.full_messages.join(", ")
     end
@@ -52,7 +52,7 @@ class Admin::JudgingTeamsController < ApplicationController
     authorize @judging_team
 
     @judging_team.update(judging_team_params)
-    redirect_to admin_judging_teams_path, notice: "Judging team #{@judging_team.id} updated"
+    redirect_to admin_judging_teams_path, notice: "#{@judging_team} updated"
   end
 
   private

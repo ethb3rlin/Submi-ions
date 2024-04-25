@@ -10,7 +10,4 @@ class JudgingTeamDecorator < Draper::Decorator
   #     end
   #   end
 
-  def track_name
-    JudgingTeam::HUMAN_READABLE_TRACKS[object.track.to_sym]
-  end
 end

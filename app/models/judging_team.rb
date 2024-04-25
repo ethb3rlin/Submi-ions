@@ -44,7 +44,7 @@ class JudgingTeam < ApplicationRecord
     infra: "Infrastructure",
     tooling: "Defensive Tooling",
     social: "Social Tech"
-  }
+  }.with_indifferent_access
 
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
@@ -72,5 +72,14 @@ class JudgingTeam < ApplicationRecord
         ]
       end
     end
+  end
+
+  def to_s
+    HUMAN_READABLE_TRACKS[track] + ' #' + sequence_number.to_s
+  end
+
+  private
+  def sequence_number
+    JudgingTeam.where(track: track).order(:id).pluck(:id).index(id) + 1
   end
 end

@@ -3,7 +3,7 @@
     <div class="panel-heading">Judging Teams</div>
     <div class="panel-tabs">
       <% @judging_teams.each do |team| %>
-        <%= link_to team.decorate.track_name, admin_judging_teams_path(id: team.id), class: class_names("is-active" => team==@current_team) %>
+        <%= link_to team, admin_judging_teams_path(id: team.id), class: class_names("is-active" => team==@current_team) %>
       <% end %>
     </div>
 

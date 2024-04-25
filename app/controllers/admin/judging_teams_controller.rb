@@ -5,7 +5,7 @@ class Admin::JudgingTeamsController < ApplicationController
 
     @current_team = JudgingTeam.find(params[:id]) rescue @judging_teams.first
 
-    @judgements = @current_team.judgements.order(:created_at)
+    @judgements = @current_team&.judgements&.order(:created_at) # @current_team can be nil if there are no teams yet
   end
 
   def new
@@ -34,7 +34,7 @@ class Admin::JudgingTeamsController < ApplicationController
     @judging_team = JudgingTeam.new(judging_team_params)
     authorize @judging_team
     if @judging_team.save
-      redirect_to edit_admin_judging_team_path(@judging_team), notice: "Judging team created"
+      redirect_to admin_judging_teams_path, notice: "Judging team #{@judging_team.id} created"
     else
       render :new, alert: "Failed to create judging team: " + @judging_team.errors.full_messages.join(", ")
     end
@@ -52,7 +52,7 @@ class Admin::JudgingTeamsController < ApplicationController
     authorize @judging_team
 
     @judging_team.update(judging_team_params)
-    redirect_to edit_admin_judging_team_path(@judging_team), notice: "Judging team updated"
+    redirect_to admin_judging_teams_path, notice: "Judging team #{@judging_team.id} updated"
   end
 
   private

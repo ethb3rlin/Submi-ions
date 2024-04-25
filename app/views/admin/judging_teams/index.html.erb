@@ -7,35 +7,49 @@
       <% end %>
     </div>
 
-    <div class="panel-block is-block judging-team">
-      <div class="columns">
-        <div class="column is-offset-4"><%= @current_team.technical_judge ? link_to(@current_team.technical_judge.name, edit_admin_user_path(@current_team.technical_judge)) : '--' %></div>
-        <div class="column"><%= @current_team.product_judge ? link_to(@current_team.product_judge.name, edit_admin_user_path(@current_team.product_judge)) : '--' %></div>
-        <div class="column"><%= @current_team.concept_judge ? link_to(@current_team.concept_judge.name, edit_admin_user_path(@current_team.concept_judge)) : '--' %></div>
-        <div class="column is-1">
-          <%= link_to "Edit", edit_admin_judging_team_path(@current_team), class: ['button', 'is-light', 'is-pulled-right'] %>
+    <% if @current_team %>
+      <div class="panel-block is-block judging-team">
+        <div class="columns">
+          <div class="column is-offset-4"><%= @current_team.technical_judge ? link_to(@current_team.technical_judge.name, edit_admin_user_path(@current_team.technical_judge)) : '--' %></div>
+          <div class="column"><%= @current_team.product_judge ? link_to(@current_team.product_judge.name, edit_admin_user_path(@current_team.product_judge)) : '--' %></div>
+          <div class="column"><%= @current_team.concept_judge ? link_to(@current_team.concept_judge.name, edit_admin_user_path(@current_team.concept_judge)) : '--' %></div>
+          <div class="column is-1">
+            <%= link_to "Edit", edit_admin_judging_team_path(@current_team), class: ['button', 'is-light', 'is-pulled-right'] %>
+          </div>
         </div>
       </div>
-    </div>
+    <% else %>
+      <div class="panel-block">
+        <p class="has-text-centered">No judging teams created yet</p>
+      </div>
+    <% end %>
 
-    <table class="table is-fullwidth">
-      <tbody id="<%= dom_id(@current_team, :judgements) %>">
-        <%= render @judgements %>
-      </tbody>
-    </table>
+    <% if @judgements.present? %>
+      <table class="table is-fullwidth">
+        <tbody id="<%= dom_id(@current_team, :judgements) %>">
+          <%= render @judgements %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="panel-block">
+        <p class="has-text-centered">This team hadn't judged any submissions yet</p>
+      </div>
+    <% end %>
   </div>
 
   <div class="level">
     <div class="level-left">
-    <%= link_to "New Judging Team", new_admin_judging_team_path, class: ['button', 'is-primary'] %>
+      <%= link_to "New Judging Team", new_admin_judging_team_path, class: ['button', 'is-primary'] %>
+    </div>
 
-    </div>
-    <div class="level-right">
-    <%= link_to admin_judging_team_path(@current_team, format: :csv), class: ['button', 'is-outlined', 'is-black'] do %>
-        <%= lucide_icon "file-down", class: "icon is-small" %>
-        <span>Export as CSV</span>
-      <% end %>
-    </div>
+    <% if @current_team %>
+      <div class="level-right">
+        <%= link_to admin_judging_team_path(@current_team, format: :csv), class: ['button', 'is-outlined', 'is-black'] do %>
+          <%= lucide_icon "file-down", class: "icon is-small" %>
+          <span>Export as CSV</span>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <%= turbo_stream_from @current_team, :judgements %>

@@ -4,9 +4,7 @@
   <td class="url"><%= link_to submission.url, submission.url, target: '_blank' %></td>
   <td>
     <% if submission.judgement %>
-      <code><%= submission.judgement&.technical_vote&.padded_mark %></code>;
-      <code><%= submission.judgement&.product_vote&.padded_mark %></code>;
-      <code><%= submission.judgement&.concept_vote&.padded_mark %></code>
+      <%= link_to submission.judgement.judging_team, admin_judging_teams_path(id: submission.judgement.judging_team.id) %>
     <% end %>
   </td>
   <td><%= link_to 'Show',

@@ -12,5 +12,7 @@ class HackingTeam < ApplicationRecord
   has_many :hackers, inverse_of: :hacking_team, class_name: 'User'
   has_many :submissions
 
+  has_many :join_applications
+
   validates :name, presence: true, uniqueness: true
 end

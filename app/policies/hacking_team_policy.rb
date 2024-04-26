@@ -18,4 +18,12 @@ class HackingTeamPolicy < ApplicationPolicy
   def list_members?
     user.present? && (user.organizer? || user.hacking_team == record)
   end
+
+  def leave?
+    user.present? && user.hacking_team == record
+  end
+
+  def apply?
+    user.present? && user.hacker? && !user.hacking_team.present?
+  end
 end

@@ -58,6 +58,8 @@
 #                                          PATCH  /submissions/:id(.:format)                                                                        submissions#update
 #                                          PUT    /submissions/:id(.:format)                                                                        submissions#update
 #                                          DELETE /submissions/:id(.:format)                                                                        submissions#destroy
+#                       hacking_team_leave DELETE /teams/:hacking_team_id/leave(.:format)                                                           hacking_teams#leave
+#                       hacking_team_apply POST   /teams/:hacking_team_id/apply(.:format)                                                           hacking_teams#apply
 #                            hacking_teams GET    /teams(.:format)                                                                                  hacking_teams#index
 #                                          POST   /teams(.:format)                                                                                  hacking_teams#create
 #                         new_hacking_team GET    /teams/new(.:format)                                                                              hacking_teams#new
@@ -123,7 +125,10 @@ Rails.application.routes.draw do
 
   resources :submissions
 
-  resources :hacking_teams, path: :teams
+  resources :hacking_teams, path: :teams do
+    delete 'leave'
+    post 'apply'
+  end
 
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

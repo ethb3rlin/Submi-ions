@@ -1,17 +1,40 @@
 <div class="team block" id="<%= dom_id @team %>">
+  <% if current_user&.hacking_team == @team && policy(@team).leave? %>
+    <%= button_to hacking_team_leave_path(@team), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "button is-danger is-pulled-right" do %>
+      <%= lucide_icon "door-open", class: 'icon is-small' %>
+      <span>Leave this team</span>
+    <% end %>
+  <% else %>
+    <% if policy(@team).apply? %>
+      <%= button_to hacking_team_apply_path(@team), method: :post, class: "button is-success is-pulled-right", disabled: @already_applied do %>
+        <% if @already_applied %>
+          <%= lucide_icon "user-check", class: 'icon is-small' %>
+          <span>Already applied</span>
+        <% else %>
+          <%= lucide_icon "smile-plus", class: 'icon is-small' %>
+          <span>Apply to join</span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
   <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_team == @team %>"><%= @team.name %></p>
   <p class="agenda"><%= @team.agenda %></p>
 
   <% if policy(@team).list_members? %>
     <h2 class="is-size-4">Members</h2>
-    <div class="members">
+    <div class="members tags are-medium">
       <% @team.hackers.each do |hacker| %>
-        <div class="member" id="<%= dom_id hacker %>">
-          <%= link_to hacker.decorate.readable_name, hacker %>
-        </div>
+        <span class="member tag <%= 'is-success is-light' if current_user==hacker %>" id="<%= dom_id hacker %>">
+          <%= hacker.decorate.readable_name %>
+        </span>
       <% end %>
     </div>
+
   <% end %>
 
-  <%= render @team.submissions %>
+  <% if @team.submissions.present? %>
+    <h2 class="is-size-4">Team's submissions</h2>
+    <%= render @team.submissions %>
+  <% end %>
 </div>

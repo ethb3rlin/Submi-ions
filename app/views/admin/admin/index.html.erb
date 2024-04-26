@@ -7,7 +7,7 @@
       <% end %>
     </div>
     <div class="column">
-      <%= link_to admin_users_path, class: ['button', 'is-light', 'is-large'] do %>
+      <%= link_to admin_users_path(role: :hacker), class: ['button', 'is-light', 'is-large'] do %>
         <%= lucide_icon 'users', class: 'icon is-large' %>
         <span><%= pluralize User.hacker.count, 'Hacker' %></span>
       <% end %>

@@ -36,6 +36,8 @@ class User < ApplicationRecord
     # User shouldn't belong to a hacking team unless their kind is :hacker
     validates :hacking_team, absence: true, unless: -> { hacker? }
 
+    has_many :join_applications, inverse_of: :user
+
     def judging_team
         JudgingTeam.where('technical_judge_id = :id OR product_judge_id = :id OR concept_judge_id = :id', id: self.id).first
     end

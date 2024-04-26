@@ -31,6 +31,30 @@ class HackingTeamsController < ApplicationController
   def show
     @team = HackingTeam.find(params[:id])
     authorize @team
+
+    @applications = @team.join_applications
+    @already_applied = @applications.where(user: current_user).exists?
+  end
+
+  def apply
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    application = JoinApplication.new(user: current_user, hacking_team: @team)
+    if application.save
+      redirect_to @team, notice: "Your application has been submitted."
+    else
+      redirect_to hacking_teams_path, alert: "Failed to submit your application."
+    end
+  end
+
+
+  def leave
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    current_user.update(hacking_team: nil)
+    redirect_to hacking_teams_path, notice: "You have successfully left the #{@team.name} team."
   end
 
   private

@@ -3,13 +3,10 @@ require 'securerandom'
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: %i[ show edit update destroy ]
 
-  before_action :prepare_for_login, only: %i[ index show ], if: -> { current_user.nil? }
-
-  skip_after_action :verify_authorized, only: %i[ index ]
-
   # GET /submissions or /submissions.json
   def index
     @submissions = Submission.all
+    authorize @submissions
   end
 
   # GET /submissions/1 or /submissions/1.json
@@ -75,16 +72,5 @@ class SubmissionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def submission_params
       params.require(:submission).permit(:title, :description, :url)
-    end
-
-    def prepare_for_login
-      nonce = SecureRandom.alphanumeric(12)
-      session[:nonce] = nonce
-      cookies[:nonce] = { value: nonce, httponly: false, secure: Rails.env.production? }
-
-      # ISO 8601 in Z (UTC) format
-      timestamp = DateTime.now.utc.iso8601
-      session[:timestamp] = timestamp
-      cookies[:timestamp] = { value: timestamp, httponly: false, secure: Rails.env.production? }
     end
 end

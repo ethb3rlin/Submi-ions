@@ -19,7 +19,7 @@
     <div class="teams-list list">
       <% @teams.each do |team| %>
         <div class="team block" id="<%= dom_id team %>">
-          <h2 class="name <%= "has-text-success" if current_user.hacking_team == team %>"><%= team.name %></h2>
+          <h2 class="name <%= "has-text-success" if current_user&.hacking_team == team %>"><%= team.name %></h2>
           <p class="agenda"><%= team.agenda %></p>
         </div>
       <% end %>

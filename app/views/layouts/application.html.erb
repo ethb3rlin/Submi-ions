@@ -22,7 +22,7 @@
   </head>
 
   <body>
-    <nav class="navbar <%= current_user.try :navbar_class %>" role="navigation" aria-label="main navigation">
+    <nav class="navbar has-shadow <%= current_user.try :navbar_class %>" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" id="navbar-logo-header" href="/">
           <%= lucide_icon "land-plot", size: 28, "stroke-width": 1.6 %>
@@ -39,15 +39,34 @@
 
       <div id="submissionsNavbar" class="navbar-menu">
         <div class="navbar-start">
-          <% if policy(:admin).index? %>
-            <a class="navbar-item <%= active_class(admin_root_path) %>" href="<%= admin_root_path %>">
-              Admin panel
+          <% if current_user&.organizer? %>
+            <div class="navbar-item">
+              <a class="button is-info is-inverted <%= active_class(admin_root_path) %>" href="<%= admin_root_path %>">
+                <%= lucide_icon 'shield-check', class: "icon is-small" %>
+                <span>Admin dashboard</span>
+              </a>
+            </div>
+          <% elsif current_user&.judge? %>
+            <div class="navbar-item">
+              <a class="button <%= active_class(judgements_path) %>" href="<%= judgements_path %>">
+                <%= lucide_icon 'scale', class: "icon is-small" %>
+                <span>Judging UI</span>
+              </a>
+            </div>
+          <% else %>
+            <% if policy(Submission).create? %>
+              <div class="navbar-item">
+                <a class="button has-text-primary-dark has-text-weight-bold has-background-primary-light" href="<%= new_submission_path %>">
+                  <%= lucide_icon 'badge-plus', class: "icon is-small" %>
+                  <span>Submit a project</span>
+                </a>
+              </div>
+            <% end %>
+            <a class="navbar-item is-tab <%= active_class(submissions_path) %>" href="<%= submissions_path %>">
+              Browse projects
             </a>
-          <% end %>
-
-          <% if policy(Judgement).create? %>
-            <a class="navbar-item <%= active_class(judgements_path) %>" href="<%= judgements_path %>">
-              Judging UI
+            <a class="navbar-item is-tab <%= active_class(hacking_teams_path) %>" href="<%= hacking_teams_path %>">
+              Hacking teams
             </a>
           <% end %>
         </div>

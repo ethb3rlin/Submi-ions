@@ -27,7 +27,7 @@ class UserDecorator < Draper::Decorator
 
   def navbar_class
     if object.organizer?
-      'is-primary'
+      'is-info'
     elsif object.judge?
       'is-dark'
     else

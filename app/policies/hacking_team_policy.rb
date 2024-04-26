@@ -1,6 +1,6 @@
 class HackingTeamPolicy < ApplicationPolicy
   def index?
-    user.present?
+    true
   end
 
   def new?

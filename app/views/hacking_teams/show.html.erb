@@ -21,7 +21,7 @@
   <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_team == @team %>"><%= @team.name %></p>
   <p class="agenda"><%= @team.agenda %></p>
 
-  <% if policy(@team).list_members? %>
+  <% if policy(@team).list_members? && @team.hackers.any? %>
     <h2 class="is-size-4">Members</h2>
     <div class="members tags are-medium">
       <% @team.hackers.each do |hacker| %>
@@ -30,7 +30,45 @@
         </span>
       <% end %>
     </div>
+  <% end %>
 
+  <% if @pending_applications.any? && policy(@team).accept? %>
+    <h2 class="is-size-4">Pending applications</h2>
+    <div class="field is-grouped is-grouped-multiline">
+      <% @pending_applications.each do |application| %>
+        <div class="control">
+          <div class="tags has-addons is-medium">
+            <span class="tag">
+              <%= application.user.decorate.readable_name %>
+            </span>
+            <%= button_to hacking_team_accept_path(@team, application), method: :post, class: "tag is-success is-light" do %>
+              <%= lucide_icon "check", class: 'icon is-small' %>
+            <% end %>
+            <%= button_to hacking_team_reject_path(@team, application), method: :delete, class: "tag is-danger is-light" do %>
+              <%= lucide_icon "x", class: 'icon is-small' %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @rejected_applications.any? && policy(@team).accept? %>
+    <h2 class="is-size-5 is-light">Rejected applications</h2>
+    <div class="tags">
+      <% @pending_applications.each do |application| %>
+        <div class="tags has-addons is-small">
+          <span class="member tag">
+            <%= application.user.decorate.readable_name %>
+          </span>
+          <span class="tag">
+          <%= button_to hacking_team_accept_path(@team, application), method: :post, class: "tag is-success is-light" do %>
+            <%= lucide_icon "check", class: 'icon is-small' %>
+            <span>Restore</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 
   <% if @team.submissions.present? %>

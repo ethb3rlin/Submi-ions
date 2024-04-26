@@ -32,8 +32,9 @@ class HackingTeamsController < ApplicationController
     @team = HackingTeam.find(params[:id])
     authorize @team
 
-    @applications = @team.join_applications
-    @already_applied = @applications.where(user: current_user).exists?
+    @pending_applications = @team.join_applications.pending
+    @rejected_applications = @team.join_applications.declined
+    @already_applied = @pending_applications.where(user: current_user).any?
   end
 
   def apply
@@ -48,6 +49,25 @@ class HackingTeamsController < ApplicationController
     end
   end
 
+  def accept
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    application = JoinApplication.find(params[:id])
+    application.accept!(current_user)
+
+    redirect_to @team, notice: "Application accepted."
+  end
+
+  def reject
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    application = JoinApplication.find(params[:id])
+    application.decline!(current_user)
+
+    redirect_to @team, notice: "Application rejected."
+  end
 
   def leave
     @team = HackingTeam.find(params[:hacking_team_id])

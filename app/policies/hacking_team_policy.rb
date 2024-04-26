@@ -26,4 +26,12 @@ class HackingTeamPolicy < ApplicationPolicy
   def apply?
     user.present? && user.hacker? && !user.hacking_team.present?
   end
+
+  def accept?
+    user.present? && (user.organizer? || user.hacking_team == record)
+  end
+
+  def reject?
+    accept?
+  end
 end

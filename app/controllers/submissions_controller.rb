@@ -28,7 +28,7 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions or /submissions.json
   def create
-    @submission = Submission.new(submission_params)
+    @submission = current_user.hacking_team.submissions.new(submission_params)
     authorize @submission
 
     respond_to do |format|

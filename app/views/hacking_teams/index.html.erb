@@ -1,10 +1,10 @@
 <% if @teams.present? %>
-  <div class="teams">
+  <div class="teams" data-controller="filterable-teams">
 
     <div class="columns">
       <div class="column is-6">
         <div class="control has-icons-left">
-          <input class="filter-input input search" type="text" placeholder="Filter" data-action="filterable-submissions#filter"/>
+          <input class="filter-input input search" type="text" placeholder="Filter" data-action="filterable-teams#filter"/>
           <span class="icon is-left">
             <%= lucide_icon 'search', size: 16 %>
           </span>
@@ -16,12 +16,14 @@
       </div>
     </div>
 
-    <% @teams.each do |team| %>
-      <div class="team" id="<%= dom_id team %>">
-        <h2><%= team.name %></h2>
-        <p><%= team.agenda %></p>
-      </div>
-    <% end %>
+    <div class="teams-list list">
+      <% @teams.each do |team| %>
+        <div class="team block" id="<%= dom_id team %>">
+          <h2 class="name <%= "has-text-success" if current_user.hacking_team == team %>"><%= team.name %></h2>
+          <p class="agenda"><%= team.agenda %></p>
+        </div>
+      <% end %>
+    </div>
   </div>
 
 <% else %>

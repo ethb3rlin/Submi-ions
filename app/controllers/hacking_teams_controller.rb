@@ -1,6 +1,14 @@
 class HackingTeamsController < ApplicationController
   def index
-    @teams = HackingTeam.all
+    # Querying all hacking teams, but putting current user's team first
+    teams_table = HackingTeam.arel_table
+    order_clause = Arel::Nodes::Case.new(teams_table[:id])
+      .when(current_user.hacking_team_id).then(0)
+      .else(1)
+      .asc
+
+    @teams = HackingTeam.order(order_clause).order(created_at: :desc).all
+
     authorize @teams
   end
 

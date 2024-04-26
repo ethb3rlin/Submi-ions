@@ -26,6 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+// Borrowed from Bulma documentation, to make the notification close button work
+document.addEventListener('turbo:load', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
+
 window.navigateBackOrUp = function() {
   if (history.length > 2) {
       // If history is not empty, go back

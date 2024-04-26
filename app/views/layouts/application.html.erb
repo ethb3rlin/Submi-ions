@@ -106,7 +106,8 @@
     <section class="section">
       <div class="container">
           <% flash.each do |type, msg| %>
-            <div class="notification <%= type == "notice" ? "is-success" : "is-danger" %>">
+            <div class="notification is-light <%= type == "notice" ? "is-success" : "is-danger" %>">
+              <button class="delete"></button>
               <%= msg %>
             </div>
           <% end %>

@@ -30,10 +30,6 @@ class Submission < ApplicationRecord
     url.present? && url.include?('github.com')
   end
 
-  def user
-    nil
-  end
-
   private
   def broadcast
     broadcast_append_to 'submissions', partial: 'submissions/tr', locals: { submission: self }

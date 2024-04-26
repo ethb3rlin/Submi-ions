@@ -16,10 +16,10 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && (record.user == user || user.organizer?)
+    user.present? && (record.hacking_team == user.hacking_team || user.organizer?)
   end
 
   def destroy?
-    user.present? && (record.user == user || user.organizer?)
+    user.present? && (record.hacking_team == user.hacking_team || user.organizer?)
   end
 end

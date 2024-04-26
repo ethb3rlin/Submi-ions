@@ -26,7 +26,15 @@
     <div class="control"><%= form.url_field :url, class: "input", placeholder: "Project's repo, e.g. on Github" %></div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="field is-grouped">
+    <div class="control">
+      <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
+        <%= lucide_icon "arrow-big-left", class: "icon is-small" %>
+        <span>Back</span>
+      <% end %>
+    </div>
+    <div class="control">
+      <%= form.submit class: "button is-primary" %>
+    </div>
   </div>
 <% end %>

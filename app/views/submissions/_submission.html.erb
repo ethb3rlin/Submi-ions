@@ -1,20 +1,33 @@
-<div id="<%= dom_id submission %>">
-  <p>
-    <strong>Title:</strong>
-    <%= submission.title %>
-  </p>
+<div class="card" id="<%= dom_id submission %>">
 
-  <p>
-    <strong>Description:</strong>
-    <%= submission.description %>
-  </p>
-
-  <% if submission.decorated? && submission.github_repo? %>
-    <%= submission.github_repo_card %>
-  <% else %>
-    <p>
-      <strong>Url:</strong>
-      <%= link_to submission.url, submission.url, target: "_blank", rel: "nofollow" %>
-    </p>
-  <% end %>
+  <header class="card-header">
+    <p class="card-header-title title submission-title"><%= submission.title %></p>
+    <% if policy(submission).edit? %>
+      <%= link_to edit_submission_path(submission), class: "card-header-icon has-text-link" do %>
+        <%= lucide_icon 'edit', class: 'icon' %>
+      <% end %>
+    <% end %>
+  </header>
+  <div class="card-content">
+    <div class="content description"><%= submission.description %></div>
+  </div>
+  <footer class="card-footer">
+    <div class="card-footer-item show-card">
+      <%= link_to "Show details", submission, class: "button is-ghost" %>
+    </div>
+    <% if submission.hacking_team.present? %>
+      <div class="card-footer-item">
+        <%= link_to submission.hacking_team, class: "button is-ghost" do %>
+          <%= lucide_icon 'users', class: 'icon is-small' %>
+          <span><%= submission.hacking_team.name %></span>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="card-footer-item">
+      <%= link_to submission.url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
+        <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
+        <span><%= submission.url %></span>
+      <% end %>
+    </div>
+  </footer>
 </div>

@@ -20,6 +20,6 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.present? && (record.hacking_team == user.hacking_team || user.organizer?)
+    user.present? && user.organizer? # TODO: Do we even want to destroy (and not just soft-delete) submissions?
   end
 end

@@ -9,7 +9,7 @@
 #  updated_at :datetime         not null
 #
 class HackingTeam < ApplicationRecord
-  has_many :hackers, inverse_of: :hacking_team
+  has_many :hackers, inverse_of: :hacking_team, class_name: 'User'
   has_many :submissions
 
   validates :name, presence: true, uniqueness: true

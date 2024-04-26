@@ -1,6 +1,18 @@
 class SubmissionDecorator < Draper::Decorator
   delegate_all
 
+  def repo_icon_class
+    return unless object.url.present?
+
+    if object.url.include?('github.com')
+      'github'
+    elsif object.url.include?('gitlab')
+      'gitlab'
+    else
+      'file-code'
+    end
+  end
+
   def github_repo_card
     return unless object.github_repo?
 

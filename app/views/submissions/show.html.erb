@@ -1,10 +1,10 @@
-<p style="color: green"><%= notice %></p>
+<div class="submission-display"><%= render @submission %></div>
 
-<%= render @submission %>
-
-<div>
-  <%= link_to "Edit this submission", edit_submission_path(@submission) if policy(@submission).update? %> |
-  <%= link_to "Back to submissions", submissions_path %>
-
-  <%= button_to "Destroy this submission", @submission, method: :delete if policy(@submission).destroy? %>
+<div class="buttons mt-5">
+  <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
+    <%= lucide_icon "arrow-big-left", class: 'icon is-small' %>
+    <span>Back</span>
+  <% end %>
+  <%= link_to "Edit this submission", edit_submission_path(@submission), class: "button is-primary" if policy(@submission).update? %>
+  <%= button_to "Destroy this submission", @submission, method: :delete, class: "button is-danger" if policy(@submission).destroy? %>
 </div>

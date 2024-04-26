@@ -10,4 +10,12 @@ class HackingTeamPolicy < ApplicationPolicy
   def create?
     new?
   end
+
+  def show?
+    true
+  end
+
+  def list_members?
+    user.present? && (user.organizer? || user.hacking_team == record)
+  end
 end

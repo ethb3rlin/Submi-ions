@@ -19,7 +19,7 @@
     <div class="teams-list list">
       <% @teams.each do |team| %>
         <div class="team block" id="<%= dom_id team %>">
-          <h2 class="name <%= "has-text-success" if current_user&.hacking_team == team %>"><%= team.name %></h2>
+          <%= link_to team.name, team, class: class_names(name:true, "is-size-3" => true, "has-text-success" => current_user&.hacking_team == team) %>
           <p class="agenda"><%= team.agenda %></p>
         </div>
       <% end %>

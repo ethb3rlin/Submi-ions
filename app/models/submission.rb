@@ -26,10 +26,6 @@ class Submission < ApplicationRecord
 
   after_create_commit :broadcast
 
-  def github_repo?
-    url.present? && url.include?('github.com')
-  end
-
   private
   def broadcast
     broadcast_append_to 'submissions', partial: 'submissions/tr', locals: { submission: self }

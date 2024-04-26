@@ -1,0 +1,17 @@
+<div class="team block" id="<%= dom_id @team %>">
+  <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_team == @team %>"><%= @team.name %></p>
+  <p class="agenda"><%= @team.agenda %></p>
+
+  <% if policy(@team).list_members? %>
+    <h2 class="is-size-4">Members</h2>
+    <div class="members">
+      <% @team.hackers.each do |hacker| %>
+        <div class="member" id="<%= dom_id hacker %>">
+          <%= link_to hacker.decorate.readable_name, hacker %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= render @team.submissions %>
+</div>

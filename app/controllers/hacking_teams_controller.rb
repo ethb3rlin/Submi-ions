@@ -28,6 +28,11 @@ class HackingTeamsController < ApplicationController
     end
   end
 
+  def show
+    @team = HackingTeam.find(params[:id])
+    authorize @team
+  end
+
   private
   def team_params
     params.require(:hacking_team).permit(:name, :agenda)

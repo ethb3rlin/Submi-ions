@@ -33,13 +33,6 @@
 #                                          PUT    /admin/users/:id(.:format)                                                                        admin/users#update
 #                                          DELETE /admin/users/:id(.:format)                                                                        admin/users#destroy
 #                        admin_submissions GET    /admin/submissions(.:format)                                                                      admin/submissions#index
-#                                          POST   /admin/submissions(.:format)                                                                      admin/submissions#create
-#                     new_admin_submission GET    /admin/submissions/new(.:format)                                                                  admin/submissions#new
-#                    edit_admin_submission GET    /admin/submissions/:id/edit(.:format)                                                             admin/submissions#edit
-#                         admin_submission GET    /admin/submissions/:id(.:format)                                                                  admin/submissions#show
-#                                          PATCH  /admin/submissions/:id(.:format)                                                                  admin/submissions#update
-#                                          PUT    /admin/submissions/:id(.:format)                                                                  admin/submissions#update
-#                                          DELETE /admin/submissions/:id(.:format)                                                                  admin/submissions#destroy
 #                      admin_judging_teams GET    /admin/judging_teams(.:format)                                                                    admin/judging_teams#index
 #                                          POST   /admin/judging_teams(.:format)                                                                    admin/judging_teams#create
 #                   new_admin_judging_team GET    /admin/judging_teams/new(.:format)                                                                admin/judging_teams#new
@@ -120,7 +113,7 @@ Rails.application.routes.draw do
       delete 'ethereum_address/:id' => 'ethereum_addresses#destroy', as: :destroy_ethereum_address
     end
 
-    resources :submissions
+    resources :submissions, only: :index
     resources :judging_teams
   end
 

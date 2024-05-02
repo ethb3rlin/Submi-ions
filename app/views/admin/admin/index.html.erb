@@ -16,9 +16,13 @@
       </div>
     </div>
     <div class="column">
-      <%= link_to admin_judging_teams_path, class: ['button', 'is-warning', 'is-light', 'is-large'] do %>
+      <%= link_to hacking_teams_path, class: ['button', 'is-success', 'is-light', 'is-large', 'block'] do %>
+        <%= lucide_icon 'ungroup', class: 'icon is-large' %>
+        <span><%= pluralize HackingTeam.count, 'Hacking Team' %></span>
+      <% end %>
+      <%= link_to admin_judging_teams_path, class: ['button', 'is-warning', 'is-light', 'is-large', 'block'] do %>
         <%= lucide_icon 'group', class: 'icon is-large' %>
-        <span><%= JudgingTeam.count %> Judging Teams</span>
+        <span><%= pluralize JudgingTeam.count, 'Judging Team' %></span>
       <% end %>
     </div>
   </div>

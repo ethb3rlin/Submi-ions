@@ -69,3 +69,8 @@
 	transform: translate(-50%, 0);
 	margin-bottom: 5px;
 }
+
+.teams-list .agenda {
+	max-height: 350px;
+	overflow-y: auto;
+}

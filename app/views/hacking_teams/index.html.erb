@@ -20,7 +20,9 @@
       <% @teams.each do |team| %>
         <div class="team block" id="<%= dom_id team %>">
           <%= link_to team.name, team, class: class_names(name:true, "is-size-3" => true, "has-text-success" => current_user&.hacking_team == team) %>
-          <p class="agenda"><%= team.agenda %></p>
+          <div class="agenda">
+            <%= team.decorate.formatted_agenda %>
+          </div>
         </div>
       <% end %>
     </div>

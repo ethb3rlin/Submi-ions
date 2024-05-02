@@ -15,6 +15,14 @@ class HackingTeamPolicy < ApplicationPolicy
     true
   end
 
+  def edit?
+    user.present? && (user.organizer? || user.hacking_team == record)
+  end
+
+  def update?
+    edit?
+  end
+
   def list_members?
     user.present? && (user.organizer? || user.hacking_team == record)
   end

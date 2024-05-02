@@ -41,6 +41,22 @@ class HackingTeamsController < ApplicationController
     @already_rejected = @current_user_application&.declined?
   end
 
+  def edit
+    @team = HackingTeam.find(params[:id])
+    authorize @team
+  end
+
+  def update
+    @team = HackingTeam.find(params[:id])
+    authorize @team
+
+    if @team.update(team_params)
+      redirect_to @team
+    else
+      redirect_to @team, alert: "Failed to update the team: #{@team.errors.full_messages.to_sentence}"
+    end
+  end
+
   def apply
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team

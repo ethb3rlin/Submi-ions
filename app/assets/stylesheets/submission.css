@@ -1,3 +1,8 @@
 .submission-display .show-card {
   display: none;
 }
+
+#submissions .list .card-content {
+  max-height: 250px;
+  overflow-y: auto;
+}

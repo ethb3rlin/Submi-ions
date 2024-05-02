@@ -34,12 +34,18 @@ class HackingTeamsController < ApplicationController
 
     @pending_applications = @team.join_applications.pending
     @rejected_applications = @team.join_applications.declined
-    @already_applied = @pending_applications.where(user: current_user).any?
+
+    @current_user_application = JoinApplication.find_by(user: current_user, hacking_team: @team)
+
+    @already_applied = @current_user_application&.pending?
+    @already_rejected = @current_user_application&.declined?
   end
 
   def apply
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team
+
+    return redirect_to @team, notice: "You are already a member of a team." if current_user.hacking_team==@team
 
     application = JoinApplication.find_or_initialize_by(user: current_user, hacking_team: @team)
 
@@ -59,7 +65,7 @@ class HackingTeamsController < ApplicationController
     application = JoinApplication.find(params[:id])
     application.accept!(current_user)
 
-    redirect_to @team, notice: "Application accepted."
+    redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} has been accepted."
   end
 
   def reject
@@ -69,7 +75,7 @@ class HackingTeamsController < ApplicationController
     application = JoinApplication.find(params[:id])
     application.decline!(current_user)
 
-    redirect_to @team, notice: "Application rejected."
+    redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} has been rejected."
   end
 
   def unreject
@@ -77,9 +83,12 @@ class HackingTeamsController < ApplicationController
     authorize @team
 
     application = JoinApplication.find(params[:id])
-    application.update(state: :pending, decided_at: nil, decided_by_id: nil)
 
-    redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} is back in the pending list."
+    if application.update(state: :pending, decided_at: nil, decided_by_id: nil)
+      redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} is back in the pending list."
+    else
+      redirect_to @team, alert: "Failed to un-reject the application: #{application.errors.full_messages.to_sentence}"
+    end
   end
 
   def leave

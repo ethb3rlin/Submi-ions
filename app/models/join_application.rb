@@ -27,7 +27,7 @@
 #
 class JoinApplication < ApplicationRecord
   belongs_to :user
-  has_one :decided_by, class_name: 'User', foreign_key: 'decided_by_id'
+  belongs_to :decided_by, class_name: 'User', foreign_key: 'decided_by_id', optional: true
   belongs_to :hacking_team
 
   enum :state, { pending: 'pending', approved: 'approved', declined: 'declined' }

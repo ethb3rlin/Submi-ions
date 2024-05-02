@@ -4,18 +4,26 @@
       <%= lucide_icon "door-open", class: 'icon is-small' %>
       <span>Leave this team</span>
     <% end %>
-  <% else %>
-    <% if policy(@team).apply? %>
-      <%= button_to hacking_team_apply_path(@team), method: :post, class: "button is-success is-pulled-right", disabled: @already_applied do %>
-        <% if @already_applied %>
+  <% elsif policy(@team).apply? %>
+
+      <% if @already_rejected %>
+        <button class="button is-disabled is-pulled-right is-danger"
+          title="Rejected by <%= @current_user_application.decided_by.decorate.readable_name %> <%= time_ago_in_words @current_user_application.decided_at %> ago" disabled>
+          <%= lucide_icon "user-x", class: 'icon is-small' %>
+          <span>Rejected</span>
+        </button>
+      <% elsif @already_applied %>
+        <button class="button is-disabled is-pulled-right is-warning" disabled>
           <%= lucide_icon "user-check", class: 'icon is-small' %>
           <span>Already applied</span>
-        <% else %>
+        </button>
+      <% else %>
+        <%= button_to hacking_team_apply_path(@team), method: :post, class: "button is-success is-pulled-right" do %>
           <%= lucide_icon "smile-plus", class: 'icon is-small' %>
           <span>Apply to join</span>
         <% end %>
       <% end %>
-    <% end %>
+
   <% end %>
 
   <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_team == @team %>"><%= @team.name %></p>

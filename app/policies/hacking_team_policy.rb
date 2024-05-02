@@ -38,4 +38,8 @@ class HackingTeamPolicy < ApplicationPolicy
   def unreject?
     accept?
   end
+
+  def kick?
+    accept?
+  end
 end

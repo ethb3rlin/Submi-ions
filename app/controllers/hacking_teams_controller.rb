@@ -101,6 +101,19 @@ class HackingTeamsController < ApplicationController
     redirect_to hacking_teams_path, notice: "You have successfully left the #{@team.name} team."
   end
 
+  def kick
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    user = User.find(params[:id])
+    application = JoinApplication.find_by(user: user, hacking_team: @team)
+    if user.update(hacking_team: nil) && application.update(state: :declined, decided_by: current_user, decided_at: Time.current)
+      redirect_to @team, notice: "#{user.decorate.readable_name} has been kicked from the team."
+    else
+      redirect_to @team, alert: "Failed to kick the user: #{user.errors.full_messages.to_sentence} #{application.errors.full_messages.to_sentence}"
+    end
+  end
+
   private
   def team_params
     params.require(:hacking_team).permit(:name, :agenda)

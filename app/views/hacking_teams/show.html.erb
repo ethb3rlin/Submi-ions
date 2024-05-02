@@ -31,11 +31,27 @@
 
   <% if policy(@team).list_members? && @team.hackers.any? %>
     <h2 class="is-size-4">Members</h2>
-    <div class="members tags are-medium">
+    <div class="members field is-grouped is-grouped-multiline">
       <% @team.hackers.each do |hacker| %>
-        <span class="member tag <%= 'is-success is-light' if current_user==hacker %>" id="<%= dom_id hacker %>">
-          <%= hacker.decorate.readable_name %>
-        </span>
+        <div class="control">
+          <% if current_user == hacker %>
+            <div class="member tags has-addons are-large" id="<%= dom_id hacker %>">
+              <span class="tag is-success is-light">
+                <%= hacker.decorate.readable_name %>
+              </span>
+            </div>
+          <% else %>
+            <div class="member tags has-addons are-large" id="<%= dom_id hacker %>">
+              <span class="tag">
+                <%= hacker.decorate.readable_name %>
+              </span>
+              <%= link_to hacking_team_kick_path(@team, hacker), class: "tag is-danger is-light",
+                  data: {turbo_confirm: "Are you sure you want to kick #{hacker.decorate.readable_name} from the team?", turbo_method: :delete} do %>
+                <%= lucide_icon "user-x", class: 'icon dropdown-trigger' %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
     </div>
   <% end %>

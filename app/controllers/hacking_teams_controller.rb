@@ -41,8 +41,11 @@ class HackingTeamsController < ApplicationController
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team
 
-    application = JoinApplication.new(user: current_user, hacking_team: @team)
-    if application.save
+    application = JoinApplication.find_or_initialize_by(user: current_user, hacking_team: @team)
+
+    if application.declined?
+      redirect_to @team, alert: "You have already been declined from this team, and can't re-apply. Please contact someone of the team in-person if you want this decision to be revised."
+    elsif application.update(state: :pending, decided_by_id: nil, decided_at: nil)
       redirect_to @team, notice: "Your application has been submitted."
     else
       redirect_to hacking_teams_path, alert: "Failed to submit your application."

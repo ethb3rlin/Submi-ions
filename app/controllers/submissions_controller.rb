@@ -25,41 +25,40 @@ class SubmissionsController < ApplicationController
 
   # POST /submissions or /submissions.json
   def create
-    @submission = current_user.hacking_team.submissions.new(submission_params)
-    authorize @submission
+    Submission.transaction do
+      if current_user.hacking_team.blank?
+        name = current_user.name.present? ? "#{current_user.name}'s Team" : "Team \##{SecureRandom.hex(4)}"
+        if HackingTeam.exists?(name: name)
+          name = "#{name} \##{SecureRandom.hex(4)}"
+        end
+        current_user.create_hacking_team!(name: name)
+        current_user.save!
+      end
 
-    respond_to do |format|
+      @submission = current_user.hacking_team.submissions.new(submission_params)
+      authorize @submission
+
       if @submission.save
-        format.html { redirect_to submission_url(@submission), notice: "Submission was successfully created." }
-        format.json { render :show, status: :created, location: @submission }
+        redirect_to submission_url(@submission), notice: "Submission #{@submission.title} was successfully created."
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @submission.errors, status: :unprocessable_entity }
+        redirect_to new_submission_url, alert: "Submission could not be created: #{@submission.errors.full_messages.to_sentence}"
       end
     end
   end
 
   # PATCH/PUT /submissions/1 or /submissions/1.json
   def update
-    respond_to do |format|
-      if @submission.update(submission_params)
-        format.html { redirect_to submission_url(@submission), notice: "Submission was successfully updated." }
-        format.json { render :show, status: :ok, location: @submission }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @submission.errors, status: :unprocessable_entity }
-      end
+    if @submission.update(submission_params)
+      redirect_to submission_url(@submission), notice: "Submission was successfully updated."
+    else
+      redirect_to edit_submission_url(@submission), alert: "Submission could not be updated: #{submission.errors.full_messages.to_sentence}"
     end
   end
 
   # DELETE /submissions/1 or /submissions/1.json
   def destroy
     @submission.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to submissions_url, notice: "Submission was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to submissions_url, notice: "Submission was successfully destroyed."
   end
 
   private

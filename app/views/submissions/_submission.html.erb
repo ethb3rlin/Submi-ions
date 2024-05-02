@@ -23,11 +23,14 @@
         <% end %>
       </div>
     <% end %>
-    <div class="card-footer-item">
-      <%= link_to submission.url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
-        <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
-        <span><%= submission.url %></span>
-      <% end %>
-    </div>
+
+    <% if submission.url.present? %>
+      <div class="card-footer-item">
+        <%= link_to submission.url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
+          <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
+          <span><%= submission.url %></span>
+        <% end %>
+      </div>
+    <% end %>
   </footer>
 </div>

@@ -69,6 +69,16 @@ class HackingTeamsController < ApplicationController
     redirect_to @team, notice: "Application rejected."
   end
 
+  def unreject
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    application = JoinApplication.find(params[:id])
+    application.update(state: :pending, decided_at: nil, decided_by_id: nil)
+
+    redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} is back in the pending list."
+  end
+
   def leave
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team

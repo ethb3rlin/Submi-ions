@@ -41,10 +41,10 @@
             <span class="tag">
               <%= application.user.decorate.readable_name %>
             </span>
-            <%= button_to hacking_team_accept_path(@team, application), method: :post, class: "tag is-success is-light" do %>
+            <%= link_to hacking_team_accept_path(@team, application), data: {turbo_method: :post}, class: "tag is-success is-light" do %>
               <%= lucide_icon "check", class: 'icon is-small' %>
             <% end %>
-            <%= button_to hacking_team_reject_path(@team, application), method: :delete, class: "tag is-danger is-light" do %>
+            <%= link_to hacking_team_reject_path(@team, application), data: {turbo_method: :delete}, class: "tag is-danger is-light" do %>
               <%= lucide_icon "x", class: 'icon is-small' %>
             <% end %>
           </div>
@@ -54,20 +54,26 @@
   <% end %>
 
   <% if @rejected_applications.any? && policy(@team).accept? %>
-    <h2 class="is-size-5 is-light">Rejected applications</h2>
-    <div class="tags">
-      <% @pending_applications.each do |application| %>
-        <div class="tags has-addons is-small">
-          <span class="member tag">
-            <%= application.user.decorate.readable_name %>
-          </span>
-          <span class="tag">
-          <%= button_to hacking_team_accept_path(@team, application), method: :post, class: "tag is-success is-light" do %>
-            <%= lucide_icon "check", class: 'icon is-small' %>
-            <span>Restore</span>
+    <div class="collapsible-container">
+      <input type="checkbox" id="collapsible-toggle">
+      <label for="collapsible-toggle" class="collapsible-label">
+        <span class="is-size-5 has-text-weight-semibold">Rejected applications</span>
+      </label>
+      <div class="collapsible">
+        <div class="tags">
+          <% @rejected_applications.each do |application| %>
+            <div class="tags has-addons is-small">
+              <span class="member tag">
+                <%= application.user.decorate.readable_name %>
+              </span>
+              <%= link_to hacking_team_unreject_path(@team, application), data: {turbo_method: :post}, class: "tag is-warning is-light" do %>
+                <%= lucide_icon "archive-restore", class: 'icon is-small' %>
+                <span>Actually, let's think again</span>
+              <% end %>
+            </div>
           <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
   <% end %>
 

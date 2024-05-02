@@ -34,4 +34,8 @@ class HackingTeamPolicy < ApplicationPolicy
   def reject?
     accept?
   end
+
+  def unreject?
+    accept?
+  end
 end

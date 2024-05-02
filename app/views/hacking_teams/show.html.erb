@@ -68,19 +68,31 @@
         <span class="is-size-5 has-text-weight-semibold">Rejected applications</span>
       </label>
       <div class="collapsible">
-        <div class="tags">
-          <% @rejected_applications.each do |application| %>
-            <div class="tags has-addons is-small">
-              <span class="member tag">
-                <%= application.user.decorate.readable_name %>
-              </span>
-              <%= link_to hacking_team_unreject_path(@team, application), data: {turbo_method: :post}, class: "tag is-warning is-light" do %>
-                <%= lucide_icon "archive-restore", class: 'icon is-small' %>
-                <span>Actually, let's think again</span>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Hacker</th>
+              <th>Rejected by</th>
+              <th>Decided at</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @rejected_applications.each do |application| %>
+              <tr>
+                <td><%= application.user.decorate.readable_name %></td>
+                <td><%= application.decided_by.decorate.readable_name %></td>
+                <td><%= application.decided_at %></td>
+                <td>
+                  <%= link_to hacking_team_unreject_path(@team, application), data: {turbo_method: :post}, class: "button is-warning is-light is-small" do %>
+                    <%= lucide_icon "archive-restore", class: 'icon is-small' %>
+                    <span>Actually, let's think again</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+        </table>
       </div>
     </div>
   <% end %>

@@ -62,9 +62,11 @@ class HackingTeamsController < ApplicationController
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team
 
-    application = JoinApplication.find(params[:id])
-    application.accept!(current_user)
 
+    application = JoinApplication.find(params[:id])
+    return redirect_to @team, alert: "The user has already been accepted to another team." if application.user.hacking_team.present? && application.user.hacking_team != @team
+
+    application.accept!(current_user)
     redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} has been accepted."
   end
 

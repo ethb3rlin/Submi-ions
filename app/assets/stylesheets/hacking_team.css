@@ -1,10 +1,8 @@
 .collapsible-container>input[type="checkbox"] {
   display: none;
 }
-
 .collapsible-label {
   display: block;
-
   cursor: pointer;
 }
 .collapsible-label::before {
@@ -21,18 +19,53 @@
 
   transition: transform .2s ease-out;
 }
-
 .collapsible {
   max-height: 0px;
   overflow: hidden;
 
   transition: max-height .25s ease-in-out;
 }
-
 #collapsible-toggle:checked + .collapsible-label::before {
   transform: rotate(90deg) translateX(-3px);
 }
-
 #collapsible-toggle:checked ~ .collapsible {
   max-height: 100vh;
+}
+
+
+[data-tooltip]:hover {
+	position: relative;
+}
+[data-tooltip]:hover::before {
+	all: initial;
+	font-family: var(--bulma-family-primary);
+	display: inline-block;
+	border-radius: 5px;
+	padding: 10px;
+	background-color: #1a1a1a;
+	content: attr(data-tooltip);
+	color: #f9f9f9;
+	position: absolute;
+	bottom: 100%;
+	width: 150px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	margin-bottom: 15px;
+	text-align: center;
+	font-size: 14px;
+}
+[data-tooltip]:hover::after {
+	all: initial;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #1a1a1a;
+	position: absolute;
+	bottom: 100%;
+	content: '';
+	left: 50%;
+	transform: translate(-50%, 0);
+	margin-bottom: 5px;
 }

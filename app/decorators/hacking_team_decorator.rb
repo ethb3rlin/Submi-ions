@@ -10,4 +10,7 @@ class HackingTeamDecorator < Draper::Decorator
   #     end
   #   end
 
+  def formatted_agenda
+    h.format_markdown(object.agenda).html_safe
+  end
 end

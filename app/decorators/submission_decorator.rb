@@ -13,6 +13,10 @@ class SubmissionDecorator < Draper::Decorator
     end
   end
 
+  def formatted_description
+    h.format_markdown(object.description).html_safe
+  end
+
   def github_repo_card
     return unless object.github_repo?
 

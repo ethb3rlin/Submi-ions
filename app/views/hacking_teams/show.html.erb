@@ -34,7 +34,7 @@
   <% end %>
 
   <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_team == @team %>"><%= @team.name %></p>
-  <p class="agenda"><%= @team.agenda %></p>
+  <p class="agenda"><%= @team.decorate.formatted_agenda %></p>
 
   <% if policy(@team).list_members? && @team.hackers.any? %>
     <h2 class="is-size-4">Members</h2>

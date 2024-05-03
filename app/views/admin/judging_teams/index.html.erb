@@ -10,7 +10,11 @@
     <% if @current_team %>
       <div class="panel-block is-block judging-team">
         <div class="columns">
-          <div class="column is-offset-4">
+          <div class="column is-4">
+            <p class="is-size-7 has-text-weight-medium mb-0">Location</p>
+            <%= @current_team.location %>
+          </div>
+          <div class="column">
             <p class="is-size-7 has-text-weight-medium mb-0">Technical Judge</p>
             <%= @current_team.technical_judge ? link_to(@current_team.technical_judge.name, edit_admin_user_path(@current_team.technical_judge)) : '--' %>
           </div>

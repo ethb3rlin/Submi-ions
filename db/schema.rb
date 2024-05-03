@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_03_234212) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_03_234521) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_234212) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "current_judgement_id"
+    t.string "location"
     t.index ["concept_judge_id"], name: "index_judging_teams_on_concept_judge_id"
     t.index ["current_judgement_id"], name: "index_judging_teams_on_current_judgement_id"
     t.index ["product_judge_id"], name: "index_judging_teams_on_product_judge_id"

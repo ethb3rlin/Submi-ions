@@ -57,6 +57,6 @@ class Admin::JudgingTeamsController < ApplicationController
 
   private
   def judging_team_params
-    params.require(:judging_team).permit(:concept_judge_id, :product_judge_id, :technical_judge_id, :track)
+    params.require(:judging_team).permit(:concept_judge_id, :product_judge_id, :technical_judge_id, :track, :location)
   end
 end

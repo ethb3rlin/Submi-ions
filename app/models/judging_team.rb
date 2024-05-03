@@ -3,6 +3,7 @@
 # Table name: judging_teams
 #
 #  id                   :bigint           not null, primary key
+#  location             :string
 #  track                :enum             not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null

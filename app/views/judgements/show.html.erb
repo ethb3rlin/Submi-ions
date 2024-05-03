@@ -3,14 +3,14 @@
   <p><%= @submission.description %></p>
 
   <div class="grid" id="votes">
-    <div class="cell <%= 'editable' if @judgement.technical_vote.user == current_user %>">
-      <%= render @judgement.technical_vote, kind: :technical %>
+    <div class="cell <%= 'editable' if @judgement.technical_vote&.user == current_user %>">
+      <%= render @judgement.technical_vote, kind: :technical if @judgement.technical_vote %>
     </div>
-    <div class="cell <%= 'editable' if @judgement.product_vote.user == current_user %>">
-      <%= render @judgement.product_vote, kind: :product %>
+    <div class="cell <%= 'editable' if @judgement.product_vote&.user == current_user %>">
+      <%= render @judgement.product_vote, kind: :product if @judgement.product_vote %>
     </div>
-    <div class="cell <%= 'editable' if @judgement.concept_vote.user == current_user %>">
-      <%= render @judgement.concept_vote, kind: :concept %>
+    <div class="cell <%= 'editable' if @judgement.concept_vote&.user == current_user %>">
+      <%= render @judgement.concept_vote, kind: :concept if @judgement.concept_vote %>
     </div>
   </div>
 

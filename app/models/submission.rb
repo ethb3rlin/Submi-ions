@@ -30,6 +30,8 @@ class Submission < ApplicationRecord
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
 
+  scope :unassigned, -> { Submission.left_outer_joins(:judgement).where(judgements: { id: nil }) }
+
   HUMAN_READABLE_TRACKS = {
     transact: "Freedom to Transact",
     infra: "Infrastructure",
@@ -45,6 +47,16 @@ class Submission < ApplicationRecord
   }.with_indifferent_access
 
   after_create_commit :broadcast
+
+  def self.distribute_unassigned!
+    HUMAN_READABLE_TRACKS.keys.each do |track|
+      # Shuffle the judging teams, so on subsequent runs the team #1 won't get more submissions on average
+      team_ids = JudgingTeam.where(track: track).pluck(:id).shuffle.cycle
+      Submission.unassigned.where(track: track).in_batches.each_record do |submission|
+        Judgement.create!(judging_team_id: team_ids.next, submission: submission)
+      end
+    end
+  end
 
   private
   def broadcast

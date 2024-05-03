@@ -34,9 +34,9 @@ class Judgement < ApplicationRecord
   belongs_to :judging_team
   belongs_to :submission
 
-  belongs_to :technical_vote, class_name: "Vote", dependent: :destroy
-  belongs_to :product_vote, class_name: "Vote", dependent: :destroy
-  belongs_to :concept_vote, class_name: "Vote", dependent: :destroy
+  belongs_to :technical_vote, class_name: "Vote", dependent: :destroy, optional: true
+  belongs_to :product_vote, class_name: "Vote", dependent: :destroy, optional: true
+  belongs_to :concept_vote, class_name: "Vote", dependent: :destroy, optional: true
 
   validates :judging_team, presence: true
   validates :submission, presence: true

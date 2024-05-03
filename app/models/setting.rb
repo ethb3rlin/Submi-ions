@@ -29,6 +29,11 @@ class Setting < ApplicationRecord
   def self.hackathon_stage=(stage)
     stage = stage.to_sym
     raise ArgumentError, "Invalid hackathon stage: #{stage}" unless HACKATHON_STAGES.include?(stage)
+
+    if stage == :judging
+      Submission.distribute_unassigned!
+    end
+
     self[:hackathon_stage] = stage
   end
 

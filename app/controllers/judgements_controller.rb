@@ -9,13 +9,13 @@ class JudgementsController < ApplicationController
       redirect_to @judging_team.current_judgement
     end
 
-    @there_are_more_to_judge = @judging_team.pending_submissions.any?
+    @there_are_more_to_judge = Submission.unassigned.any?
   end
 
   def create
     @judging_team = current_user.judging_team
 
-    @submission = @judging_team.pending_submissions.first
+    @submission = Submission.unassigned.first
 
     @judgement = Judgement.new(submission: @submission, judging_team: @judging_team)
     authorize @judgement

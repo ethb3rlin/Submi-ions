@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_03_092427) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_03_100231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,6 +78,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_092427) do
     t.index ["current_judgement_id"], name: "index_judging_teams_on_current_judgement_id"
     t.index ["product_judge_id"], name: "index_judging_teams_on_product_judge_id"
     t.index ["technical_judge_id"], name: "index_judging_teams_on_technical_judge_id"
+  end
+
+  create_table "settings", primary_key: "key", id: :string, force: :cascade do |t|
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "submissions", force: :cascade do |t|

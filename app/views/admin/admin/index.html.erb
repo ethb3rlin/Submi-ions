@@ -26,4 +26,23 @@
       <% end %>
     </div>
   </div>
+
+
+  <div class="hero is-medium">
+    <div class="hero-body">
+      <div class="block">
+        <p class="subtitle">Current stage:</p>
+        <p class="title"><%= Setting.hackathon_stage.capitalize %></p>
+      </div>
+
+      <div class="block">
+        <p class="subtitle">Judging begins at:</p>
+        <p class="title"><%= Setting.judging_start_time %></p>
+      </div>
+      <%= link_to admin_settings_path, class: ['button', 'is-danger', 'is-light'] do %>
+        <%= lucide_icon 'settings', class: 'icon' %>
+        <span>Settings</span>
+      <% end %>
+    </div>
+  </div>
 </div>

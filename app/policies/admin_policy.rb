@@ -4,4 +4,12 @@ class AdminPolicy < ApplicationPolicy
   def index?
     user.try :organizer?
   end
+
+  def settings?
+    user.try :organizer?
+  end
+
+  def update_start_time?
+    user.try :organizer?
+  end
 end

@@ -1,0 +1,19 @@
+<div class="content">
+  <div class="columns">
+    <div class="column">
+      <%= form_tag admin_update_start_time_path, method: :patch do %>
+        <label class="label" for="judging_start_time">Hackathon judging begins at:</label>
+        <div class="field has-addons">
+          <div class="control">
+            <%= text_field_tag :judging_start_time, Setting.judging_start_time, class: 'input', type: :time %>
+          </div>
+          <div class="control">
+            <%= submit_tag 'Update', class: 'button is-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="column">
+    </div>
+  </div>
+</div>

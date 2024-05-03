@@ -31,4 +31,17 @@ class Setting < ApplicationRecord
     raise ArgumentError, "Invalid hackathon stage: #{stage}" unless HACKATHON_STAGES.include?(stage)
     self[:hackathon_stage] = stage
   end
+
+  def self.judging_start_time
+    self.load_with_default(:judging_start_time, "15:00").value
+  end
+
+  def self.judging_start_time=(time)
+    if time.is_a?(Time)
+      time = time.strftime("%H:%M")
+    end
+
+    raise ArgumentError, "Invalid time format: #{time}" unless time =~ /\A\d{1,2}:\d{2}\z/
+    self[:judging_start_time] = time
+  end
 end

@@ -1,7 +1,13 @@
 <div class="submission card" id="<%= dom_id submission %>">
 
   <header class="card-header">
-    <p class="card-header-title title submission-title"><%= submission.title %></p>
+    <p class="card-header-title title submission-title">
+      <span><%= submission.title %></span>
+      <span class="is-size-5 is-italic submission-track has-text-weight-normal">
+        <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
+        <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
+      </span>
+    </p>
     <% if policy(submission).edit? %>
       <%= link_to edit_submission_path(submission), class: "card-header-icon has-text-link" do %>
         <%= lucide_icon 'edit', class: 'icon' %>

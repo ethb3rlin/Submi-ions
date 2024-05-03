@@ -5,6 +5,11 @@
   <td>
     <% if submission.judgement %>
       <%= link_to submission.judgement.judging_team, admin_judging_teams_path(id: submission.judgement.judging_team.id) %>
+    <% else %>
+      <span class="is-italic">
+        <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
+        <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
+      </span>
     <% end %>
   </td>
   <td><%= link_to 'Show',

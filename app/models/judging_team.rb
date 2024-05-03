@@ -39,13 +39,6 @@ class JudgingTeam < ApplicationRecord
 
   enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
 
-  HUMAN_READABLE_TRACKS = {
-    transact: "Freedom to Transact",
-    infra: "Infrastructure",
-    tooling: "Defensive Tooling",
-    social: "Social Tech"
-  }.with_indifferent_access
-
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
 
@@ -75,7 +68,7 @@ class JudgingTeam < ApplicationRecord
   end
 
   def to_s
-    HUMAN_READABLE_TRACKS[track] + ' #' + sequence_number.to_s
+    Submission::HUMAN_READABLE_TRACKS[track] + ' #' + sequence_number.to_s
   end
 
   private

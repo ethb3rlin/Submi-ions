@@ -17,6 +17,15 @@
   </div>
 
   <div class="field">
+    <%= form.label :track, class: "label" %>
+    <div class="control">
+      <div class="select">
+        <%= form.select :track, Submission::HUMAN_READABLE_TRACKS.map{|k,v| [v,k]}, class: "select" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
     <%= form.label :description, class: "label" %>
     <div class="control"><%= form.text_area :description, class: "textarea", placeholder: "A brief explanation of what's the project is about" %></div>
   </div>

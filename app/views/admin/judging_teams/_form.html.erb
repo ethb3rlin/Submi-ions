@@ -5,7 +5,7 @@
         <%= f.label :track, class: "label" %>
         <div class="control">
           <div class="select">
-            <%= f.select :track, JudgingTeam::HUMAN_READABLE_TRACKS.map{|k,v| [v,k]}, class: "select" %>
+            <%= f.select :track, Submission::HUMAN_READABLE_TRACKS.map{|k,v| [v,k]}, class: "select" %>
           </div>
         </div>
       </div>

@@ -6,3 +6,11 @@
   max-height: 250px;
   overflow-y: auto;
 }
+
+.submission-title {
+  align-items: baseline;
+}
+
+.submission-track {
+  margin-left: 1em;
+}

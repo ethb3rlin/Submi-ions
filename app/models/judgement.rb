@@ -39,9 +39,6 @@ class Judgement < ApplicationRecord
   belongs_to :product_vote, class_name: "Vote", dependent: :destroy, optional: true
   belongs_to :concept_vote, class_name: "Vote", dependent: :destroy, optional: true
 
-  validates :judging_team, presence: true
-  validates :submission, presence: true
-
   after_create_commit :broadcast_new_judgement
 
   scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }

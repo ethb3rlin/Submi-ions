@@ -14,8 +14,14 @@ class Admin::AdminController < ApplicationController
   end
 
   def next_hackathon_stage
-    authorize :admin, :next_hackathon_stage?, policy_class: AdminPolicy
+    authorize :admin, :update_hackathon_stage?, policy_class: AdminPolicy
     Setting.hackathon_stage = Setting.next_hackathon_stage
     redirect_to admin_root_path
+  end
+
+  def update_hackathon_stage
+    authorize :admin, :update_hackathon_stage?, policy_class: AdminPolicy
+    Setting.hackathon_stage = params[:hackathon_stage]
+    redirect_to admin_settings_path
   end
 end

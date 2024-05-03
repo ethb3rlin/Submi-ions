@@ -13,7 +13,7 @@ class AdminPolicy < ApplicationPolicy
     user.try :organizer?
   end
 
-  def next_hackathon_stage?
+  def update_hackathon_stage?
     user.try :organizer?
   end
 end

@@ -24,6 +24,7 @@
 #                               admin_root GET    /admin(.:format)                                                                                  admin/admin#index
 #                           admin_settings GET    /admin/settings(.:format)                                                                         admin/admin#settings
 #                  admin_update_start_time PATCH  /admin/update_start_time(.:format)                                                                admin/admin#update_start_time
+#                       admin_update_stage PATCH  /admin/update_stage(.:format)                                                                     admin/admin#update_hackathon_stage
 #                         admin_next_stage POST   /admin/next_stage(.:format)                                                                       admin/admin#next_hackathon_stage
 #              admin_user_ethereum_address POST   /admin/users/:user_id/ethereum_address(.:format)                                                  admin/ethereum_addresses#create
 #      admin_user_destroy_ethereum_address DELETE /admin/users/:user_id/ethereum_address/:id(.:format)                                              admin/ethereum_addresses#destroy
@@ -113,6 +114,7 @@ Rails.application.routes.draw do
 
     get 'settings' => 'admin#settings'
     patch 'update_start_time' => 'admin#update_start_time'
+    patch 'update_stage' => 'admin#update_hackathon_stage'
     post 'next_stage' => 'admin#next_hackathon_stage'
 
     resources :users do

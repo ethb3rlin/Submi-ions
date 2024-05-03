@@ -12,4 +12,8 @@ class AdminPolicy < ApplicationPolicy
   def update_start_time?
     user.try :organizer?
   end
+
+  def next_hackathon_stage?
+    user.try :organizer?
+  end
 end

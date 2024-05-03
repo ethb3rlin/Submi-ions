@@ -30,13 +30,24 @@
 
   <div class="hero is-medium">
     <div class="hero-body">
-      <div class="block">
-        <p class="subtitle">Current stage:</p>
-        <p class="title"><%= Setting.hackathon_stage.capitalize %></p>
+      <div class="block columns">
+        <div class="column">
+          <p class="subtitle">Current stage:</p>
+          <p class="title"><%= Setting.hackathon_stage.capitalize %></p>
+        </div>
+        <div class="column">
+          <% if Setting.hackathon_stage != :finalizing %>
+            <%= button_to admin_next_stage_path, class: ['button', 'is-danger', 'is-outlined', 'is-flex-direction-column'], data: {turbo_confirm: :post, turbo_confirm: "Are you sure?"} do %>
+              <span>Advance to the</span>
+              <span class="is-size-3"><%= Setting.next_hackathon_stage.capitalize %></span>
+              <p>stage</p>
+            <% end %>
+          <% end %>
+        </div>
       </div>
 
       <div class="block">
-        <p class="subtitle">Judging begins at:</p>
+        <p class="subtitle">On Sunday, judging is scheduled to begin at:</p>
         <p class="title"><%= Setting.judging_start_time %></p>
       </div>
       <%= link_to admin_settings_path, class: ['button', 'is-danger', 'is-light'] do %>

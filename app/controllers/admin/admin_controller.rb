@@ -12,4 +12,10 @@ class Admin::AdminController < ApplicationController
     Setting.judging_start_time = params[:judging_start_time]
     redirect_to admin_settings_path
   end
+
+  def next_hackathon_stage
+    authorize :admin, :next_hackathon_stage?, policy_class: AdminPolicy
+    Setting.hackathon_stage = Setting.next_hackathon_stage
+    redirect_to admin_root_path
+  end
 end

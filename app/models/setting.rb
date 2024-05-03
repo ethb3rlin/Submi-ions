@@ -32,6 +32,13 @@ class Setting < ApplicationRecord
     self[:hackathon_stage] = stage
   end
 
+  def self.next_hackathon_stage
+    current_index = HACKATHON_STAGES.index(self.hackathon_stage)
+    next_index = [current_index + 1, HACKATHON_STAGES.length - 1].min
+    HACKATHON_STAGES[next_index]
+  end
+
+
   def self.judging_start_time
     self.load_with_default(:judging_start_time, "15:00").value
   end

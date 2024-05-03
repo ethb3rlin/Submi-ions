@@ -50,11 +50,13 @@ class Submission < ApplicationRecord
 
   def self.distribute_unassigned!
     Judgement.suppressing_turbo_broadcasts do
-      HUMAN_READABLE_TRACKS.keys.each do |track|
-        # Shuffle the judging teams, so on subsequent runs the team #1 won't get more submissions on average
-        team_ids = JudgingTeam.where(track: track).pluck(:id).shuffle.cycle
-        Submission.unassigned.where(track: track).in_batches.each_record do |submission|
-          Judgement.create!(judging_team_id: team_ids.next, submission: submission)
+      Judgement.transaction do
+        HUMAN_READABLE_TRACKS.keys.each do |track|
+          # Shuffle the judging teams, so on subsequent runs the team #1 won't get more submissions on average
+          teams = JudgingTeam.where(track: track).shuffle.cycle
+          Submission.unassigned.where(track: track).in_batches.each_record do |submission|
+            Judgement.create!(judging_team: teams.next, submission: submission)
+          end
         end
       end
     end

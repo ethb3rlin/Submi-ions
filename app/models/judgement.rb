@@ -19,6 +19,7 @@
 #  index_judgements_on_product_vote_id    (product_vote_id)
 #  index_judgements_on_submission_id      (submission_id)
 #  index_judgements_on_technical_vote_id  (technical_vote_id)
+#  index_judgements_on_time               (time)
 #
 # Foreign Keys
 #
@@ -73,18 +74,20 @@ class Judgement < ApplicationRecord
   end
 
   def self.schedule_missing!
-    JudgingTeam.all.pluck(:id).each do |team_id|
-      latest_time = Judgement.where(judging_team_id: team_id).where.not(time: nil).order(:time).last&.time
+    Judgement.transaction do
+      JudgingTeam.all.pluck(:id).each do |team_id|
+        latest_time = Judgement.where(judging_team_id: team_id).where.not(time: nil).order(:time).pluck(:time).last
 
-      scheduled_time = if latest_time.present?
-        (Time.parse(latest_time) + 9.minutes).strftime("%H:%M")
-      else
-        Setting.judging_start_time
-      end
+        scheduled_time = if latest_time.present?
+          (latest_time + 9.minutes).strftime("%H:%M")
+        else
+          Setting.judging_start_time
+        end
 
-      Judgement.where(judging_team_id: team_id, time: nil).order(:created_at).each do |judgement|
-        judgement.update!(time: scheduled_time) # TODO: skipping validations here would save a lot of DB heavy lifting
-        scheduled_time = (Time.parse(scheduled_time) + 9.minutes).strftime("%H:%M")
+        Judgement.where(judging_team_id: team_id, time: nil).order(:created_at).each do |judgement|
+          judgement.update!(time: scheduled_time) # TODO: skipping validations here would save a lot of DB heavy lifting
+          scheduled_time = (Time.parse(scheduled_time) + 9.minutes).strftime("%H:%M")
+        end
       end
     end
   end

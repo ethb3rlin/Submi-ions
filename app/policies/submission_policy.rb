@@ -4,11 +4,11 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present? && user.hacker?
+    user.present? && user.hacker? && Setting.hackathon_stage == :hacking
   end
 
   def new?
-    user.present? && user.hacker?
+    create?
   end
 
   def show?
@@ -16,7 +16,7 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && (record.hacking_team == user.hacking_team || user.organizer?)
+    user.present? && (record.hacking_team == user.hacking_team || user.organizer?) && Setting.hackathon_stage == :hacking
   end
 
   def destroy?

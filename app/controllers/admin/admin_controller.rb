@@ -24,4 +24,16 @@ class Admin::AdminController < ApplicationController
     Setting.hackathon_stage = params[:hackathon_stage]
     redirect_to admin_settings_path
   end
+
+  def reschedule
+    authorize :admin, :reschedule?, policy_class: AdminPolicy
+
+    if params[:force] == 'true'
+      Judgement.empty.delete_all
+    end
+
+    Submission.distribute_unassigned!
+    Judgement.schedule_missing!
+    redirect_to admin_submissions_path
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_03_100231) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_03_165434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_100231) do
     t.bigint "concept_vote_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.time "time"
     t.index ["concept_vote_id"], name: "index_judgements_on_concept_vote_id"
     t.index ["judging_team_id"], name: "index_judgements_on_judging_team_id"
     t.index ["product_vote_id"], name: "index_judgements_on_product_vote_id"

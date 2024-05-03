@@ -4,7 +4,12 @@
   <td class="url"><%= link_to submission.url, submission.url, target: '_blank' %></td>
   <td>
     <% if submission.judgement %>
-      <%= link_to submission.judgement.judging_team, admin_judging_teams_path(id: submission.judgement.judging_team.id) %>
+      <%= link_to admin_judging_teams_path(id: submission.judgement.judging_team.id) do %>
+        <span><%= submission.judgement.judging_team %></span>
+        <% if submission.judgement.time %>
+          <span class="is-italic">scheduled for <%= submission.judgement.time %></span>
+        <% end %>
+      <% end %>
     <% else %>
       <span class="is-italic">
         <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>

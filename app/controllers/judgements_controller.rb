@@ -37,6 +37,8 @@ class JudgementsController < ApplicationController
     @judgement = Judgement.find(params[:id])
     authorize @judgement
 
+    @judgement.initialize_votes!
+
     @judging_team = @judgement.judging_team
     @submission = @judgement.submission
   end

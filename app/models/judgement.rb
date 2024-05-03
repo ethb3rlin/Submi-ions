@@ -3,6 +3,7 @@
 # Table name: judgements
 #
 #  id                :bigint           not null, primary key
+#  time              :time
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  concept_vote_id   :bigint
@@ -43,6 +44,12 @@ class Judgement < ApplicationRecord
 
   after_create_commit :broadcast_new_judgement
 
+  scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }
+
+  def time
+    self[:time]&.strftime("%H:%M")
+  end
+
   def complete_for(user)
     technical_vote.update!(completed: true) if technical_vote.user == user
     product_vote.update!(completed: true) if product_vote.user == user
@@ -57,6 +64,32 @@ class Judgement < ApplicationRecord
 
   def completed?
     technical_vote.completed && product_vote.completed && concept_vote.completed
+  end
+
+  def initialize_votes!
+    transaction do
+      create_technical_vote!(user: judging_team.technical_judge, mark: 50) unless technical_vote.present?
+      create_product_vote!(user: judging_team.product_judge, mark: 50) unless product_vote.present?
+      create_concept_vote!(user: judging_team.concept_judge, mark: 50) unless concept_vote.present?
+      save!
+    end
+  end
+
+  def self.schedule_missing!
+    JudgingTeam.all.pluck(:id).each do |team_id|
+      latest_time = Judgement.where(judging_team_id: team_id).where.not(time: nil).order(:time).last&.time
+
+      scheduled_time = if latest_time.present?
+        (Time.parse(latest_time) + 9.minutes).strftime("%H:%M")
+      else
+        Setting.judging_start_time
+      end
+
+      Judgement.where(judging_team_id: team_id, time: nil).order(:created_at).each do |judgement|
+        judgement.update!(time: scheduled_time) # TODO: skipping validations here would save a lot of DB heavy lifting
+        scheduled_time = (Time.parse(scheduled_time) + 9.minutes).strftime("%H:%M")
+      end
+    end
   end
 
   private

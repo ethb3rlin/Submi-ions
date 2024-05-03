@@ -32,6 +32,7 @@ class Setting < ApplicationRecord
 
     if stage == :judging
       Submission.distribute_unassigned!
+      Judgement.schedule_missing!
     end
 
     self[:hackathon_stage] = stage

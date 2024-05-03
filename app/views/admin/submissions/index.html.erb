@@ -33,6 +33,30 @@
       <%= render collection: @submissions, partial: 'submissions/tr', as: :submission %>
     </tbody>
   </table>
+
+<div class="block">
+  <% if @unassigned_count > 0 %>
+    <%= link_to admin_reschedule_path, class: 'button is-warning is-light', data: { turbo_method: :post } do %>
+      <%= lucide_icon 'calendar', size: 16 %>
+      <span>Schedule <%= pluralize @unassigned_count, 'remaining submission' %></span>
+    <% end %>
+  <% end %>
+
+  <div class="collapsible-container">
+    <input type="checkbox" id="collapsible-toggle">
+    <label for="collapsible-toggle" class="collapsible-label">
+      <span class="is-size-5 has-text-weight-semibold">Danger zone</span>
+    </label>
+    <div class="collapsible">
+      <%= link_to admin_reschedule_path(force: true), class: 'button is-danger is-light', data: { turbo_method: :post, turbo_confirm: "Are you sure? This might change sessions order, time or team assignment." } do %>
+        <%= lucide_icon 'calendar', size: 16 %>
+        <span>Recalculate all schedules</span>
+      <% end %>
+    </div>
+  </div>
 </div>
+
+</div>
+
 
 <%= turbo_stream_from 'submissions' %>

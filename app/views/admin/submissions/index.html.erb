@@ -1,7 +1,7 @@
 <div class="content admin-submissions-ui" data-controller="filterable-submissions">
   <div class="columns admin-submissions-header">
     <div class="column is-7">
-      <div class="tabs">
+      <div class="tabs is-toggle">
         <ul>
           <li class="tab <%= 'is-active' unless params[:track].present? %>"><%= link_to 'All', admin_submissions_path %></li>
           <% Submission::HUMAN_READABLE_TRACKS.each do |key, track| %>

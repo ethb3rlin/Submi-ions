@@ -44,20 +44,21 @@ class JudgingTeam < ApplicationRecord
   validates :track, inclusion: { in: tracks.keys }
 
   def to_csv
-    attributes = %w{team_name project repository technical_judge product_judge concept_judge}
+    attributes = %w{project scheduled_at team_name repository technical_judge product_judge concept_judge}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      csv << [nil, nil, nil, technical_judge.name, product_judge.name, concept_judge.name]
+      csv << [nil, nil, nil, nil, technical_judge.name, product_judge.name, concept_judge.name]
 
       judgements.order(:created_at).find_each do |judgement|
         csv << [
-          nil, # TODO judgement.submission.team_name,
           judgement.submission.title,
+          judgement.time,
+          judgement.submission.hacking_team.name,
           judgement.submission.url,
-          judgement.technical_vote.completed ? judgement.technical_vote.padded_mark : nil,
-          judgement.product_vote.completed ? judgement.product_vote.padded_mark : nil,
-          judgement.concept_vote.completed ? judgement.concept_vote.padded_mark : nil
+          judgement.technical_vote&.completed ? judgement.technical_vote.padded_mark : nil,
+          judgement.product_vote&.completed ? judgement.product_vote.padded_mark : nil,
+          judgement.concept_vote&.completed ? judgement.concept_vote.padded_mark : nil
         ]
       end
     end

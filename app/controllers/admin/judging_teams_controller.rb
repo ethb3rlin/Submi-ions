@@ -52,7 +52,7 @@ class Admin::JudgingTeamsController < ApplicationController
     authorize @judging_team
 
     @judging_team.update(judging_team_params)
-    redirect_to admin_judging_teams_path, notice: "#{@judging_team} updated"
+    redirect_to admin_judging_teams_path(id: @judging_team.id), notice: "#{@judging_team} updated"
   end
 
   private

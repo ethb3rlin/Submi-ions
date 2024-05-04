@@ -1,6 +1,16 @@
 <div class="content admin-submissions-ui" data-controller="filterable-submissions">
-  <div class="columns">
-    <div class="column is-5 is-offset-7">
+  <div class="columns admin-submissions-header">
+    <div class="column is-7">
+      <div class="tabs">
+        <ul>
+          <li class="tab <%= 'is-active' unless params[:track].present? %>"><%= link_to 'All', admin_submissions_path %></li>
+          <% Submission::HUMAN_READABLE_TRACKS.each do |key, track| %>
+            <li class="tab <%= 'is-active' if params[:track]==key %>"><%= link_to track, admin_submissions_path(track: key) %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="column is-4 is-offset-1">
       <div class="control has-icons-left">
         <input class="filter-input input search" type="text" placeholder="Filter" data-action="filterable-submissions#filter"/>
         <span class="icon is-left">

@@ -14,3 +14,7 @@
 .submission-track {
   margin-left: 1em;
 }
+
+.admin-submissions-header {
+  align-items: end;
+}

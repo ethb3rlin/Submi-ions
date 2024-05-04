@@ -122,7 +122,7 @@ class HackingTeamsController < ApplicationController
     authorize @team
 
     user = User.find(params[:id])
-    application = JoinApplication.find_by(user: user, hacking_team: @team)
+    application = JoinApplication.find_or_create_by(user: user, hacking_team: @team)
     if user.update(hacking_team: nil) && application.update(state: :declined, decided_by: current_user, decided_at: Time.current)
       redirect_to @team, notice: "#{user.decorate.readable_name} has been kicked from the team."
     else

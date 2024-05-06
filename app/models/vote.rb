@@ -22,9 +22,9 @@ class Vote < ApplicationRecord
 
   belongs_to :user
 
-  has_one :technical_vote_judgement, class_name: "Judgement", foreign_key: "technical_vote_id", dependent: :destroy, inverse_of: :technical_vote
-  has_one :product_vote_judgement, class_name: "Judgement", foreign_key: "product_vote_id", dependent: :destroy, inverse_of: :product_vote
-  has_one :concept_vote_judgement, class_name: "Judgement", foreign_key: "concept_vote_id", dependent: :destroy, inverse_of: :concept_vote
+  has_one :technical_vote_judgement, class_name: "Judgement", foreign_key: "technical_vote_id", dependent: :destroy, inverse_of: :technical_vote, touch: true
+  has_one :product_vote_judgement, class_name: "Judgement", foreign_key: "product_vote_id", dependent: :destroy, inverse_of: :product_vote, touch: true
+  has_one :concept_vote_judgement, class_name: "Judgement", foreign_key: "concept_vote_id", dependent: :destroy, inverse_of: :concept_vote, touch: true
 
   validates :mark, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 

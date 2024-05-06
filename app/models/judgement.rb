@@ -40,7 +40,7 @@ class Judgement < ApplicationRecord
   belongs_to :product_vote, class_name: "Vote", dependent: :destroy, optional: true
   belongs_to :concept_vote, class_name: "Vote", dependent: :destroy, optional: true
 
-  after_create_commit :broadcast_new_judgement
+  after_save_commit :broadcast_new_judgement
 
   scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }
 
@@ -69,7 +69,7 @@ class Judgement < ApplicationRecord
       create_technical_vote!(user: judging_team.technical_judge, mark: 50) unless technical_vote.present?
       create_product_vote!(user: judging_team.product_judge, mark: 50) unless product_vote.present?
       create_concept_vote!(user: judging_team.concept_judge, mark: 50) unless concept_vote.present?
-      save!
+      save! if self.changed?
     end
   end
 
@@ -94,8 +94,8 @@ class Judgement < ApplicationRecord
 
   private
   def broadcast_new_judgement
-    broadcast_append_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(judging_team, :judgements)
-    broadcast_append_to judging_team, :judgements_redirects, html: "<script>if (window.location.pathname.match('#{ judgements_path }') && CURRENT_USER_ROLE==='judge') { window.location = '#{judgement_path(self)}'; }</script>".html_safe
+    broadcast_replace_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(self)
+    broadcast_refresh_to judging_team, :judgements_redirects
 
     broadcast_replace_to 'submissions', target: dom_id(submission), partial: 'submissions/tr', locals: { submission: submission }
   end

@@ -6,7 +6,10 @@
     <% if submission.judgement %>
       <%= link_to admin_judging_teams_path(id: submission.judgement.judging_team.id) do %>
         <span><%= submission.judgement.judging_team %></span>
-        <% if submission.judgement.time %>
+        <% if submission.judgement.completed? %>
+          <%= lucide_icon 'circle-check-big', class: 'icon is-small has-text-success' %>
+          <span class="is-italic">judged at <%= submission.judgement.updated_at %></span>
+        <% elsif submission.judgement.time %>
           <span class="is-italic">scheduled for <%= submission.judgement.time %></span>
         <% end %>
       <% end %>

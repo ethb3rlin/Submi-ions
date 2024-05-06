@@ -2,6 +2,8 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
+import LocalTime from "local-time"
+LocalTime.start();
 
 // Borrowed from Bulma documentation, to make the burger menu work
 document.addEventListener('DOMContentLoaded', () => {

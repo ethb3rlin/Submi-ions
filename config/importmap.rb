@@ -21,3 +21,4 @@ pin "util", to: "https://ga.jspm.io/npm:@jspm/core@2.0.1/nodelibs/browser/util.j
 pin "util-deprecate", to: "https://ga.jspm.io/npm:util-deprecate@1.0.2/browser.js"
 pin "list.js", to: "https://ga.jspm.io/npm:list.js@2.3.1/src/index.js"
 pin "string-natural-compare", to: "https://ga.jspm.io/npm:string-natural-compare@2.0.3/natural-compare.js"
+pin "local-time" # @3.0.2

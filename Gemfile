@@ -87,3 +87,4 @@ end
 gem "lucide-rails", "~> 0.4.0"
 
 gem "commonmarker"
+gem "local_time"

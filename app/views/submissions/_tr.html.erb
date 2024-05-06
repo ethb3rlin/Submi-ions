@@ -8,7 +8,7 @@
         <span><%= submission.judgement.judging_team %></span>
         <% if submission.judgement.completed? %>
           <%= lucide_icon 'circle-check-big', class: 'icon is-small has-text-success' %>
-          <span class="is-italic">judged at <%= submission.judgement.updated_at %></span>
+          <span class="is-italic">judged at <%= local_time(submission.judgement.updated_at, "%H:%M") %></span>
         <% elsif submission.judgement.time %>
           <span class="is-italic">scheduled for <%= submission.judgement.time %></span>
         <% end %>

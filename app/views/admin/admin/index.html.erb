@@ -37,7 +37,7 @@
         </div>
         <div class="column">
           <% if Setting.hackathon_stage != :finalizing %>
-            <%= button_to admin_next_stage_path, class: ['button', 'is-danger', 'is-outlined', 'is-flex-direction-column'], data: {turbo_confirm: :post, turbo_confirm: "Are you sure?"} do %>
+            <%= button_to admin_update_stage_path(hackathon_stage: Setting.next_hackathon_stage), method: :patch, class: ['button', 'is-danger', 'is-outlined', 'is-flex-direction-column'], data: {turbo_method: :patch, turbo_confirm: "Are you sure?"} do %>
               <span>Advance to the</span>
               <span class="is-size-3"><%= Setting.next_hackathon_stage.capitalize %></span>
               <p>stage</p>

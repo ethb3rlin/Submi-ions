@@ -61,7 +61,7 @@ class Judgement < ApplicationRecord
   end
 
   def completed?
-    technical_vote.completed && product_vote.completed && concept_vote.completed
+    technical_vote&.completed && product_vote&.completed && concept_vote&.completed
   end
 
   def initialize_votes!

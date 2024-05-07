@@ -32,7 +32,13 @@
         <span class="name"><%= user.name %></span>
         <span class="email"><%= user.email %></span>
         <span class="ethereum-addresses"><%= user.rendered_ethereum_addresses %></span>
-        </span>
+        <% if user.hacker? %>
+          <span class="team-names tags">
+            <% user.hacking_teams.each do |team| %>
+              <span class="team-name tag is-success is-light is-size-7"><%= team.name %></span>
+            <% end %>
+          </span>
+        <% end %>
       <% end %>
     <% end %>
   </div>

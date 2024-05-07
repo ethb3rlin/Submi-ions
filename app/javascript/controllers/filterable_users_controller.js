@@ -6,7 +6,7 @@ import List from "list.js"
 export default class extends Controller {
   connect() {
     this.list = new List(this.element, {
-      valueNames: [ 'name', 'email', 'ethereum-addresses' ]
+      valueNames: [ 'name', 'email', 'ethereum-addresses', 'team-names' ]
     })
   }
 

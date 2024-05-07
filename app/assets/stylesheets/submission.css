@@ -2,6 +2,21 @@
   display: none;
 }
 
+.team-selector ul {
+  margin: 0;
+}
+
+.team-selector input[type="radio"] {
+  display: none;
+}
+
+.team-selector input[type="radio"]:checked + label>a {
+  background-color: var(--bulma-tabs-toggle-link-active-background-color);
+  border-color: var(--bulma-tabs-toggle-link-active-border-color);
+  color: var(--bulma-tabs-toggle-link-active-color);
+  z-index: 1
+}
+
 #submissions .list .card-content {
   max-height: 250px;
   overflow-y: auto;

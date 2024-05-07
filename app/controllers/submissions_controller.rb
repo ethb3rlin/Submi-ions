@@ -31,12 +31,14 @@ class SubmissionsController < ApplicationController
         if HackingTeam.exists?(name: name)
           name = "#{name} \##{SecureRandom.hex(4)}"
         end
-        current_user.create_hacking_team!(name: name)
+        current_user.hacking_teams.create!(name: name)
       end
 
-      # FIXME there should be a form field for selecting a team
-      @submission = current_user.hacking_teams.last.submissions.new(submission_params)
+      team = HackingTeam.find_by(id: params[:submission][:hacking_team]) || current_user.hacking_teams.last
+
+      @submission = team.submissions.new(submission_params)
       authorize @submission
+
 
       if @submission.save
         redirect_to submission_url(@submission), notice: "Submission #{@submission.title} was successfully created."

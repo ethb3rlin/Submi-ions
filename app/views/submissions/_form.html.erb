@@ -11,6 +11,30 @@
     </div>
   <% end %>
 
+  <% if form.object.new_record? %>
+    <% if current_user.hacking_teams.count > 1 %>
+      <%= form.label :team, class: "label" %>
+      <div class="control block">
+        <div class="tabs is-toggle team-selector">
+          <ul>
+            <% current_user.hacking_teams.each_with_index do |team, i| %>
+              <li>
+                <%= form.radio_button :hacking_team, team.id, checked: i==0 %>
+                <%= form.label dom_id(team) do %>
+                  <a><%= team.name %></a>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% elsif current_user.hacking_teams.any? %>
+      <h4 class="subtitle">Will be submitted by <%= link_to current_user.hacking_teams.first.name, current_user.hacking_teams.first %></h4>
+    <% end %>
+  <% else %>
+    <h4 class="subtitle">Submitted by <%= link_to submission.hacking_team.name, submission.hacking_team %></h4>
+  <% end %>
+
   <div class="field">
     <%= form.label :title, class: "label" %>
     <div class="control"><%= form.text_field :title, class: "input", placeholder: "Project's title" %></div>

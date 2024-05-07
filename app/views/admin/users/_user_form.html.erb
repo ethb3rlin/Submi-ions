@@ -28,8 +28,16 @@
     </div>
   </div>
 
-
-  <% if @user.judging_team %>
+  <% if @user.hacker? && @user.hacking_teams.any? %>
+    <div class="content">
+      <div class="label">Hacking teams:</div>
+      <div class="tags">
+        <% @user.hacking_teams.each do |team| %>
+          <%= link_to team.name, hacking_team_path(id: team.id), class: "tag is-success is-light" %>
+        <% end %>
+      </div>
+    </div>
+  <% elsif @user.judge? && @user.judging_team %>
     <div class="content">
       <div class="label">Judging team</div>
       <%= link_to @user.judging_team, admin_judging_teams_path(id: @user.judging_team.id) %></li>

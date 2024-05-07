@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :prepare_for_login, if: -> { request.get? && current_user.nil? }
 
+  rescue_from Exception, :with => :handle_exception unless Rails.env.development?
+
   include Pundit::Authorization
   after_action :verify_authorized
 
@@ -22,5 +24,14 @@ class ApplicationController < ActionController::Base
     def current_user
       @_current_user ||= User.joins(:ethereum_addresses).where(ethereum_addresses: { address: session[:address] }).first if session[:address]
       @_current_user.decorate if @_current_user
+    end
+
+    def handle_exception(exception)
+      logger.error "Exception: #{exception.class.name} - #{exception.message}"
+
+      flash.keep
+      flash[:error] = "An error occurred: #{exception.message}"
+
+      redirect_to root_path
     end
 end

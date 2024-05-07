@@ -36,7 +36,7 @@ class HackingTeamsController < ApplicationController
     @current_user_application = JoinApplication.find_by(user: current_user, hacking_team: @team)
 
     @already_applied = @current_user_application&.pending?
-    @already_rejected = @current_user_application&.declined?
+    @already_rejected = @current_user_application&.declined? && (@current_user_application.decided_by != current_user)
   end
 
   def edit
@@ -63,7 +63,7 @@ class HackingTeamsController < ApplicationController
 
     application = JoinApplication.find_or_initialize_by(user: current_user, hacking_team: @team)
 
-    if application.declined?
+    if application.declined? && (application.decided_by != current_user)
       redirect_to @team, alert: "You have already been declined from this team, and can't re-apply. Please contact someone of the team in-person if you want this decision to be revised."
     elsif application.update(state: :pending, decided_by_id: nil, decided_at: nil)
       redirect_to @team, notice: "Your application has been submitted."

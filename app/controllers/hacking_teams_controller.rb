@@ -1,13 +1,11 @@
 class HackingTeamsController < ApplicationController
   def index
-    # Querying all hacking teams, but putting current user's team first
+    # Querying all hacking teams, but putting the ones for which JoinApplication with status "approved" exists first
     teams_table = HackingTeam.arel_table
-    order_clause = Arel::Nodes::Case.new(teams_table[:id])
-      .when(current_user&.hacking_team_id).then(0)
-      .else(1)
-      .asc
+    order_clause = Arel.sql("CASE WHEN EXISTS (SELECT 1 FROM join_applications WHERE hacking_team_id = hacking_teams.id AND user_id = ? AND state = 'approved') THEN 0 ELSE 1 END", current_user.id)
 
     @teams = HackingTeam.order(order_clause).order(created_at: :desc).all
+    @approved_applications = current_user.join_applications.approved
 
     authorize @teams
   end
@@ -21,7 +19,7 @@ class HackingTeamsController < ApplicationController
     @team = HackingTeam.new(team_params)
     authorize @team
     if @team.save
-      current_user.update(hacking_team: @team)
+      current_user.hacking_teams << @team unless current_user.organizer?
       redirect_to hacking_teams_path
     else
       render :new
@@ -61,7 +59,7 @@ class HackingTeamsController < ApplicationController
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team
 
-    return redirect_to @team, notice: "You are already a member of a team." if current_user.hacking_team==@team
+    return redirect_to @team, notice: "You are already a member of a team." if current_user.hacking_teams.include?(@team)
 
     application = JoinApplication.find_or_initialize_by(user: current_user, hacking_team: @team)
 
@@ -80,7 +78,7 @@ class HackingTeamsController < ApplicationController
 
 
     application = JoinApplication.find(params[:id])
-    return redirect_to @team, alert: "The user has already been accepted to another team." if application.user.hacking_team.present? && application.user.hacking_team != @team
+    return redirect_to @team, alert: "The user can't be added to any more teams." unless (application.user.hacking_teams.count < 2 || current_user.organizer?)
 
     application.accept!(current_user)
     redirect_to @team, notice: "Application from #{application.user.decorate.readable_name} has been accepted."
@@ -113,7 +111,7 @@ class HackingTeamsController < ApplicationController
     @team = HackingTeam.find(params[:hacking_team_id])
     authorize @team
 
-    current_user.update(hacking_team: nil)
+    JoinApplication.where(user: current_user, hacking_team: @team).update(state: :declined, decided_by: current_user, decided_at: Time.current) # TODO "left" should be a separate state
     redirect_to hacking_teams_path, notice: "You have successfully left the #{@team.name} team."
   end
 
@@ -123,10 +121,10 @@ class HackingTeamsController < ApplicationController
 
     user = User.find(params[:id])
     application = JoinApplication.find_or_create_by(user: user, hacking_team: @team)
-    if user.update(hacking_team: nil) && application.update(state: :declined, decided_by: current_user, decided_at: Time.current)
+    if application.update(state: :declined, decided_by: current_user, decided_at: Time.current)
       redirect_to @team, notice: "#{user.decorate.readable_name} has been kicked from the team."
     else
-      redirect_to @team, alert: "Failed to kick the user: #{user.errors.full_messages.to_sentence} #{application.errors.full_messages.to_sentence}"
+      redirect_to @team, alert: "Failed to kick the user: #{application.errors.full_messages.to_sentence}"
     end
   end
 

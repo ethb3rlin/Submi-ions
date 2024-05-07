@@ -6,7 +6,7 @@
     <% end %>
   <% end %>
 
-  <% if current_user&.hacking_team == @team && policy(@team).leave? %>
+  <% if current_user&.hacking_teams.include?(@team) && policy(@team).leave? %>
     <%= button_to hacking_team_leave_path(@team), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "button is-danger is-pulled-right" do %>
       <%= lucide_icon "door-open", class: 'icon is-small' %>
       <span>Leave this team</span>
@@ -33,7 +33,7 @@
 
   <% end %>
 
-  <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_team == @team %>"><%= @team.name %></p>
+  <p class="is-size-3 <%= 'has-text-success' if current_user&.hacking_teams.include? @team %>"><%= @team.name %></p>
   <p class="agenda"><%= @team.decorate.formatted_agenda %></p>
 
   <% if policy(@team).list_members? && @team.hackers.any? %>
@@ -72,14 +72,14 @@
             <span class="tag">
               <%= application.user.decorate.readable_name %>
             </span>
-            <% if application.user.hacking_team.present? %>
-              <span class="tag is-light" data-tooltip="User is already a member of the <%= application.user.hacking_team.name %> team">
-                <%= lucide_icon "check", class: 'icon is-small dropdown-trigger' %>
-              </span>
-            <% else %>
+            <% if current_user.organizer? || application.user.hacking_teams.count < 2 %>
               <%= link_to hacking_team_accept_path(@team, application), data: {turbo_method: :post}, class: "tag is-success is-light" do %>
                 <%= lucide_icon "check", class: 'icon is-small' %>
               <% end %>
+            <% else %>
+              <span class="tag is-light" data-tooltip="User is already a member of the <%= application.user.hacking_teams.map(&:name).join(' and ') %> teams">
+                <%= lucide_icon "check", class: 'icon is-small dropdown-trigger' %>
+              </span>
             <% end %>
             <%= link_to hacking_team_reject_path(@team, application), data: {turbo_method: :delete}, class: "tag is-danger is-light" do %>
               <%= lucide_icon "x", class: 'icon is-small' %>

@@ -36,7 +36,6 @@ class JoinApplication < ApplicationRecord
   def accept!(decided_by)
     self.transaction do
       self.update(decided_by_id: decided_by.id, state: :approved, decided_at: Time.current)
-      self.user.update!(hacking_team: self.hacking_team) # TODO: Check that we're not overwriting a team
     end
   end
 

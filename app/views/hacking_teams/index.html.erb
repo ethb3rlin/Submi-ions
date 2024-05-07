@@ -19,7 +19,7 @@
     <div class="teams-list list">
       <% @teams.each do |team| %>
         <div class="team block" id="<%= dom_id team %>">
-          <%= link_to team.name, team, class: class_names(name:true, "is-size-3" => true, "has-text-success" => current_user&.hacking_team == team) %>
+          <%= link_to team.name, team, class: class_names(name:true, "is-size-3" => true, "has-text-success" => @approved_applications.map(&:hacking_team_id).include?(team.id)) %>
           <div class="agenda">
             <%= team.decorate.formatted_agenda %>
           </div>

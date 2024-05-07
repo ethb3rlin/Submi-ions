@@ -26,16 +26,16 @@ class SubmissionsController < ApplicationController
   # POST /submissions or /submissions.json
   def create
     Submission.transaction do
-      if current_user.hacking_team.blank?
+      if current_user.hacking_teams.blank?
         name = current_user.name.present? ? "#{current_user.name}'s Team" : "Team \##{SecureRandom.hex(4)}"
         if HackingTeam.exists?(name: name)
           name = "#{name} \##{SecureRandom.hex(4)}"
         end
         current_user.create_hacking_team!(name: name)
-        current_user.save!
       end
 
-      @submission = current_user.hacking_team.submissions.new(submission_params)
+      # FIXME there should be a form field for selecting a team
+      @submission = current_user.hacking_teams.last.submissions.new(submission_params)
       authorize @submission
 
       if @submission.save

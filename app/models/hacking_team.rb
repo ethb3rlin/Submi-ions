@@ -9,10 +9,11 @@
 #  updated_at :datetime         not null
 #
 class HackingTeam < ApplicationRecord
-  has_many :hackers, inverse_of: :hacking_team, class_name: 'User'
   has_many :submissions
 
   has_many :join_applications
+  has_many :accepted_join_applications, -> { where(state: :approved) }, class_name: 'JoinApplication'
+  has_many :hackers, through: :accepted_join_applications, source: :user
 
   validates :name, presence: true, uniqueness: true
 end

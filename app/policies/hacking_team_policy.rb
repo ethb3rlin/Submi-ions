@@ -4,7 +4,7 @@ class HackingTeamPolicy < ApplicationPolicy
   end
 
   def new?
-    user.present? && !user.hacking_team.present?
+    user.present? && (user.organizer? || user.hacking_teams.count < 2)
   end
 
   def create?
@@ -16,7 +16,7 @@ class HackingTeamPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.present? && (user.organizer? || user.hacking_team == record)
+    user.present? && (user.organizer? || user.hacking_teams.include?(record))
   end
 
   def update?
@@ -24,19 +24,19 @@ class HackingTeamPolicy < ApplicationPolicy
   end
 
   def list_members?
-    user.present? && (user.organizer? || user.hacking_team == record)
+    user.present? && (user.organizer? || user.hacking_teams.include?(record))
   end
 
   def leave?
-    user.present? && user.hacking_team == record
+    user.present? && user.hacking_teams.include?(record)
   end
 
   def apply?
-    user.present? && user.hacker? && (!user.hacking_team.present? || user.hacking_team == record)
+    user.present? && user.hacker? && (!user.hacking_teams.include?(record)) && user.hacking_teams.count < 2
   end
 
   def accept?
-    user.present? && (user.organizer? || user.hacking_team == record)
+    user.present? && (user.organizer? || user.hacking_teams.include?(record))
   end
 
   def reject?

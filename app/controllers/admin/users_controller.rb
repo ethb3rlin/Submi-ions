@@ -37,8 +37,11 @@ class Admin::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     authorize @user
-    @user.update(user_params)
-    redirect_to edit_admin_user_path(@user), notice: "User updated"
+    if @user.update(user_params)
+      redirect_to edit_admin_user_path(@user), notice: "User updated"
+    else
+      redirect_to edit_admin_user_path(@user), alert: "Failed to update user: " + @user.errors.full_messages.join(", ")
+    end
   end
 
   def destroy

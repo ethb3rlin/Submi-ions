@@ -4,7 +4,7 @@ class Admin::UsersController < ApplicationController
       User.where(kind: params[:role]).order(:id).all
     else
       User.order(:id).all
-    end
+    end.includes(:ethereum_addresses, :hacking_teams)
     authorize @users
     @users = @users.decorate
   end

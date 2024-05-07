@@ -5,7 +5,7 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions or /submissions.json
   def index
-    @submissions = Submission.all
+    @submissions = Submission.includes(:hacking_team).all
     authorize @submissions
   end
 

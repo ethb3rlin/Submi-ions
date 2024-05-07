@@ -6,6 +6,7 @@ class Admin::JudgingTeamsController < ApplicationController
     @current_team = JudgingTeam.find(params[:id]) rescue @judging_teams.first
 
     @judgements = @current_team&.judgements&.order(:created_at) # @current_team can be nil if there are no teams yet
+    @judgements = @judgements.includes(:submission, {technical_vote: :user, product_vote: :user, concept_vote: :user}) if @judgements
   end
 
   def new

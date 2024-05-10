@@ -70,7 +70,7 @@
 #                                          PUT    /teams/:id(.:format)                                                                              hacking_teams#update
 #                                          DELETE /teams/:id(.:format)                                                                              hacking_teams#destroy
 #                       rails_health_check GET    /up(.:format)                                                                                     rails/health#show
-#                                     root GET    /                                                                                                 submissions#index
+#                                     root GET    /                                                                                                 users#home
 #         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
 #         turbo_resume_historical_location GET    /resume_historical_location(.:format)                                                             turbo/native/navigation#resume
 #        turbo_refresh_historical_location GET    /refresh_historical_location(.:format)                                                            turbo/native/navigation#refresh
@@ -152,5 +152,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root 'submissions#index'
+  root 'users#home'
 end

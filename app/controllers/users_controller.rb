@@ -1,4 +1,16 @@
 class UsersController < ApplicationController
+  skip_after_action :verify_authorized, only: [:home]
+
+  def home
+    return redirect_to submissions_path unless current_user
+    return redirect_to admin_root_path if current_user.organizer?
+    return redirect_to judgements_path if current_user.judge?
+
+    @teams = current_user.hacking_teams
+    @current_team = HackingTeam.find_by(id: params[:team_id]) || @teams.first
+    @submissions = @current_team.submissions.order(created_at: :desc) rescue []
+  end
+
   def edit
     @user = User.find(params[:id])
     authorize @user

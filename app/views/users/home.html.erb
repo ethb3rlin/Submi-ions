@@ -1,0 +1,25 @@
+<div class="content">
+  <% if @teams.any? %>
+    <div class="tabs is-toggle">
+      <ul>
+        <% @teams.each do |team| %>
+          <li class="<%= class_names('is-active' => team==@current_team)  %>"><%= link_to team.name, root_path(team_id: team)%></li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <h3 class="subtitle">You are not a part of any team</h3>
+    <p>Do you want to
+      <%= link_to 'browse existing ones', hacking_teams_path %>, or
+      <%= link_to 'create a new one', new_hacking_team_path %>?
+    </p>
+  <% end %>
+
+  <% if @submissions.any? %>
+    <h3 class="subtitle">Your submissions</h3>
+    <%= render @submissions %>
+  <% else %>
+    <h3 class="subtitle">You have not submitted any projects yet</h3>
+    <%= link_to 'Submit your project', new_submission_path, class: 'button is-success is-large' %>
+  <% end %>
+</div>

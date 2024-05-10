@@ -1,19 +1,56 @@
 <div class="content">
   <div class="columns">
-    <div class="column">
+    <div class="column is-4">
       <%= form_tag admin_update_start_time_path, method: :patch do %>
         <label class="label" for="judging_start_time">Hackathon judging begins at:</label>
         <div class="field has-addons">
           <div class="control">
-            <%= text_field_tag :judging_start_time, Setting.judging_start_time, class: 'input', type: :time %>
+            <%= time_field_tag :judging_start_time, Setting.judging_start_time, class: 'input' %>
           </div>
           <div class="control">
             <%= submit_tag 'Update', class: 'button is-primary' %>
           </div>
         </div>
       <% end %>
+
+      <div class="panel judging-breaks mt-4">
+        <p class="panel-heading">Breaks for judges</p>
+        <% JudgingBreak.order(:begins).each do |break_time| %>
+          <div class="panel-block is-block">
+            <%= form_with model: break_time, url: admin_judging_break_path(break_time), method: :patch do |f| %>
+              <div class="field has-addons">
+                <div class="control">
+                  <%= f.time_field :begins, class: 'input' %>
+                </div>
+                <div class="control">
+                  <%= f.time_field :ends, class: 'input' %>
+                </div>
+                <div class="control">
+                  <%= f.submit 'Update', class: ['button', 'is-primary'] %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="panel-block">
+          <%= form_with model: JudgingBreak.new, url: admin_judging_breaks_path, class: "fullwidth" do |form| %>
+            <div class="field has-addons">
+              <div class="control">
+                <%= form.time_field :begins, class: 'input' %>
+              </div>
+              <div class="control">
+                <%= form.time_field :ends, class: 'input' %>
+              </div>
+              <div class="control">
+                <%= form.submit 'Add', class: ['button', 'is-primary'] %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-    <div class="column">
+    <div class="column is-offset-2">
       <%= form_tag admin_update_stage_path, method: :patch do %>
         <label class="label" for="hackathon_stage">Current stage:</label>
         <div class="field has-addons">

@@ -36,6 +36,10 @@
 #                                          PATCH  /admin/users/:id(.:format)                                                                        admin/users#update
 #                                          PUT    /admin/users/:id(.:format)                                                                        admin/users#update
 #                                          DELETE /admin/users/:id(.:format)                                                                        admin/users#destroy
+#                     admin_judging_breaks POST   /admin/judging_breaks(.:format)                                                                   admin/judging_breaks#create
+#                      admin_judging_break PATCH  /admin/judging_breaks/:id(.:format)                                                               admin/judging_breaks#update
+#                                          PUT    /admin/judging_breaks/:id(.:format)                                                               admin/judging_breaks#update
+#                                          DELETE /admin/judging_breaks/:id(.:format)                                                               admin/judging_breaks#destroy
 #                        admin_submissions GET    /admin/submissions(.:format)                                                                      admin/submissions#index
 #                      admin_judging_teams GET    /admin/judging_teams(.:format)                                                                    admin/judging_teams#index
 #                                          POST   /admin/judging_teams(.:format)                                                                    admin/judging_teams#create
@@ -122,6 +126,8 @@ Rails.application.routes.draw do
       post 'ethereum_address' => 'ethereum_addresses#create'
       delete 'ethereum_address/:id' => 'ethereum_addresses#destroy', as: :destroy_ethereum_address
     end
+
+    resources :judging_breaks, only: %i[create update destroy]
 
     resources :submissions, only: :index
     resources :judging_teams

@@ -19,6 +19,18 @@ class Admin::AdminController < ApplicationController
     redirect_to admin_root_path
   end
 
+  def create_judging_break
+    authorize :admin, :manage_judging_breaks?, policy_class: AdminPolicy
+  end
+
+  def update_judging_break
+    authorize :admin, :manage_judging_breaks?, policy_class: AdminPolicy
+  end
+
+  def destroy_judging_break
+    authorize :admin, :manage_judging_breaks?, policy_class: AdminPolicy
+  end
+
   def reschedule
     authorize :admin, :reschedule?, policy_class: AdminPolicy
 

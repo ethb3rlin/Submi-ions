@@ -44,7 +44,7 @@ class Judgement < ApplicationRecord
 
   scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }
 
-  def time
+  def just_time
     self[:time]&.strftime("%H:%M")
   end
 
@@ -76,17 +76,31 @@ class Judgement < ApplicationRecord
   def self.schedule_missing!
     Judgement.transaction do
       JudgingTeam.all.pluck(:id).each do |team_id|
-        latest_time = Judgement.where(judging_team_id: team_id).where.not(time: nil).order(:time).pluck(:time).last
+        latest_time = Judgement.where(judging_team_id: team_id).where.not(time: nil).order(time: :desc).limit(1).pluck(:time).last
 
         scheduled_time = if latest_time.present?
-          (latest_time + 9.minutes).strftime("%H:%M")
+          latest_time + 9.minutes
         else
-          Setting.judging_start_time
+          # FIXME: This parsing uses local date and timezone, while "natural" deserializing from Postgres
+          # uses UTC and 01 Jan 2000 as the date. This is a workaround for that.
+          Time.parse(Setting.judging_start_time).change(year: 2000, month: 1, day: 1, offset: Time.zone.formatted_offset)
         end
 
+        breaks = JudgingBreak.order(:begins).pluck(:begins, :ends)
+
         Judgement.where(judging_team_id: team_id, time: nil).order(:created_at).each do |judgement|
-          judgement.update!(time: scheduled_time) # TODO: skipping validations here would save a lot of DB heavy lifting
-          scheduled_time = (Time.parse(scheduled_time) + 9.minutes).strftime("%H:%M")
+          # If our scheduled time is within one of the breaks, we need to schedule it at the end of the break
+          breaks.each do |begin_time, end_time|
+            logger.debug "Scheduled time: #{scheduled_time}, begin_time: #{begin_time}, end_time: #{end_time}"
+
+            if scheduled_time.between?(begin_time, end_time)
+              scheduled_time = end_time
+              break
+            end
+          end
+
+          judgement.update!(time: scheduled_time.strftime("%H:%M"))
+          scheduled_time = scheduled_time + 9.minutes
         end
       end
     end

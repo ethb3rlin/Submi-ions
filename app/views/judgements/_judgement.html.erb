@@ -1,7 +1,7 @@
 <tr id="<%= dom_id(judgement.submission)%>">
   <td class="project-title">
     <%= link_to judgement.submission.title, judgement, class: 'is-size-5' %>
-    <p class="is-size-7 is-italic">Scheduled at: <b class="is-size-6"><%= judgement.time %></b></p>
+    <p class="is-size-7 is-italic">Scheduled at: <b class="is-size-6"><%= judgement.just_time %></b></p>
   </td>
   <td class="<%= 'editable' if judgement.technical_vote&.user == current_user %>"><%= render judgement.technical_vote, kind: :technical if judgement.technical_vote %></td>
   <td class="<%= 'editable' if judgement.product_vote&.user == current_user %>"><%= render judgement.product_vote, kind: :product if judgement.product_vote %></td>

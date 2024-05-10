@@ -9,7 +9,7 @@
       </span>
       <% if submission&.judgement.time.present? %>
         <span class="is-size-6 ml-6 has-text-weight-normal">
-          Demo at <%= submission.judgement.time %> in <%= submission.judgement.judging_team.location %>
+          Demo at <%= submission.judgement.just_time %> in <%= submission.judgement.judging_team.location %>
         </span>
       <% end %>
     </p>

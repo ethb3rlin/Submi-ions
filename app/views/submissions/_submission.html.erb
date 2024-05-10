@@ -7,7 +7,7 @@
         <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
         <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
       </span>
-      <% if submission&.judgement.time.present? %>
+      <% if submission&.judgement&.time.present? %>
         <span class="is-size-6 ml-6 has-text-weight-normal">
           Demo at <%= submission.judgement.just_time %> in <%= submission.judgement.judging_team.location %>
         </span>

@@ -46,6 +46,7 @@ class Submission < ApplicationRecord
     social: "hand-heart"
   }.with_indifferent_access
 
+  after_initialize :set_default_description, unless: :persisted?
   after_create_commit :broadcast
 
   def self.distribute_unassigned!
@@ -65,5 +66,9 @@ class Submission < ApplicationRecord
   private
   def broadcast
     broadcast_append_to 'submissions', partial: 'submissions/tr', locals: { submission: self }
+  end
+
+  def set_default_description
+    self.description ||= "### The problem [PROJECT NAME] solves\n\n### Challenges you ran into\n\n### Technology used"
   end
 end

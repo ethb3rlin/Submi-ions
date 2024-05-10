@@ -5,6 +5,11 @@
     <%= lucide_icon "arrow-big-left", class: 'icon is-small' %>
     <span>Back</span>
   <% end %>
-  <%= link_to "Edit this submission", edit_submission_path(@submission), class: "button is-primary" if policy(@submission).update? %>
+  <% if policy(@submission).update? %>
+    <%= link_to edit_submission_path(@submission), class: "button is-light is-link" do %>
+      <%= lucide_icon "edit", class: 'icon is-small' %>
+      <span>Edit this submission</span>
+    <% end %>
+  <% end %>
   <%= button_to "Destroy this submission", @submission, method: :delete, class: "button is-danger" if policy(@submission).destroy? %>
 </div>

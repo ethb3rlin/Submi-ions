@@ -20,6 +20,9 @@
     <%= render @submissions %>
   <% else %>
     <h3 class="subtitle">You have not submitted any projects yet</h3>
-    <%= link_to 'Submit your project', new_submission_path, class: 'button is-success is-large' %>
+    <%= link_to new_submission_path, class: 'button has-text-primary-dark has-text-weight-bold has-background-primary-light is-large' do %>
+      <%= lucide_icon 'badge-plus', class: "icon is-small" %>
+      <span>Submit a project</span>
+    <% end %>
   <% end %>
 </div>

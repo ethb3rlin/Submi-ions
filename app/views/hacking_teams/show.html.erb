@@ -1,7 +1,7 @@
 <div class="team block" id="<%= dom_id @team %>">
   <% if policy(@team).edit? %>
-    <%= link_to edit_hacking_team_path(@team), class: "button is-primary is-light" do %>
-      <%= lucide_icon "pencil", class: 'icon is-small' %>
+    <%= link_to edit_hacking_team_path(@team), class: "button is-link is-light" do %>
+      <%= lucide_icon "edit", class: 'icon is-small' %>
       <span>Edit</span>
     <% end %>
   <% end %>

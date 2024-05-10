@@ -49,9 +49,11 @@ class Judgement < ApplicationRecord
   end
 
   def complete_for(user)
-    technical_vote.update!(completed: true) if technical_vote.user == user
-    product_vote.update!(completed: true) if product_vote.user == user
-    concept_vote.update!(completed: true) if concept_vote.user == user
+    Vote.transaction do
+      technical_vote.update!(completed: true) if technical_vote.user == user
+      product_vote.update!(completed: true) if product_vote.user == user
+      concept_vote.update!(completed: true) if concept_vote.user == user
+    end
 
     if completed?
       broadcast_append_to self, :votes,

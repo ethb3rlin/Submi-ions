@@ -4,7 +4,7 @@ after 'development:users' do
   ).find_or_create_by!(
     name: 'Hackers United'
   )
-  User.hacker.first.update(hacking_team: team)
+  User.hacker.first.hacking_teams << team
 
   HackingTeam.create_with(
     agenda: 'To hack the universe and beyond'

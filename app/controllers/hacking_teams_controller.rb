@@ -1,11 +1,15 @@
 class HackingTeamsController < ApplicationController
   def index
-    # Querying all hacking teams, but putting the ones for which JoinApplication with status "approved" exists first
-    teams_table = HackingTeam.arel_table
-    order_clause = Arel.sql("CASE WHEN EXISTS (SELECT 1 FROM join_applications WHERE hacking_team_id = hacking_teams.id AND user_id = ? AND state = 'approved') THEN 0 ELSE 1 END", current_user.id)
 
-    @teams = HackingTeam.order(order_clause).order(created_at: :desc).all
-    @approved_applications = current_user.join_applications.approved
+    @teams = if current_user
+      # Querying all hacking teams, but putting the ones for which JoinApplication with status "approved" exists first
+      teams_table = HackingTeam.arel_table
+      order_clause = Arel.sql("CASE WHEN EXISTS (SELECT 1 FROM join_applications WHERE hacking_team_id = hacking_teams.id AND user_id = ? AND state = 'approved') THEN 0 ELSE 1 END", current_user.id)
+      HackingTeam.all.order(order_clause)
+    else
+      HackingTeam.all
+    end.order(created_at: :desc).all
+    @approved_applications = current_user&.join_applications&.approved || []
 
     authorize @teams
   end

@@ -24,7 +24,7 @@
   <body>
     <nav class="navbar has-shadow <%= current_user.try :navbar_class %>" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" id="navbar-logo-header" href="/">
+        <a class="navbar-item" id="navbar-logo-header" data-turbo="false" href="/">
           <%= lucide_icon "land-plot", size: 28, "stroke-width": 1.6 %>
           <span>Submißions</span>
         </a>

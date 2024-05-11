@@ -24,7 +24,11 @@ class HackingTeamPolicy < ApplicationPolicy
   end
 
   def list_members?
-    user.present? && (user.organizer? || user.hacking_teams.include?(record))
+    edit?
+  end
+
+  def list_invitations?
+    edit?
   end
 
   def leave?
@@ -32,11 +36,24 @@ class HackingTeamPolicy < ApplicationPolicy
   end
 
   def apply?
-    user.present? && user.hacker? && (!user.hacking_teams.include?(record)) && user.hacking_teams.count < 2
+    return false unless user.present?
+    # For hackers, only allow applying to the teams which have less than 5 members
+    user.hacker? && !user.hacking_teams.include?(record) && user.hacking_teams.count < 2 && record.hackers.count < 5
   end
 
   def accept?
-    user.present? && (user.organizer? || user.hacking_teams.include?(record))
+    return false unless user.present?
+    return true if user.organizer?
+    # For hackers, only allow accepting if the team has less than 5 members
+    user.hacking_teams.include?(record) && record.hackers.count < 5
+  end
+
+  def admin_members?
+    user.present? && user.organizer?
+  end
+
+  def force_add?
+    admin_members?
   end
 
   def reject?
@@ -44,7 +61,7 @@ class HackingTeamPolicy < ApplicationPolicy
   end
 
   def unreject?
-    accept?
+    edit?
   end
 
   def kick?

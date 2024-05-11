@@ -47,6 +47,10 @@ class UserDecorator < Draper::Decorator
     end
   end
 
+  def id_and_name
+    "#{object.id}: #{object.name}"
+  end
+
   def rendered_ethereum_addresses
     object.ethereum_addresses.map do |ea|
       helpers.content_tag :code, ea.address, class: 'is-size-7'

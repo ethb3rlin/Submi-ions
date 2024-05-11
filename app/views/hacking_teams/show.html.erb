@@ -63,7 +63,7 @@
     </div>
   <% end %>
 
-  <% if @pending_applications.any? && policy(@team).accept? %>
+  <% if @pending_applications.any? && policy(@team).list_invitations? %>
     <h2 class="is-size-4">Pending applications</h2>
     <div class="field is-grouped is-grouped-multiline">
       <% @pending_applications.each do |application| %>
@@ -72,12 +72,16 @@
             <span class="tag">
               <%= application.user.decorate.readable_name %>
             </span>
-            <% if current_user.organizer? || application.user.hacking_teams.count < 2 %>
+            <% if policy(@team).accept? %>
               <%= link_to hacking_team_accept_path(@team, application), data: {turbo_method: :post}, class: "tag is-success is-light" do %>
                 <%= lucide_icon "check", class: 'icon is-small' %>
               <% end %>
-            <% else %>
+            <% elsif application.user.hacking_teams.count >= 2 %>
               <span class="tag is-light" data-tooltip="User is already a member of the <%= application.user.hacking_teams.map(&:name).join(' and ') %> teams">
+                <%= lucide_icon "check", class: 'icon is-small dropdown-trigger' %>
+              </span>
+            <% elsif @team.hackers.count >= 5 %>
+              <span class="tag is-light" data-tooltip="Can't add any more users to the team">
                 <%= lucide_icon "check", class: 'icon is-small dropdown-trigger' %>
               </span>
             <% end %>
@@ -90,7 +94,7 @@
     </div>
   <% end %>
 
-  <% if @rejected_applications.any? && policy(@team).accept? %>
+  <% if @rejected_applications.any? && policy(@team).list_invitations? %>
     <div class="collapsible-container">
       <input type="checkbox" id="collapsible-toggle">
       <label for="collapsible-toggle" class="collapsible-label">
@@ -124,6 +128,13 @@
         </table>
       </div>
     </div>
+  <% end %>
+
+  <% if policy(@team).admin_members? %>
+    <%= link_to hacking_team_admin_members_path(@team), class: "button is-danger is-light" do %>
+      <%= lucide_icon "user-plus", class: 'icon is-small' %>
+      <span>Force add members</span>
+    <% end %>
   <% end %>
 
   <% if @team.submissions.present? %>

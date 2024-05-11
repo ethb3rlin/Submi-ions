@@ -1,0 +1,36 @@
+<div class="content">
+  <nav class="panel is-info admin-users-ui">
+    <p class="panel-heading">Current members of <%= link_to @team.name, @team %></p>
+    <div class="users-list">
+      <% @members.each do |user| %>
+        <%= link_to edit_admin_user_path(user), class: "panel-block" do %>
+          <span class="panel-icon">
+            <%= lucide_icon user.role_icon, size: 16 %>
+          </span>
+          <span class="id is-family-monospace"><%= user.id %></span>
+          <span class="name"><%= user.name %></span>
+          <span class="email"><%= user.email %></span>
+          <span class="ethereum-addresses"><%= user.rendered_ethereum_addresses %></span>
+          <span class="team-names tags">
+            <% user.hacking_teams.each do |team| %>
+              <span class="team-name tag is-success is-light is-size-7"><%= team.name %></span>
+            <% end %>
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+
+  <p>Find users to add to the team:</p>
+  <%= form_with url: hacking_team_force_add_path(@team), method: :post do |f| %>
+    <div class="field has-addons">
+      <datalist id="all-other-hackers">
+        <% @all_other_hackers.each do |hacker| %>
+          <option value="<%= hacker.id_and_name %>"/>
+        <% end %>
+      </datalist>
+      <input class="input" name="new_hacker" list="all-other-hackers" autocomplete="off" type="text">
+      <%= f.submit "Add", class: "button is-info" %>
+    </div>
+  <% end %>
+</div>

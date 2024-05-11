@@ -64,6 +64,8 @@
 #                      hacking_team_accept POST   /teams/:hacking_team_id/accept/:id(.:format)                                                      hacking_teams#accept
 #                      hacking_team_reject DELETE /teams/:hacking_team_id/reject/:id(.:format)                                                      hacking_teams#reject
 #                    hacking_team_unreject POST   /teams/:hacking_team_id/unreject/:id(.:format)                                                    hacking_teams#unreject
+#               hacking_team_admin_members GET    /teams/:hacking_team_id/admin_members(.:format)                                                   hacking_teams#admin_members
+#                   hacking_team_force_add POST   /teams/:hacking_team_id/force_add(.:format)                                                       hacking_teams#force_add
 #                        hacking_team_kick DELETE /teams/:hacking_team_id/kick/:id(.:format)                                                        hacking_teams#kick
 #                            hacking_teams GET    /teams(.:format)                                                                                  hacking_teams#index
 #                                          POST   /teams(.:format)                                                                                  hacking_teams#create
@@ -145,6 +147,9 @@ Rails.application.routes.draw do
     post 'accept/:id', to: 'hacking_teams#accept', as: :accept
     delete 'reject/:id', to: 'hacking_teams#reject', as: :reject
     post 'unreject/:id', to: 'hacking_teams#unreject', as: :unreject
+
+    get 'admin_members'
+    post 'force_add', to: 'hacking_teams#force_add', as: :force_add
 
     delete 'kick/:id', to: 'hacking_teams#kick', as: :kick
   end

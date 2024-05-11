@@ -132,6 +132,25 @@ class HackingTeamsController < ApplicationController
     end
   end
 
+
+  ### Admin-only actions
+  def admin_members
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+    @members = @team.hackers.decorate
+    @all_other_hackers = User.hacker.where.not(id: @members.pluck(:id)).order(:name).decorate
+  end
+
+  def force_add
+    @team = HackingTeam.find(params[:hacking_team_id])
+    authorize @team
+
+    new_hacker_id = params[:new_hacker].split(':').first.to_i
+    new_hacker = User.find(new_hacker_id)
+    JoinApplication.find_or_create_by(user: new_hacker, hacking_team: @team).accept!(current_user)
+    redirect_to hacking_team_admin_members_path(@team), notice: "#{new_hacker.decorate.readable_name} has been added to the team."
+  end
+
   private
   def team_params
     params.require(:hacking_team).permit(:name, :agenda)

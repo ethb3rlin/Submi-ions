@@ -11,8 +11,9 @@
         <%= lucide_icon 'users', class: 'icon is-large' %>
         <span><%= pluralize User.hacker.count, 'Hacker' %></span>
       <% end %>
-      <div class="is-size-7 is-italic block">
-        Plus <%= link_to pluralize(User.judge.count, 'Judge'), admin_users_path(role: :judge) %> and <%= link_to pluralize(User.organizer.count, 'Organizer'), admin_users_path(role: :organizer) %>
+      <div class="is-size-7 block">
+        <p class="is-italic">Plus <%= link_to pluralize(User.judge.count, 'Judge'), admin_users_path(role: :judge) %> and <%= link_to pluralize(User.organizer.count, 'Organizer'), admin_users_path(role: :organizer) %></p>
+        <p><%= link_to pluralize(User.approval_pending.count, 'application'), admin_users_path(role: :unapproved) %> pending approval</p>
       </div>
       <%= link_to hacking_teams_path, class: ['button', 'is-success', 'is-light', 'is-large', 'block'] do %>
         <%= lucide_icon 'ungroup', class: 'icon is-large' %>

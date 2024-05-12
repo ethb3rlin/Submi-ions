@@ -1,7 +1,7 @@
 <nav class="panel is-info admin-users-ui" data-controller="filterable-users">
   <p class="panel-heading">Users</p>
   <p class="panel-tabs">
-    <%= link_to admin_users_path(role: :unauthorized), class: class_names("is-active" => params[:role]=='unauthorized') do %>
+    <%= link_to admin_users_path(role: :unapproved), class: class_names("is-active" => params[:role]=='unapproved') do %>
       <%= lucide_icon 'ticket-slash', size: 16 %>
       <span>Approval pending</span>
     <% end %>

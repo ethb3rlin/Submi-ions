@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   def index
-    @users = if params[:role]== 'unauthorized'
+    @users = if params[:role]== 'unapproved'
       User.approval_pending.order(:id).all
     elsif params[:role].present?
       User.where(kind: params[:role]).order(:id).all
@@ -13,7 +13,7 @@ class Admin::UsersController < ApplicationController
 
   def new
     @user = User.new
-    if params[:role] != 'unauthorized'
+    if params[:role] != 'unapproved'
       @user.kind = params[:role]
     end
     authorize @user

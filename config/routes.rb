@@ -18,6 +18,7 @@
 #                                          PATCH  /judgements/:id(.:format)                                                                         judgements#update
 #                                          PUT    /judgements/:id(.:format)                                                                         judgements#update
 #                                          DELETE /judgements/:id(.:format)                                                                         judgements#destroy
+#           user_verify_zupass_credentials POST   /users/:user_id/verify_zupass_credentials(.:format)                                               users#verify_zupass_credentials
 #                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
 #                                     user PATCH  /users/:id(.:format)                                                                              users#update
 #                                          PUT    /users/:id(.:format)                                                                              users#update
@@ -115,7 +116,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: %i[edit update]
+  resources :users, only: %i[edit update] do
+    post 'verify_zupass_credentials'
+  end
 
   namespace :admin do
     root 'admin#index'

@@ -11,6 +11,10 @@ class UserPolicy < ApplicationPolicy
     user.organizer?
   end
 
+  def verify_zupass_credentials?
+    user == record
+  end
+
   def edit?
     user.organizer? || user == record
   end

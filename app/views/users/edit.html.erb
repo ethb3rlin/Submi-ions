@@ -1,17 +1,34 @@
 <div class="content">
   <h1 class="title">Please introduce yourself</h1>
-  <%= form_with model: @user, local: true do |form| %>
-
-    <div class="field">
-      <%= form.label :name, class: 'label' %>
-      <div class="control"><%= form.text_field :name, class: 'input' %></div>
+  <div class="columns">
+    <div class="column">
+      <%= form_with model: @user, local: true do |form| %>
+        <div class="field">
+          <%= form.label :name, class: 'label' %>
+          <div class="control"><%= form.text_field :name, class: 'input' %></div>
+        </div>
+        <div class="field">
+          <%= form.label :email, class: 'label' %>
+          <div class="control"><%= form.email_field :email, type: :email, class: 'input' %></div>
+        </div>
+        <div class="field"><%= form.submit class: %w[button is-primary]%></div>
+      <% end %>
     </div>
 
-    <div class="field">
-      <%= form.label :email, class: 'label' %>
-      <div class="control"><%= form.email_field :email, type: :email, class: 'input' %></div>
-    </div>
-
-    <div class="field"><%= form.submit class: %w[button is-primary]%></div>
-  <% end %>
+    <% unless @user.approved? %>
+      <div class="column">
+        <h2 class="subtitle">You need to be an approved hacker to participate in EthBerlin.</h2>
+        <p>You can confirm your EthBerlin ticket by clicking the button:</p>
+        <a class="button is-primary is-large" target="popup"
+          href="<%= zupass_url(user_verify_zupass_credentials_url(@user)) %>"
+          onclick="window.open(
+            '<%= zupass_url(user_verify_zupass_credentials_url(@user))%>',
+            'popup','width=500,height=700'); return false;">
+          <%= lucide_icon 'ticket', size: 64, class: 'icon' %>
+          <span>Confirm my ticket<br/>via ZuPass</span>
+        </a>
+        <p>Alternatively, you can get in touch with EthBerlin team in-person, and we'll approve your profile.</p>
+      </div>
+    <% end %>
+  </div>
 </div>

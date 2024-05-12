@@ -17,6 +17,22 @@ class UsersController < ApplicationController
     authorize @user
   end
 
+  def verify_zupass_credentials
+    @user = User.unscoped.find(params[:id])
+    authorize @user
+
+    background_checker_url = ENV.fetch('ZUPASS_CHECKER_URL', 'localhost:8000')
+    response = HTTParty.post(background_checker_url, json: request.body.read, headers: { 'Content-Type' => 'application/json' })
+
+    if response.code == 200
+      @user.update!(approved_at: DateTime.now)
+      # TODO: invalidate TicketID here, so the single claim won't authorize multiple accounts
+      redirect_to root_path
+    else
+      render :edit, alert: 'There was an error verifying your credentials. Please try again.'
+    end
+  end
+
   def update
     @user = User.unscoped.find(params[:id])
     authorize @user

@@ -20,9 +20,13 @@
     <%= render @submissions %>
   <% else %>
     <h3 class="subtitle">You have not submitted any projects yet</h3>
-    <%= link_to new_submission_path, class: 'button has-text-primary-dark has-text-weight-bold has-background-primary-light is-large' do %>
-      <%= lucide_icon 'badge-plus', class: "icon is-small" %>
-      <span>Submit a project</span>
+    <% if policy(Submission).new? %>
+      <%= link_to new_submission_path, class: 'button has-text-primary-dark has-text-weight-bold has-background-primary-light is-large' do %>
+        <%= lucide_icon 'badge-plus', class: "icon is-small" %>
+        <span>Submit a project</span>
+      <% end %>
+    <% else %>
+      <p>Project submissions are currently closed</p>
     <% end %>
   <% end %>
 </div>

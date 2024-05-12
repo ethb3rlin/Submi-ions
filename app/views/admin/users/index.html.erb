@@ -1,8 +1,13 @@
 <nav class="panel is-info admin-users-ui" data-controller="filterable-users">
   <p class="panel-heading">Users</p>
   <p class="panel-tabs">
+    <%= link_to admin_users_path(role: :unauthorized), class: class_names("is-active" => params[:role]=='unauthorized') do %>
+      <%= lucide_icon 'ticket-slash', size: 16 %>
+      <span>Approval pending</span>
+    <% end %>
     <%= link_to admin_users_path, class: class_names("is-active" => params[:role].blank?) do %>
-      All
+      <%= lucide_icon 'ticket-check', size: 16 %>
+      <span>All approved</span>
     <% end %>
     <%= link_to admin_users_path(role: :hacker), class: class_names("is-active" => params[:role]=='hacker') do %>
       Hackers

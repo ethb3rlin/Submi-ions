@@ -2,17 +2,24 @@
 #
 # Table name: users
 #
-#  id            :bigint           not null, primary key
-#  email         :string
-#  github_handle :string
-#  kind          :enum             default("hacker"), not null
-#  name          :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id             :bigint           not null, primary key
+#  approved_at    :datetime
+#  email          :string
+#  github_handle  :string
+#  kind           :enum             default("hacker"), not null
+#  name           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  approved_by_id :bigint
 #
 # Indexes
 #
-#  index_users_on_kind  (kind)
+#  index_users_on_approved_by_id  (approved_by_id)
+#  index_users_on_kind            (kind)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (approved_by_id => users.id)
 #
 class User < ApplicationRecord
     has_many :ethereum_addresses, dependent: :destroy
@@ -20,7 +27,6 @@ class User < ApplicationRecord
     enum :kind, { hacker: 'hacker', judge: 'judge', organizer: 'organizer' }
     validates :kind, presence: true
     validates :kind, inclusion: { in: kinds.keys }
-
 
     has_one :technical_judging_team, class_name: 'JudgingTeam', foreign_key: 'technical_judge_id'
     has_one :product_judging_team, class_name: 'JudgingTeam', foreign_key: 'product_judge_id'
@@ -32,6 +38,20 @@ class User < ApplicationRecord
     has_many :hacking_teams, through: :accepted_join_applications
     # User shouldn't belong to a hacking team unless their kind is :hacker
     validates :hacking_teams, absence: true, unless: -> { hacker? }
+
+    belongs_to :approved_by, class_name: 'User', optional: true
+
+    # Scope to users which have `approved_at` set by default
+    default_scope { where.not(approved_at: nil) }
+    scope :approval_pending, -> { unscope(where: :approved_at).where(approved_at: nil) }
+
+    def approved?
+        approved_at.present?
+    end
+
+    def approve_as!(user)
+        update!(approved_at: DateTime.now, approved_by: user)
+    end
 
     def judging_team
         JudgingTeam.where('technical_judge_id = :id OR product_judge_id = :id OR concept_judge_id = :id', id: self.id).first

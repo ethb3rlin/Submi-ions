@@ -19,6 +19,14 @@ class UserPolicy < ApplicationPolicy
     user.organizer? || user == record
   end
 
+  def manually_approve?
+    user.organizer?
+  end
+
+  def unapprove?
+    manually_approve?
+  end
+
   def destroy?
     user.organizer?
   end

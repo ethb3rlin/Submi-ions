@@ -28,6 +28,8 @@
 #                         admin_reschedule POST   /admin/reschedule(.:format)                                                                       admin/admin#reschedule
 #              admin_user_ethereum_address POST   /admin/users/:user_id/ethereum_address(.:format)                                                  admin/ethereum_addresses#create
 #      admin_user_destroy_ethereum_address DELETE /admin/users/:user_id/ethereum_address/:id(.:format)                                              admin/ethereum_addresses#destroy
+#                       admin_user_approve PATCH  /admin/users/:user_id/approve(.:format)                                                           admin/users#manually_approve
+#                     admin_user_unapprove DELETE /admin/users/:user_id/unapprove(.:format)                                                         admin/users#unapprove
 #                              admin_users GET    /admin/users(.:format)                                                                            admin/users#index
 #                                          POST   /admin/users(.:format)                                                                            admin/users#create
 #                           new_admin_user GET    /admin/users/new(.:format)                                                                        admin/users#new
@@ -127,6 +129,9 @@ Rails.application.routes.draw do
     resources :users do
       post 'ethereum_address' => 'ethereum_addresses#create'
       delete 'ethereum_address/:id' => 'ethereum_addresses#destroy', as: :destroy_ethereum_address
+
+      patch 'approve' => 'users#manually_approve'
+      delete 'unapprove' => 'users#unapprove'
     end
 
     resources :judging_breaks, only: %i[create update destroy]

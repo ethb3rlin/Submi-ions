@@ -45,21 +45,23 @@
   <% end %>
 
   <div class="content">
-    <% if @user.approved? %>
-      <h2 class="title is-4">Approved at:</h2>
-      <p><%= @user.approved_at %></p>
-      <% if @user.approved_by.present? %>
-        <h2 class="title is-4">Manually approved by:</h2>
-        <p><%= @user.approved_by.name %></p>
-      <% end %>
-      <%= link_to admin_user_unapprove_path(@user), data: {turbo_method: :delete}, class: ['button', 'is-danger'] do %>
-        <%= lucide_icon "ticket-x", class: "icon" %>
-        <span>Revoke approval</span>
-      <% end %>
-    <% else %>
-      <%= link_to admin_user_approve_path(@user), data: {turbo_method: :patch}, class: ['button', 'is-warning'] do %>
-        <%= lucide_icon "ticket-check", class: "icon" %>
-        <span>Approve manually</span>
+    <% if @user.persisted? %>
+      <% if @user.approved? %>
+        <h2 class="title is-4">Approved at:</h2>
+        <p><%= @user.approved_at %></p>
+        <% if @user.approved_by.present? %>
+          <h2 class="title is-4">Manually approved by:</h2>
+          <p><%= @user.approved_by.name %></p>
+        <% end %>
+        <%= link_to admin_user_unapprove_path(@user), data: {turbo_method: :delete}, class: ['button', 'is-danger'] do %>
+          <%= lucide_icon "ticket-x", class: "icon" %>
+          <span>Revoke approval</span>
+        <% end %>
+      <% else %>
+        <%= link_to admin_user_approve_path(@user), data: {turbo_method: :patch}, class: ['button', 'is-warning'] do %>
+          <%= lucide_icon "ticket-check", class: "icon" %>
+          <span>Approve manually</span>
+        <% end %>
       <% end %>
     <% end %>
   </div>

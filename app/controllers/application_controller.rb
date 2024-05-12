@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      @_current_user ||= User.unscoped.joins(:ethereum_addresses).where(ethereum_addresses: { address: session[:address] }).first if session[:address]
+      @_current_user ||= EthereumAddress.find_by(address: session[:address])&.user if session[:address]
       @_current_user.decorate if @_current_user
     end
 

@@ -29,9 +29,13 @@ class SessionsController < ApplicationController
 
       session[:address] = message.address
 
-      address_record = EthereumAddress.find_or_create_by(address: message.address)
-      if !address_record.user
-        user = User.create(ethereum_addresses: [address_record])
+      address_record = EthereumAddress.find_by(address: message.address)
+      if !address_record
+        user = User.unscoped.new
+        User.transaction do
+          user.save!
+          address_record = EthereumAddress.create!(address: message.address, user: user)
+        end
         return render html: "<script>window.location = '#{edit_user_path(user)}';</script>".html_safe
       end
 

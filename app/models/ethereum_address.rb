@@ -18,5 +18,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class EthereumAddress < ApplicationRecord
-  belongs_to :user, -> { unscope(where: :approved_at) }
+  belongs_to :user, -> { unscope(where: :approved_at) }, inverse_of: :ethereum_addresses
 end

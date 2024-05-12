@@ -12,7 +12,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def new
-    @user = User.new(approved_at: DateTime.now, approved_by: current_user)
+    @user = User.new
     if params[:role] != 'unauthorized'
       @user.kind = params[:role]
     end
@@ -35,7 +35,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def create
-    @user = User.unscoped.new(user_params)
+    @user = User.create_with(approved_at: DateTime.now, approved_by: current_user).new(user_params)
     authorize @user
     if @user.save
       redirect_to edit_admin_user_path(@user), notice: "User created"

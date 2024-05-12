@@ -8,10 +8,10 @@ class JudgementPolicy < ApplicationPolicy
   end
 
   def show?
-    user.present? && ((user.judge? && record.judging_team == user.judging_team) || user.organizer?)
+    user.present? && user.approved? && ((user.judge? && record.judging_team == user.judging_team) || user.organizer?)
   end
 
   def complete?
-    user.present? && user.judge? && record.judging_team == user.judging_team
+    user.present? && user.approved? && user.judge? && record.judging_team == user.judging_team
   end
 end

@@ -1,14 +1,14 @@
 class VotePolicy < ApplicationPolicy
   def index?
-    user.present?
+    user.present? && (user.organizer? || user.judge?)
   end
 
   def create?
-    user.present?
+    user.present? && (user.organizer? || user.judge?)
   end
 
   def new?
-    user.present?
+    user.present? && (user.organizer? || user.judge?)
   end
 
   def show?
@@ -16,7 +16,7 @@ class VotePolicy < ApplicationPolicy
   end
 
   def complete?
-    user.present? && record.user == user
+    user.present? && (user.organizer? || user.judge?) && record.user == user
   end
 
   def update?

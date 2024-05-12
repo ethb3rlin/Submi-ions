@@ -2,17 +2,24 @@
 #
 # Table name: users
 #
-#  id            :bigint           not null, primary key
-#  email         :string
-#  github_handle :string
-#  kind          :enum             default("hacker"), not null
-#  name          :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id             :bigint           not null, primary key
+#  approved_at    :datetime
+#  email          :string
+#  github_handle  :string
+#  kind           :enum             default("hacker"), not null
+#  name           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  approved_by_id :bigint
 #
 # Indexes
 #
-#  index_users_on_kind  (kind)
+#  index_users_on_approved_by_id  (approved_by_id)
+#  index_users_on_kind            (kind)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (approved_by_id => users.id)
 #
 class User < ApplicationRecord
     has_many :ethereum_addresses, dependent: :destroy

@@ -34,14 +34,18 @@ class UsersController < ApplicationController
     raise 'Watermark mismatch for user #{@user.id}' unless watermark == helpers.watermark_digest(@user)
 
     ticket_id = pcd['claim']['partialTicket']['ticketId']
+    raise "Ticket #{ticket_id} has already been used" if TicketInvalidation.exists?(ticket_id: ticket_id)
+
     raise "Ticket #{ticket_id} has been revoked" unless pcd['claim']['partialTicket']['isRevoked'] == false
 
     validation_response = HTTParty.post(background_checker_url, body: pcd.to_json, headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json'})
 
     if validation_response.code == 200
       logger.info "ZuPass validation successful for user #{@user.id}"
-      @user.update!(approved_at: DateTime.now)
-      # TODO: invalidate TicketID here, so the single claim won't authorize multiple accounts
+      User.transaction do
+        @user.update!(approved_at: DateTime.now)
+        TicketInvalidation.create!(ticket_id: ticket_id, user: @user)
+      end
 
       head :ok
     else

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_12_140326) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_13_224636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -110,6 +110,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_12_140326) do
     t.index ["track"], name: "index_submissions_on_track"
   end
 
+  create_table "ticket_invalidations", id: false, force: :cascade do |t|
+    t.uuid "ticket_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ticket_id"], name: "index_ticket_invalidations_on_ticket_id", unique: true
+    t.index ["user_id"], name: "index_ticket_invalidations_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -146,6 +155,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_12_140326) do
   add_foreign_key "judging_teams", "users", column: "product_judge_id"
   add_foreign_key "judging_teams", "users", column: "technical_judge_id"
   add_foreign_key "submissions", "hacking_teams"
+  add_foreign_key "ticket_invalidations", "users"
   add_foreign_key "users", "users", column: "approved_by_id"
   add_foreign_key "votes", "users"
 end

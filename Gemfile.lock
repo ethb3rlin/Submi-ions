@@ -108,6 +108,7 @@ GEM
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
+    csv (3.3.0)
     date (3.3.4)
     debug (1.9.2)
       irb (~> 1.10)
@@ -160,6 +161,10 @@ GEM
       guard (~> 2.11)
       guard-compat (~> 1.0)
     http_parser.rb (0.8.0)
+    httparty (0.22.0)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -198,6 +203,8 @@ GEM
     minitest (5.22.3)
     msgpack (1.7.2)
     multi_json (1.15.0)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     mutex_m (0.2.0)
     nenv (0.3.0)
     net-imap (0.4.11)
@@ -350,6 +357,7 @@ DEPENDENCIES
   guard
   guard-livereload
   guard-rails
+  httparty
   importmap-rails
   jbuilder
   local_time

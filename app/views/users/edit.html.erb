@@ -20,9 +20,9 @@
         <h2 class="subtitle">You need to be an approved hacker to participate in EthBerlin.</h2>
         <p>You can confirm your EthBerlin ticket by clicking the button:</p>
         <a class="button is-primary is-large" target="popup"
-          href="<%= zupass_url(user_verify_zupass_credentials_url(@user)) %>"
+          href="<%= zupass_url(@user) %>"
           onclick="window.open(
-            '<%= zupass_url(user_verify_zupass_credentials_url(@user))%>',
+            '<%= zupass_url(@user)%>',
             'popup','width=500,height=700'); return false;">
           <%= lucide_icon 'ticket', size: 64, class: 'icon' %>
           <span>Confirm my ticket<br/>via ZuPass</span>

@@ -1,6 +1,6 @@
 class Admin::EthereumAddressesController < ApplicationController
   def create
-    @user = User.find(params[:user_id])
+    @user = User.unscoped.find(params[:user_id])
     @ethereum_address = @user.ethereum_addresses.new(ethereum_address_params)
     authorize @ethereum_address
     if @ethereum_address.save

@@ -1,6 +1,9 @@
 require 'commonmarker'
+require 'digest'
 
 module ApplicationHelper
+  include Rails.application.routes.url_helpers # Add route helpers
+
   def active_class(path)
     if request.path.starts_with? path
       return 'is-active is-selected'
@@ -17,13 +20,22 @@ module ApplicationHelper
     sanitized_content.gsub(/<a href="http[^"]*"/) { |match| match.gsub('<a href="', '<a target="_blank" href="') }
   end
 
-  def zupass_url(callback_url)
+  ETHBERLIN_ZUPASS_ID = '53edb3e7-6733-41e0-a9be-488877c5c572'.freeze
+
+  def watermark_digest(user)
+    Digest::SHA256.hexdigest("EthBerlin04 user #{user.id}").unpack('C*').join('')
+  end
+
+  def zupass_url(user)
+    watermark = watermark_digest(user)
+    callback_url = user_verify_zupass_credentials_url(user_id: user.id)
+
     payload = {"type"=>"Get",
     "returnUrl"=>callback_url,
     "args"=>
-     {"ticket"=>{"argumentType"=>"PCD", "pcdType"=>"eddsa-ticket-pcd", "userProvided"=>true, "validatorParams"=>{"eventIds"=>[], "productIds"=>[], "notFoundMessage"=>"No eligible PCDs found"}},
+     {"ticket"=>{"argumentType"=>"PCD", "pcdType"=>"eddsa-ticket-pcd", "userProvided"=>true, "validatorParams"=>{"eventIds"=>[ETHBERLIN_ZUPASS_ID], "productIds"=>[], "notFoundMessage"=>"Can't find your EthBerlin04 ticket."}},
       "identity"=>{"argumentType"=>"PCD", "pcdType"=>"semaphore-identity-pcd", "userProvided"=>true},
-      "validEventIds"=>{"argumentType"=>"StringArray", "value"=>["53edb3e7-6733-41e0-a9be-488877c5c572"], "userProvided"=>false},
+      "validEventIds"=>{"argumentType"=>"StringArray", "value"=>[ETHBERLIN_ZUPASS_ID], "userProvided"=>false},
       "fieldsToReveal"=>
        {"argumentType"=>"ToggleList",
         "value"=>
@@ -38,11 +50,11 @@ module ApplicationHelper
           "revealAttendeeEmail"=>false,
           "revealAttendeeName"=>false},
         "userProvided"=>false},
-      "externalNullifier"=>{"argumentType"=>"BigInt", "value"=>"286221548613905319765390676747549020842773565836071072789446643597948148432", "userProvided"=>false},
-      "watermark"=>{"argumentType"=>"BigInt", "value"=>"393662727178615156857885255537022063054299486604806608471397216310022167464", "userProvided"=>false}},
+      "externalNullifier"=>{},
+      "watermark"=>{"argumentType"=>"BigInt", "value"=>watermark, "userProvided"=>false}},
     "pcdType"=>"zk-eddsa-event-ticket-pcd",
     "options"=>{"genericProveScreen"=>true, "title"=>"EthBerlin04 Ticket", "description"=>"Please confirm that you've been issued a valid EthBerlin04 ticket."},
-    "postMessage"=>false}
+    "postMessage"=>true}
 
     'https://zupass.org/#/prove?request=' + ERB::Util.url_encode(payload.to_json)
   end

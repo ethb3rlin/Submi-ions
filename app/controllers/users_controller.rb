@@ -18,18 +18,37 @@ class UsersController < ApplicationController
   end
 
   def verify_zupass_credentials
-    @user = User.unscoped.find(params[:id])
+    @user = User.unscoped.find(params[:user_id])
     authorize @user
 
     background_checker_url = ENV.fetch('ZUPASS_CHECKER_URL', 'localhost:8000')
-    response = HTTParty.post(background_checker_url, json: params[:proof], headers: { 'Content-Type' => 'application/json' })
+    # Adding http: if there is no protocol in the URL
+    background_checker_url = 'http://' + background_checker_url unless background_checker_url.match?(/https?:\/\//)
+
+    proof = JSON.parse(params[:proof])
+    pcd = JSON.parse(proof['pcd'])
+
+    raise 'Wrong proof type' unless proof['type'] == "zk-eddsa-event-ticket-pcd"
+
+    watermark = pcd['claim']['watermark']
+    raise 'Watermark mismatch for user #{@user.id}' unless watermark == helpers.watermark_digest(@user)
+
+    ticket_id = pcd['claim']['partialTicket']['ticketId']
+    raise "Ticket #{ticket_id} has been revoked" unless pcd['claim']['partialTicket']['isRevoked'] == false
+
+    validation_response = HTTParty.post(background_checker_url, body: pcd.to_json, headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json'})
 
     if response.code == 200
-      @user.update!(approved_at: DateTime.now)
+      logger.info "ZuPass validation successful for user #{@user.id}"
+      @user.update!(approved_at: DateTime.now) # TODO: broadcast refresh to the user's session
       # TODO: invalidate TicketID here, so the single claim won't authorize multiple accounts
-      redirect_to root_path
+
+      head :ok
     else
-      render :edit, alert: 'There was an error verifying your credentials. Please try again.'
+      logger.warn "ZuPass validation failed for user #{@user.id}"
+      logger.warn validation_response
+
+      head :unprocessable_entity
     end
   end
 

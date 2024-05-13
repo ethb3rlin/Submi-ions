@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     authorize @user
 
     background_checker_url = ENV.fetch('ZUPASS_CHECKER_URL', 'localhost:8000')
-    response = HTTParty.post(background_checker_url, json: request.body.read, headers: { 'Content-Type' => 'application/json' })
+    response = HTTParty.post(background_checker_url, json: params[:proof], headers: { 'Content-Type' => 'application/json' })
 
     if response.code == 200
       @user.update!(approved_at: DateTime.now)

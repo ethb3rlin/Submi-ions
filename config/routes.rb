@@ -117,7 +117,7 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: %i[edit update] do
-    post 'verify_zupass_credentials'
+    get 'verify_zupass_credentials'
   end
 
   namespace :admin do

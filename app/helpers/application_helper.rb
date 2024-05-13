@@ -23,7 +23,7 @@ module ApplicationHelper
   ETHBERLIN_ZUPASS_ID = '53edb3e7-6733-41e0-a9be-488877c5c572'.freeze
 
   def watermark_digest(user)
-    Digest::SHA256.hexdigest("EthBerlin04 user #{user.id}").unpack('C*').join('')
+    Digest::SHA256.hexdigest("EthBerlin04 user #{user.id}").unpack('C*').join('')[0..75]
   end
 
   def zupass_url(user)

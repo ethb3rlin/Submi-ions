@@ -38,9 +38,9 @@ class UsersController < ApplicationController
 
     validation_response = HTTParty.post(background_checker_url, body: pcd.to_json, headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json'})
 
-    if response.code == 200
+    if validation_response.code == 200
       logger.info "ZuPass validation successful for user #{@user.id}"
-      @user.update!(approved_at: DateTime.now) # TODO: broadcast refresh to the user's session
+      @user.update!(approved_at: DateTime.now)
       # TODO: invalidate TicketID here, so the single claim won't authorize multiple accounts
 
       head :ok

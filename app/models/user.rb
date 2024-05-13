@@ -45,6 +45,8 @@ class User < ApplicationRecord
     default_scope { where.not(approved_at: nil) }
     scope :approval_pending, -> { unscope(where: :approved_at).where(approved_at: nil) }
 
+    after_update_commit :refresh_user_page, if: -> { saved_change_to_approved_at? }
+
     def approved?
         approved_at.present?
     end
@@ -59,5 +61,10 @@ class User < ApplicationRecord
 
     def self.unassigned_judges
         User.judge.where.not(id: JudgingTeam.pluck(:technical_judge_id).compact + JudgingTeam.pluck(:product_judge_id).compact + JudgingTeam.pluck(:concept_judge_id).compact).order(:name)
+    end
+
+    private
+    def refresh_user_page
+        broadcast_refresh
     end
 end

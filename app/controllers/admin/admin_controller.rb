@@ -42,4 +42,33 @@ class Admin::AdminController < ApplicationController
     Judgement.schedule_missing!
     redirect_to admin_submissions_path
   end
+
+  def wipe_all_data
+    authorize :admin, :wipe_all_data?, policy_class: AdminPolicy
+
+    raise 'Confirmation value mismatch' unless params[:confirmation]=='RESET ETHBERLIN04'
+
+    Setting.transaction do
+      Setting.delete_all
+
+      Vote.delete_all
+      Judgement.delete_all
+      Submission.delete_all
+
+      JudgingTeam.delete_all
+      JudgingBreak.delete_all
+
+      JoinApplication.delete_all
+      HackingTeam.delete_all
+
+      TicketInvalidation.delete_all
+
+      # Only delete Ethereum addresses which don't belong to users with role 'organizer'
+      EthereumAddress.where.not(user: User.unscoped.where(kind: :organizer)).delete_all
+
+      User.unscoped.where.not(kind: :organizer).delete_all
+    end
+
+    redirect_to admin_root_path, notice: 'All data has been wiped.'
+  end
 end

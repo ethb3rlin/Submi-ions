@@ -20,4 +20,8 @@ class AdminPolicy < ApplicationPolicy
   def reschedule?
     user.try :organizer?
   end
+
+  def wipe_all_data?
+    user.try :organizer?
+  end
 end

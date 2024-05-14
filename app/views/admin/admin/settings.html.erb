@@ -64,4 +64,24 @@
       <% end %>
     </div>
   </div>
+
+  <div class="collapsible-container">
+    <input type="checkbox" id="collapsible-toggle">
+    <label for="collapsible-toggle" class="collapsible-label">
+      <span class="is-size-5 has-text-weight-semibold has-text-danger-dark has-background-danger-light">Danger zone</span>
+    </label>
+    <div class="collapsible">
+      <%= form_with url: admin_wipe_all_data_path, method: :delete do %>
+        <p class="unselectable">To wipe all data from the database and reset the hackathon, please type <code>RESET ETHBERLIN04</code> below:</p>
+        <div class="field has-addons">
+          <div class="control">
+            <%= text_field_tag :confirmation, nil, class: 'input', autocomplete: 'off' %>
+          </div>
+          <div class="control">
+            <%= submit_tag 'Wipe all data', class: 'button is-danger', data: {turbo_confirm: "This is an intrusive action which will wipe all data from the database. Are you sure?"} %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

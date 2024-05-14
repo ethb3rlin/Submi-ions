@@ -18,7 +18,7 @@
 #                                          PATCH  /judgements/:id(.:format)                                                                         judgements#update
 #                                          PUT    /judgements/:id(.:format)                                                                         judgements#update
 #                                          DELETE /judgements/:id(.:format)                                                                         judgements#destroy
-#           user_verify_zupass_credentials POST   /users/:user_id/verify_zupass_credentials(.:format)                                               users#verify_zupass_credentials
+#           user_verify_zupass_credentials GET    /users/:user_id/verify_zupass_credentials(.:format)                                               users#verify_zupass_credentials
 #                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
 #                                     user PATCH  /users/:id(.:format)                                                                              users#update
 #                                          PUT    /users/:id(.:format)                                                                              users#update
@@ -52,6 +52,7 @@
 #                                          PATCH  /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#update
 #                                          PUT    /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#update
 #                                          DELETE /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#destroy
+#                      admin_wipe_all_data DELETE /admin/wipe_all_data(.:format)                                                                    admin/admin#wipe_all_data
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
 #                                 sign_out DELETE /sign_out(.:format)                                                                               sessions#sign_out
 #                              submissions GET    /submissions(.:format)                                                                            submissions#index
@@ -141,6 +142,8 @@ Rails.application.routes.draw do
 
     resources :submissions, only: :index
     resources :judging_teams
+
+    delete 'wipe_all_data' => 'admin#wipe_all_data'
   end
 
   post 'sign_in' => 'sessions#sign_in'

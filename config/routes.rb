@@ -52,6 +52,7 @@
 #                                          PATCH  /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#update
 #                                          PUT    /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#update
 #                                          DELETE /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#destroy
+#                 admin_generate_fake_data POST   /admin/generate_fake_data(.:format)                                                               admin/admin#generate_fake_data
 #                      admin_wipe_all_data DELETE /admin/wipe_all_data(.:format)                                                                    admin/admin#wipe_all_data
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
 #                                 sign_out DELETE /sign_out(.:format)                                                                               sessions#sign_out
@@ -143,6 +144,7 @@ Rails.application.routes.draw do
     resources :submissions, only: :index
     resources :judging_teams
 
+    post 'generate_fake_data' => 'admin#generate_fake_data'
     delete 'wipe_all_data' => 'admin#wipe_all_data'
   end
 

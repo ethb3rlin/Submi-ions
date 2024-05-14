@@ -5,6 +5,8 @@ class Admin::AdminController < ApplicationController
 
   def settings
     authorize :admin, :settings?, policy_class: AdminPolicy
+
+    @job_count = Que.job_stats.find { |job| job[:job_class] == 'GenerateRandomTeamJob' }&.fetch(:count)
   end
 
   def update_start_time
@@ -41,6 +43,15 @@ class Admin::AdminController < ApplicationController
     Submission.distribute_unassigned!
     Judgement.schedule_missing!
     redirect_to admin_submissions_path
+  end
+
+  def generate_fake_data
+    authorize :admin, :generate_fake_data?, policy_class: AdminPolicy
+    amount = params[:amount].to_i
+    amount.times do
+      GenerateRandomTeamJob.enqueue
+    end
+    redirect_to admin_settings_path, notice: "Enqueued #{amount} jobs"
   end
 
   def wipe_all_data

@@ -26,5 +26,7 @@ module Submissions
 
     # I want to reuse partials in the Admin:: namespace without dealing with nesting path bugs
     config.action_view.prefix_partial_path_with_controller_namespace = false
+
+    config.active_job.queue_adapter = :que # In tests we would just configure Que::Job.run_synchronously = true
   end
 end

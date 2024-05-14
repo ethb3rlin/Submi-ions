@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: 6595da907a39c3d1bc746acc85f9af63f45325b6
+  branch: main
+  specs:
+    faker (3.3.1)
+      i18n (>= 1.8.11, < 2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -235,6 +243,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.3.2)
       activesupport (>= 3.0.0)
+    que (2.3.0)
     racc (1.7.3)
     rack (3.0.11)
     rack-livereload (0.6.0)
@@ -354,6 +363,7 @@ DEPENDENCIES
   commonmarker
   debug
   draper
+  faker!
   guard
   guard-livereload
   guard-rails
@@ -365,6 +375,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   pundit
+  que
   rack-livereload
   rails (~> 7.1.3)
   redis (>= 4.0.1)

@@ -90,3 +90,7 @@ gem "commonmarker"
 gem "local_time"
 
 gem "httparty"
+
+# We use faker in production as well, since it's used to generate fake data for the loadtesting
+gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main'
+gem 'que' # To run background jobs via Postgres

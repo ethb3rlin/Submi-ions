@@ -65,14 +65,40 @@
     </div>
   </div>
 
+
   <% if ENV['ALLOW_DANGEROUS_OPERATIONS'] == 'true' %>
+
+    <div class="generate-fake-data is-block mb-5">
+      <h2 class="title is-4">Generate fake data</h2>
+      <% if @job_count && @job_count > 0 %>
+        <p class="has-text-danger-dark">There are <%= @job_count %> generation jobs in the queue.</p>
+      <% end %>
+      <div class="buttons">
+        <%= button_to admin_generate_fake_data_path(amount: 1), method: :post, class: 'button is-success is-outlined' do %>
+          <%= lucide_icon 'dice-1' %>
+          Generate one fake submission
+        <% end %>
+        <%= button_to admin_generate_fake_data_path(amount: 100), method: :post, class: 'button is-warning is-outlined' do %>
+          <%= lucide_icon 'dices' %>
+          Generate 100 fake submissions
+        <% end %>
+        <%= button_to admin_generate_fake_data_path(amount: 1000), method: :post, class: 'button is-danger is-outlined' do %>
+          <%= lucide_icon 'skull' %>
+          Generate 1000 fake submissions
+        <% end %>
+      </div>
+    </div>
+
     <div class="collapsible-container">
       <input type="checkbox" id="collapsible-toggle">
       <label for="collapsible-toggle" class="collapsible-label">
         <span class="is-size-5 has-text-weight-semibold has-text-danger-dark has-background-danger-light">Danger zone</span>
       </label>
       <div class="collapsible">
+
+
         <%= form_with url: admin_wipe_all_data_path, method: :delete do %>
+          <h2 class="title is-4">Wipe all data!!!111</h2>
           <p class="unselectable">To wipe all data from the database and reset the hackathon, please type <code>RESET ETHBERLIN04</code> below:</p>
           <div class="field has-addons">
             <div class="control">

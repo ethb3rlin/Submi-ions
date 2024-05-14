@@ -21,6 +21,10 @@ class AdminPolicy < ApplicationPolicy
     user.try :organizer?
   end
 
+  def generate_fake_data?
+    user.try(:organizer?) && ENV['ALLOW_DANGEROUS_OPERATIONS']=='true'
+  end
+
   def wipe_all_data?
     user.try(:organizer?) && ENV['ALLOW_DANGEROUS_OPERATIONS']=='true'
   end

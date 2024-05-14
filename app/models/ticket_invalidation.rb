@@ -4,7 +4,7 @@
 #
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  ticket_id  :uuid             not null
+#  ticket_id  :uuid             not null, primary key
 #  user_id    :bigint           not null
 #
 # Indexes

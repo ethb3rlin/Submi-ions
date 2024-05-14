@@ -48,8 +48,19 @@
       </div>
 
       <div class="block">
-        <p class="subtitle">On Sunday, judging is scheduled to begin at:</p>
-        <p class="title"><%= Setting.judging_start_time %></p>
+        <div class="block">
+          <p class="subtitle">On Sunday, judging is scheduled to begin at:</p>
+          <p class="title"><%= Setting.judging_start_time %></p>
+        </div>
+
+        <% if JudgingBreak.any? %>
+          <div class="block">
+            <p class="subtitle mb-1">with the following breaks:</p>
+            <% JudgingBreak.order(:begins).each do |break_time| %>
+              <p class="subtitle has-text-weight-semibold mb-0"><%= break_time.begins.strftime("%H:%M") %>&#8239;–&#8239;<%= break_time.ends.strftime("%H:%M") %></p>
+            <% end %>
+          </div>
+        <% end %>
       </div>
       <%= link_to admin_settings_path, class: ['button', 'is-danger', 'is-light'] do %>
         <%= lucide_icon 'settings', class: 'icon' %>

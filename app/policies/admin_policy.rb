@@ -22,6 +22,6 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def wipe_all_data?
-    user.try :organizer?
+    user.try(:organizer?) && ENV['ALLOW_DANGEROUS_OPERATIONS']=='true'
   end
 end

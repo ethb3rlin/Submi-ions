@@ -9,8 +9,7 @@ class HackingTeamsController < ApplicationController
     else
       HackingTeam.all
     end.order(created_at: :desc).all
-    @approved_applications = current_user&.join_applications&.approved || []
-
+    @approved_application_ids = JoinApplication.approved.where(user: current_user).pluck(:hacking_team_id)
     authorize @teams
   end
 

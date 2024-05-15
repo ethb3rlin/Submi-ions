@@ -1,47 +1,44 @@
-<div class="submission card" id="<%= dom_id submission %>">
+<% cache submission do %>
+  <div class="submission card" id="<%= dom_id submission %>">
 
-  <header class="card-header">
-    <p class="card-header-title title submission-title">
-      <span><%= submission.title %></span>
-      <span class="is-size-5 is-italic submission-track has-text-weight-normal">
-        <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
-        <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
-      </span>
-      <% if submission&.judgement&.time.present? %>
-        <span class="is-size-6 ml-6 has-text-weight-normal">
-          Demo at <%= submission.judgement.just_time %> in <%= submission.judgement.judging_team.location %>
+    <header class="card-header">
+      <p class="card-header-title title submission-title">
+        <span><%= submission.title %></span>
+        <span class="is-size-5 is-italic submission-track has-text-weight-normal">
+          <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
+          <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
         </span>
-      <% end %>
-    </p>
-    <% if policy(submission).edit? %>
-      <%= link_to edit_submission_path(submission), class: "card-header-icon has-text-link" do %>
-        <%= lucide_icon 'edit', class: 'icon' %>
-      <% end %>
-    <% end %>
-  </header>
-  <div class="card-content">
-    <div class="content description"><%= submission.decorate.formatted_description %></div>
-  </div>
-  <footer class="card-footer">
-    <div class="card-footer-item show-card">
-      <%= link_to "Show details", submission, class: "button is-ghost" %>
+        <% if submission&.judgement&.time.present? %>
+          <span class="is-size-6 ml-6 has-text-weight-normal">
+            Demo at <%= submission.judgement.just_time %> in <%= submission.judgement.judging_team.location %>
+          </span>
+        <% end %>
+      </p>
+    </header>
+    <div class="card-content">
+      <div class="content description"><%= submission.decorate.formatted_description %></div>
     </div>
-    <% if submission.hacking_team.present? %>
-      <div class="card-footer-item">
-        <%= link_to submission.hacking_team, class: "button is-ghost" do %>
-          <%= lucide_icon 'users', class: 'icon is-small' %>
-          <span><%= submission.hacking_team.name %></span>
-        <% end %>
+    <footer class="card-footer">
+      <div class="card-footer-item show-card">
+        <%= link_to "Show details", submission, class: "button is-ghost" %>
       </div>
-    <% end %>
+      <% if submission.hacking_team.present? %>
+        <div class="card-footer-item">
+          <%= link_to submission.hacking_team, class: "button is-ghost" do %>
+            <%= lucide_icon 'users', class: 'icon is-small' %>
+            <span><%= submission.hacking_team.name %></span>
+          <% end %>
+        </div>
+      <% end %>
 
-    <% if submission.url.present? %>
-      <div class="card-footer-item">
-        <%= link_to submission.url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
-          <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
-          <span><%= submission.url %></span>
-        <% end %>
-      </div>
-    <% end %>
-  </footer>
-</div>
+      <% if submission.url.present? %>
+        <div class="card-footer-item">
+          <%= link_to submission.url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
+            <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
+            <span><%= submission.url %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </footer>
+  </div>
+<% end %>

@@ -48,8 +48,10 @@ class Admin::AdminController < ApplicationController
   def generate_fake_data
     authorize :admin, :generate_fake_data?, policy_class: AdminPolicy
     amount = params[:amount].to_i
-    amount.times do
-      GenerateRandomTeamJob.enqueue
+    Que.bulk_enqueue do
+      amount.times do
+        GenerateRandomTeamJob.enqueue
+      end
     end
     redirect_to admin_settings_path, notice: "Enqueued #{amount} jobs"
   end

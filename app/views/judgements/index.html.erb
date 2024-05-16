@@ -1,9 +1,42 @@
 <div class="content" id="judgements">
-  <% if @judgements.empty? %>
-    <p>
-      You have not judged any projects yet.
+  <% if [:registration, :hacking].include? Setting.hackathon_stage %>
+    <p class="title">
+      Judging starts at <%= Setting.judging_start_time %> on Sunday.
     </p>
+    <p class="subtitle">
+      Before that time, you can browse the <%= link_to "projects", submissions_path %> or <%= link_to "hacking teams", hacking_teams_path %> at your own leisure.
+    </p>
+  <% elsif Setting.hackathon_stage == :judging %>
+
+    <% if @judgements.empty? %>
+      <p>
+        You have not judged any projects yet.
+      </p>
+    <% else %>
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Technical Score</th>
+            <th>Product Score</th>
+            <th>Concept Score</th>
+          </tr>
+        </thead>
+        <tbody id="<%= dom_id(@judging_team, :judgements) %>">
+          <%= render @judgements %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <% if @there_are_more_to_judge %>
+      <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
+    <% else %>
+      <p>Congrats, you have judged everything!</p>
+    <% end %>
   <% else %>
+    <p>Judging is no longer possible.</p>
+    <p>Here are the judgements of your <%= @judging_team %> team.</p>
+    <% # TODO: link to the Hackathon results page %>
     <table class="table is-fullwidth">
       <thead>
         <tr>
@@ -11,18 +44,13 @@
           <th>Technical Score</th>
           <th>Product Score</th>
           <th>Concept Score</th>
+          <th>Total Score</th>
         </tr>
       </thead>
       <tbody id="<%= dom_id(@judging_team, :judgements) %>">
         <%= render @judgements %>
       </tbody>
     </table>
-  <% end %>
-
-  <% if @there_are_more_to_judge %>
-    <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
-  <% else %>
-    <p>Congrats, you have judged everything!</p>
   <% end %>
 </div>
 

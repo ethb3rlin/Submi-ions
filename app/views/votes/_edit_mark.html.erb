@@ -2,7 +2,7 @@
   <div class="level" data-controller="vote" data-vote-path-value="<%= vote_path(vote) %>">
     <div class="level-left is-flex-grow-1">
       <div class="level-item is-flex-grow-1">
-        <input type="range" class="slider is-fullwidth <%= vote.completed ? 'is-link' : 'is-info' %>" min="0" max="100" step="0.1" value="<%= vote.padded_mark %>" data-vote-target="slider" data-action="input->vote#updateNumber mouseup->vote#submitValue">
+        <input type="range" class="slider is-fullwidth <%= 'is-info' unless vote.completed %>" min="0" max="100" step="0.1" value="<%= vote.padded_mark %>" data-vote-target="slider" data-action="input->vote#updateNumber mouseup->vote#submitValue">
       </div>
     </div>
     <div class="level-right">

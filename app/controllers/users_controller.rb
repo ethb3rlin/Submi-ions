@@ -5,7 +5,13 @@ class UsersController < ApplicationController
     return redirect_to submissions_path unless current_user
     return redirect_to edit_user_path(current_user) unless current_user.approved?
     return redirect_to admin_root_path if current_user.organizer?
-    return redirect_to judgements_path if current_user.judge?
+    if current_user.judge?
+      if Setting.hackathon_stage == :judging
+        return redirect_to judgements_path
+      else
+        return redirect_to submissions_path
+      end
+    end
 
     @teams = current_user.hacking_teams
     @current_team = HackingTeam.find_by(id: params[:team_id]) || @teams.first

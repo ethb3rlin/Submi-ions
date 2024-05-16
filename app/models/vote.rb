@@ -35,6 +35,23 @@ class Vote < ApplicationRecord
     technical_vote_judgement || product_vote_judgement || concept_vote_judgement
   end
 
+  def track
+    if technical_vote_judgement.present?
+      :technical
+    elsif product_vote_judgement.present?
+      :product
+    elsif concept_vote_judgement.present?
+      :concept
+    end
+  end
+
+  def suitable_judge?(judge)
+    return false unless judge.try :judge?
+    # User is a suitable judge if they areare either assigned to the team as the judge on the track, or the particular vote belongs to them
+    logger.warn "XXXXXX #{judge.id}, #{self.user.id}, #{self.judgement.judging_team.send(track.to_s+'_judge').id}"
+    return judge == self.user || judge == self.judgement.judging_team.send("#{track}_judge")
+  end
+
   def padded_mark
     format("%.1f", self.mark)
   end

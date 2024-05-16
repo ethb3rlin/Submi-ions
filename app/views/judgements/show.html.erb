@@ -3,13 +3,13 @@
   <p><%= @submission.decorate.formatted_description %></p>
 
   <div class="grid" id="votes">
-    <div class="cell <%= 'editable' if @judgement.technical_vote&.user == current_user %>">
+    <div class="cell <%= 'editable' if @judgement.technical_vote && policy(@judgement.technical_vote).update? %>">
       <%= render @judgement.technical_vote, kind: :technical %>
     </div>
-    <div class="cell <%= 'editable' if @judgement.product_vote&.user == current_user %>">
+    <div class="cell <%= 'editable' if @judgement.product_vote && policy(@judgement.product_vote).update? %>">
       <%= render @judgement.product_vote, kind: :product %>
     </div>
-    <div class="cell <%= 'editable' if @judgement.concept_vote&.user == current_user %>">
+    <div class="cell <%= 'editable' if @judgement.concept_vote && policy(@judgement.concept_vote).update? %>">
       <%= render @judgement.concept_vote, kind: :concept %>
     </div>
   </div>

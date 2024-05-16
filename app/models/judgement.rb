@@ -75,6 +75,10 @@ class Judgement < ApplicationRecord
     end
   end
 
+  def total_score
+    technical_vote.mark + product_vote.mark + concept_vote.mark
+  end
+
   def self.schedule_missing!
     Judgement.transaction do
       JudgingTeam.all.pluck(:id).each do |team_id|

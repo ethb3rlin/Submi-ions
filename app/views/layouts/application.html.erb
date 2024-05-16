@@ -47,21 +47,26 @@
               </a>
             </div>
           <% elsif current_user&.judge? %>
-            <div class="navbar-item">
-              <a class="button <%= active_class(judgements_path) %>" href="<%= judgements_path %>">
-                <%= lucide_icon 'scale', class: "icon is-small" %>
-                <span>Judging UI</span>
-              </a>
-            </div>
-          <% else %>
-            <% if policy(Submission).create? %>
+            <% if current_user.judging_team.present? %>
               <div class="navbar-item">
-                <a class="button has-text-primary-dark has-text-weight-bold has-background-primary-light" href="<%= new_submission_path %>">
-                  <%= lucide_icon 'badge-plus', class: "icon is-small" %>
-                  <span>Submit a project</span>
-                </a>
+                <p>
+                  You're in the
+                  <br/>
+                  <span class="has-text-weight-medium"><%= current_user.judging_team %></span> team
+                  <% if current_user.judging_team.location.present? %>
+                    <br/>
+                    located in <span class="has-text-weight-medium"><%= current_user.judging_team.location %></span>
+                  <% end %>
+                </p>
               </div>
             <% end %>
+          <% elsif policy(Submission).create? %>
+            <div class="navbar-item">
+              <a class="button has-text-primary-dark has-text-weight-bold has-background-primary-light" href="<%= new_submission_path %>">
+                <%= lucide_icon 'badge-plus', class: "icon is-small" %>
+                <span>Submit a project</span>
+              </a>
+            </div>
             <a class="navbar-item is-tab <%= active_class(submissions_path) %>" href="<%= submissions_path %>">
               Browse projects
             </a>

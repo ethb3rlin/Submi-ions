@@ -8,6 +8,7 @@ class VotesController < ApplicationController
   end
 
   def update
+    @vote.user = current_user
     @vote.update!(vote_params)
   end
 

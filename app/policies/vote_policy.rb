@@ -16,14 +16,14 @@ class VotePolicy < ApplicationPolicy
   end
 
   def complete?
-    user.present? && (user.organizer? || user.judge?) && record.user == user
+    update?
   end
 
   def update?
-    user.present? && (record.user == user || user.organizer?)
+    user.present? && user.judge? && Setting.hackathon_stage == :judging && record.suitable_judge?(user)
   end
 
   def destroy?
-    user.present? && (record.user == user || user.organizer?)
+    user.present? && user.organizer?
   end
 end

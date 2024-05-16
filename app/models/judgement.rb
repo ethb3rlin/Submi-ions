@@ -41,6 +41,8 @@ class Judgement < ApplicationRecord
   belongs_to :product_vote, class_name: "Vote", dependent: :destroy, optional: true
   belongs_to :concept_vote, class_name: "Vote", dependent: :destroy, optional: true
 
+  has_many :comments, class_name: "JudgementComment", dependent: :destroy
+
   after_save_commit :broadcast_new_judgement
 
   # Don't include no-show judgements in the default scope

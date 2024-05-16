@@ -1,0 +1,9 @@
+<%= form_for judgement_comment, url: add_comment_judgement_path(judgement_comment.judgement), data: {turbo_frame: 'post'} do |form| %>
+  <div class="field">
+    <%= form.text_area :text, class: "textarea" %>
+  </div>
+
+  <div class="field">
+    <%= form.submit "Post", class: "button is-primary" %>
+  </div>
+<% end %>

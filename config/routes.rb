@@ -11,6 +11,7 @@
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
 #                       complete_judgement POST   /judgements/:id/complete(.:format)                                                                judgements#complete
 #                        no_show_judgement POST   /judgements/:id/no_show(.:format)                                                                 judgements#no_show
+#                    add_comment_judgement POST   /judgements/:id/add_comment(.:format)                                                             judgements#add_comment
 #                               judgements GET    /judgements(.:format)                                                                             judgements#index
 #                                          POST   /judgements(.:format)                                                                             judgements#create
 #                            new_judgement GET    /judgements/new(.:format)                                                                         judgements#new
@@ -117,6 +118,8 @@ Rails.application.routes.draw do
     member do
       post 'complete'
       post 'no_show'
+
+      post 'add_comment'
     end
   end
 

@@ -1,0 +1,14 @@
+<% if judgement_comment.persisted? %> <%# I'm not happy about this, but collection is rendered with non-persisted members by default %>
+  <div class="panel-block is-fullwidth">
+    <div class="columns" style="width: 100%;">
+      <div class="column">
+        <%= judgement_comment.text %>
+      </div>
+      <div class="column is-2 is-size-7">
+        Posted by <strong><%= judgement_comment.user.name %></strong>
+        <br/>
+        <span data-tooltip="<%= judgement_comment.created_at %>"><%= time_ago_in_words(judgement_comment.created_at) %></span> ago
+      </div>
+    </div>
+  </div>
+<% end %>

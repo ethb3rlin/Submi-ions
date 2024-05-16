@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_16_194903) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_16_213805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_194903) do
     t.index ["state"], name: "index_join_applications_on_state"
     t.index ["user_id", "hacking_team_id"], name: "index_join_applications_on_user_id_and_hacking_team_id", unique: true
     t.index ["user_id"], name: "index_join_applications_on_user_id"
+  end
+
+  create_table "judgement_comments", force: :cascade do |t|
+    t.bigint "judgement_id", null: false
+    t.bigint "user_id", null: false
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["judgement_id"], name: "index_judgement_comments_on_judgement_id"
+    t.index ["user_id"], name: "index_judgement_comments_on_user_id"
   end
 
   create_table "judgements", force: :cascade do |t|
@@ -186,6 +196,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_194903) do
   add_foreign_key "join_applications", "hacking_teams"
   add_foreign_key "join_applications", "users"
   add_foreign_key "join_applications", "users", column: "decided_by_id"
+  add_foreign_key "judgement_comments", "judgements"
+  add_foreign_key "judgement_comments", "users"
   add_foreign_key "judgements", "judging_teams"
   add_foreign_key "judgements", "submissions"
   add_foreign_key "judgements", "votes", column: "concept_vote_id", on_delete: :nullify

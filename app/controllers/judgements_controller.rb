@@ -32,6 +32,14 @@ class JudgementsController < ApplicationController
 
     @judging_team = @judgement.judging_team
     @submission = @judgement.submission
+
+    @new_comment = @judgement.comments.build(user: current_user)
+  end
+
+  def add_comment
+    @judgement_comment = JudgementComment.new(comment_params)
+    authorize @judgement_comment, :create?
+    @judgement_comment.save!
   end
 
   def no_show # Don't get confused, this is an action which sets the no_show flag to true
@@ -62,5 +70,10 @@ class JudgementsController < ApplicationController
     else
       redirect_to @judgement
     end
+  end
+
+  private
+  def comment_params
+    params.require(:judgement_comment).permit(:text).merge(user: current_user, judgement_id: params[:id])
   end
 end

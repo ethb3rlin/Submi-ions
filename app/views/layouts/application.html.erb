@@ -21,7 +21,7 @@
     </script>
   </head>
 
-  <body>
+  <body id="body">
     <nav class="navbar has-shadow <%= current_user.try :navbar_class %>" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" id="navbar-logo-header" data-turbo="false" href="/">
@@ -47,6 +47,7 @@
               </a>
             </div>
           <% elsif current_user&.judge? %>
+
             <% if current_user.judging_team.present? %>
               <div class="navbar-item">
                 <p>
@@ -59,6 +60,36 @@
                   <% end %>
                 </p>
               </div>
+
+              <% if Setting.hackathon_stage == :judging %>
+                <% if current_user.judging_team.current_judgement.present? %>
+                  <div class="navbar-item">
+                    <%= link_to current_user.judging_team.current_judgement, class: "button is-link" do %>
+                      <%= lucide_icon 'scale', class: "icon" %>
+                      <span>You're currently judging:<span>
+                      <br/>
+                      <span class="is-size-5"><%= current_user.judging_team.current_judgement.submission.title %></span>
+                    <% end %>
+                  </div>
+
+                  <div class="navbar-item">
+                    <p>
+                    <% if current_user.judging_team.next_judgement.present? %>
+                      Next up:
+                      <%= link_to current_user.judging_team.next_judgement do %>
+                        <span class="has-text-weight-medium is-size-5"><%= current_user.judging_team.next_judgement.submission.title %></span>
+                      <% end %>
+                      <br/>
+                      scheduled for <span class="has-text-weight-bold"><%= current_user.judging_team.next_judgement.time.strftime("%H:%M") %></span>
+                      <br/>
+                    <% end %>
+                    <% if current_user.judging_team.last_judgement.present? %>
+                      Previously: <%= link_to current_user.judging_team.last_judgement.submission.title, current_user.judging_team.last_judgement, class: "has-text-weight-medium" %>
+                    <% end %>
+                    </p>
+                  </div>
+                <% end %>
+              <% end %>
             <% end %>
           <% elsif policy(Submission).create? %>
             <div class="navbar-item">
@@ -78,6 +109,19 @@
 
         <div class="navbar-end">
           <% if current_user %>
+            <% if current_user.judge? && Setting.hackathon_stage == :judging %>
+              <div class="navbar-item" id="clock">
+                <div class="tag is-warning is-light is-large">
+                  <%= lucide_icon 'clock', size: 16, class: "icon is-small" %>
+                  <div class="time" data-controller="time" data-time-timestamp-value="<%= Time.now.to_i %>">
+                    <span data-time-target="hours"><%= Time.now.strftime("%H") %></span>
+                    <span class="blink">:</span>
+                    <span data-time-target="minutes"><%= Time.now.strftime("%M") %></span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
             <div class="navbar-item has-dropdown is-hoverable">
               <a href="" class="navbar-link">
                 Hello, <%= current_user.readable_name %>!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_14_215949) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_16_145819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,10 +84,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_215949) do
     t.bigint "concept_judge_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "current_judgement_id"
     t.string "location"
     t.index ["concept_judge_id"], name: "index_judging_teams_on_concept_judge_id"
-    t.index ["current_judgement_id"], name: "index_judging_teams_on_current_judgement_id"
     t.index ["product_judge_id"], name: "index_judging_teams_on_product_judge_id"
     t.index ["technical_judge_id"], name: "index_judging_teams_on_technical_judge_id"
   end
@@ -192,7 +190,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_14_215949) do
   add_foreign_key "judgements", "votes", column: "concept_vote_id", on_delete: :nullify
   add_foreign_key "judgements", "votes", column: "product_vote_id", on_delete: :nullify
   add_foreign_key "judgements", "votes", column: "technical_vote_id", on_delete: :nullify
-  add_foreign_key "judging_teams", "judgements", column: "current_judgement_id", on_delete: :nullify
   add_foreign_key "judging_teams", "users", column: "concept_judge_id"
   add_foreign_key "judging_teams", "users", column: "product_judge_id"
   add_foreign_key "judging_teams", "users", column: "technical_judge_id"

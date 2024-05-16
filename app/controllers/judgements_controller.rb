@@ -5,10 +5,6 @@ class JudgementsController < ApplicationController
     @judgements = Judgement.where(judging_team: @judging_team).order(:created_at)
     authorize @judgements
 
-    if @judging_team.present? && @judging_team.current_judgement.present? && !@judging_team.current_judgement.completed?
-      redirect_to @judging_team.current_judgement
-    end
-
     @there_are_more_to_judge = Submission.unassigned.any?
   end
 
@@ -20,15 +16,10 @@ class JudgementsController < ApplicationController
     @judgement = Judgement.new(submission: @submission, judging_team: @judging_team)
     authorize @judgement
 
-    return redirect_to judgements_path unless @judging_team.present? && @submission.present?
-    return redirect_to @judging_team.current_judgement if @judging_team.current_judgement.present?
-
     @judgement.technical_vote = Vote.create!(user: @judging_team.technical_judge, mark: 50)
     @judgement.product_vote = Vote.create!(user: @judging_team.product_judge, mark: 50)
     @judgement.concept_vote = Vote.create!(user: @judging_team.concept_judge, mark: 50)
     @judgement.save!
-
-    @judging_team.update(current_judgement: @judgement)
 
     redirect_to @judgement
   end
@@ -50,7 +41,11 @@ class JudgementsController < ApplicationController
     @judgement.complete_for(current_user)
 
     if @judgement.completed?
-      redirect_to judgements_path
+      if @judgement.judging_team.current_judgement.present?
+        redirect_to judgement_path(current_user.judging_team.current_judgement)
+      else
+        redirect_to judgements_path
+      end
     else
       redirect_to @judgement
     end

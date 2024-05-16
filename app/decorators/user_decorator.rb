@@ -29,9 +29,9 @@ class UserDecorator < Draper::Decorator
     if object.organizer?
       'is-info'
     elsif object.judge?
-      'is-dark'
-    else
       'is-light'
+    else
+      'is-dark'
     end
   end
 

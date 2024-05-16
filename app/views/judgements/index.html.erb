@@ -27,12 +27,6 @@
         </tbody>
       </table>
     <% end %>
-
-    <% if @there_are_more_to_judge %>
-      <%= button_to "Judge another project", judgements_path, class: "button is-primary is-large" %>
-    <% else %>
-      <p>Congrats, you have judged everything!</p>
-    <% end %>
   <% else %>
     <p>Judging is no longer possible.</p>
     <p>Here are the judgements of your <%= @judging_team %> team.</p>
@@ -54,4 +48,4 @@
   <% end %>
 </div>
 
-<%= turbo_stream_from @judging_team, :judgements_redirects %>
+<%= turbo_stream_from @judging_team, :judgement_redirects %>

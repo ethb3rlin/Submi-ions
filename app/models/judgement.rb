@@ -43,6 +43,28 @@ class Judgement < ApplicationRecord
   after_save_commit :broadcast_new_judgement
 
   scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }
+  scope :incomplete, -> {
+      # Querying Judgements where any vote (technical, product, concept) is incomplete
+      incomplete_votes_query = Vote.where(completed: false)
+
+      judgements_with_incomplete_technical_votes = Judgement.joins(:technical_vote).merge(incomplete_votes_query)
+      judgements_with_incomplete_product_votes = Judgement.joins(:product_vote).merge(incomplete_votes_query)
+      judgements_with_incomplete_concept_votes = Judgement.joins(:concept_vote).merge(incomplete_votes_query)
+
+      # Combining the queries using UNION; inelegant, but easy to follow
+      from("(#{judgements_with_incomplete_technical_votes.to_sql} UNION #{judgements_with_incomplete_product_votes.to_sql} UNION #{judgements_with_incomplete_concept_votes.to_sql}) AS judgements")
+    }
+  scope :completed, -> {
+      # All of the votes are marked as completed
+      completed_votes_query = Vote.where(completed: true)
+
+      judgements_with_completed_technical_votes = Judgement.joins(:technical_vote).merge(completed_votes_query)
+      judgements_with_completed_product_votes = Judgement.joins(:product_vote).merge(completed_votes_query)
+      judgements_with_completed_concept_votes = Judgement.joins(:concept_vote).merge(completed_votes_query)
+
+      # Combining the queries using INTERSECT; inelegant, but easy to follow
+      from("(#{judgements_with_completed_technical_votes.to_sql} INTERSECT #{judgements_with_completed_product_votes.to_sql} INTERSECT #{judgements_with_completed_concept_votes.to_sql}) AS judgements")
+  }
 
   def just_time
     self[:time]&.strftime("%H:%M")
@@ -56,9 +78,15 @@ class Judgement < ApplicationRecord
     end
 
     if completed?
-      broadcast_append_to self, :votes,
-        html: "<script>if (window.location.pathname.match('#{ judgement_path(self) }') && CURRENT_USER_ROLE==='judge') { window.location = '#{judgements_path}'; }</script>".html_safe,
-        target: dom_id(self)
+      new_location = if judging_team.current_judgement.present?
+        judgement_path(judging_team.current_judgement)
+      else
+        judgements_path
+      end
+
+      broadcast_append_to judging_team, :judgement_redirects,
+        html: "<script>window.location = '#{new_location}';</script>".html_safe,
+        target: 'body'
     end
   end
 
@@ -115,8 +143,6 @@ class Judgement < ApplicationRecord
   private
   def broadcast_new_judgement
     broadcast_replace_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(self)
-    broadcast_refresh_to judging_team, :judgements_redirects
-
     broadcast_replace_to 'submissions', target: dom_id(submission), partial: 'submissions/tr', locals: { submission: submission }
   end
 end

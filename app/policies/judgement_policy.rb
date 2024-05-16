@@ -12,7 +12,7 @@ class JudgementPolicy < ApplicationPolicy
   end
 
   def complete?
-    user.present? && user.approved? && user.judge? && record.judging_team == user.judging_team
+    user.present? && user.approved? && user.judge? && record.judging_team == user.judging_team && Setting.hackathon_stage == :judging
   end
 
   def no_show?

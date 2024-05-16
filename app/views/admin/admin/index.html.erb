@@ -33,8 +33,16 @@
     <div class="hero-body">
       <div class="block columns">
         <div class="column">
-          <p class="subtitle">Current stage:</p>
-          <p class="title"><%= Setting.hackathon_stage.capitalize %></p>
+            <p class="subtitle">Current stage:</p>
+            <p class="title"><%= Setting.hackathon_stage.capitalize %></p>
+          <% if Setting.hackathon_stage == :judging && @teams_still_judging.any? %>
+            <div class="block">
+              <p class="subtitle mb-1">Teams still judging:</p>
+              <% @teams_still_judging.each do |team| %>
+                <p class="mb-1"><%= link_to team, admin_judging_teams_path(id: team) %></p>
+              <% end %>
+            </div>
+          <% end %>
         </div>
         <div class="column">
           <% if Setting.hackathon_stage != :finalizing %>

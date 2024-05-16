@@ -1,6 +1,9 @@
 class Admin::AdminController < ApplicationController
   def index
     authorize :admin, :index?, policy_class: AdminPolicy
+
+    # List judging teams which have incomplete judgements
+    @teams_still_judging = JudgingTeam.find(Judgement.incomplete.distinct.pluck(:judging_team_id))
   end
 
   def settings

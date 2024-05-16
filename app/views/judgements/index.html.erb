@@ -48,4 +48,7 @@
   <% end %>
 </div>
 
-<%= turbo_stream_from @judging_team, :judgement_redirects %>
+<% if Setting.hackathon_stage == :judging %>
+  <%= turbo_stream_from @judging_team, :judgements %>
+  <%= turbo_stream_from @judging_team, :judgement_redirects %>
+<% end %>

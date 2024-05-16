@@ -10,6 +10,7 @@
 #                                          PUT    /votes/:id(.:format)                                                                              votes#update
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
 #                       complete_judgement POST   /judgements/:id/complete(.:format)                                                                judgements#complete
+#                        no_show_judgement POST   /judgements/:id/no_show(.:format)                                                                 judgements#no_show
 #                               judgements GET    /judgements(.:format)                                                                             judgements#index
 #                                          POST   /judgements(.:format)                                                                             judgements#create
 #                            new_judgement GET    /judgements/new(.:format)                                                                         judgements#new
@@ -115,6 +116,7 @@ Rails.application.routes.draw do
   resources :judgements do
     member do
       post 'complete'
+      post 'no_show'
     end
   end
 

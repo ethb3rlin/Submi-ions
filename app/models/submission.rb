@@ -22,7 +22,7 @@
 #
 
 class Submission < ApplicationRecord
-  has_one :judgement
+  has_one :judgement, -> { with_no_show }
 
   belongs_to :hacking_team
 

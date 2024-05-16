@@ -11,7 +11,7 @@ class VotesController < ApplicationController
     @vote.user = current_user
     @vote.update!(vote_params)
 
-    
+    @vote.judgement.update!(no_show: false)
   end
 
   def destroy

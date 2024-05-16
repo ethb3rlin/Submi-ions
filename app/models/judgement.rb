@@ -3,6 +3,7 @@
 # Table name: judgements
 #
 #  id                :bigint           not null, primary key
+#  no_show           :boolean          default(FALSE), not null
 #  time              :time
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -42,6 +43,10 @@ class Judgement < ApplicationRecord
 
   after_save_commit :broadcast_new_judgement
 
+  # Don't include no-show judgements in the default scope
+  default_scope { where(no_show: false) }
+  scope :with_no_show, -> { unscope(where: :no_show) }
+
   scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }
   scope :incomplete, -> {
       # Querying Judgements where any vote (technical, product, concept) is incomplete
@@ -75,23 +80,25 @@ class Judgement < ApplicationRecord
       technical_vote.update!(completed: true) if technical_vote.user == user
       product_vote.update!(completed: true) if product_vote.user == user
       concept_vote.update!(completed: true) if concept_vote.user == user
+      update!(no_show: false)
     end
 
     if completed?
-      new_location = if judging_team.current_judgement.present?
-        judgement_path(judging_team.current_judgement)
-      else
-        judgements_path
-      end
-
       broadcast_append_to judging_team, :judgement_redirects,
-        html: "<script>window.location = '#{new_location}';</script>".html_safe,
+        html: "<script>window.location = '#{next_location}';</script>".html_safe,
         target: 'body'
     end
   end
 
   def completed?
     technical_vote&.completed && product_vote&.completed && concept_vote&.completed
+  end
+
+  def mark_as_no_show!
+    update!(no_show: true)
+    broadcast_append_to judging_team, :judgement_redirects,
+      html: "<script>window.location = '#{next_location}';</script>".html_safe,
+      target: 'body'
   end
 
   def initialize_votes!
@@ -142,7 +149,15 @@ class Judgement < ApplicationRecord
 
   private
   def broadcast_new_judgement
-    broadcast_replace_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(self)
+    broadcast_replace_to judging_team, :judgements, locals: {judgement: self}, target: dom_id(submission)
     broadcast_replace_to 'submissions', target: dom_id(submission), partial: 'submissions/tr', locals: { submission: submission }
+  end
+
+  def next_location
+    if judging_team.current_judgement.present?
+      judgement_path(judging_team.current_judgement)
+    else
+      judgements_path
+    end
   end
 end

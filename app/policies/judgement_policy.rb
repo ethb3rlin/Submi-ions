@@ -14,4 +14,8 @@ class JudgementPolicy < ApplicationPolicy
   def complete?
     user.present? && user.approved? && user.judge? && record.judging_team == user.judging_team
   end
+
+  def no_show?
+    complete?
+  end
 end

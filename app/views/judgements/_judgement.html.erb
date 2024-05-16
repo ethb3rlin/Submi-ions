@@ -1,11 +1,22 @@
 <tr id="<%= dom_id(judgement.submission)%>">
   <td class="project-title">
-    <%= link_to judgement.submission.title, judgement, class: 'is-size-5' %>
-    <p class="is-size-7 is-italic">Scheduled at: <b class="is-size-6"><%= judgement.just_time %></b></p>
+    <%= link_to judgement.submission.title, judgement, class: class_names('is-size-5': true, 'has-text-danger': judgement.no_show) %>
+    <% if judgement.no_show %>
+      <p class="is-size-7 is-italic">No show at: <b class="is-size-6"><%= local_time(judgement.updated_at, '%H:%M') %></b></p>
+    <% elsif judgement.completed? %>
+      <p class="is-size-7 is-italic">Judged at: <b class="is-size-6"><%= local_time(judgement.updated_at, '%H:%M') %></b></p>
+    <% elsif judgement.time.present? %>
+      <p class="is-size-7 is-italic">Scheduled at: <b class="is-size-6"><%= judgement.just_time %></b></p>
+    <% end %>
   </td>
-  <td class="<%= 'editable' if judgement.technical_vote && policy(judgement.technical_vote).update? %>"><%= render judgement.technical_vote, kind: :technical if judgement.technical_vote %></td>
-  <td class="<%= 'editable' if judgement.product_vote && policy(judgement.product_vote).update? %>"><%= render judgement.product_vote, kind: :product if judgement.product_vote %></td>
-  <td class="<%= 'editable' if judgement.concept_vote && policy(judgement.concept_vote).update? %>"><%= render judgement.concept_vote, kind: :concept if judgement.concept_vote %></td>
+  <% if judgement.no_show %>
+    <td colspan="3" class="has-text-centered is-light">
+    </td>
+  <% else %>
+    <td class="<%= 'editable' if judgement.technical_vote && policy(judgement.technical_vote).update? %>"><%= render judgement.technical_vote, kind: :technical if judgement.technical_vote %></td>
+    <td class="<%= 'editable' if judgement.product_vote && policy(judgement.product_vote).update? %>"><%= render judgement.product_vote, kind: :product if judgement.product_vote %></td>
+    <td class="<%= 'editable' if judgement.concept_vote && policy(judgement.concept_vote).update? %>"><%= render judgement.concept_vote, kind: :concept if judgement.concept_vote %></td>
+  <% end %>
   <% if Setting.hackathon_stage == :finalizing %>
     <td><%= judgement.total_score %></td>
   <% end %>

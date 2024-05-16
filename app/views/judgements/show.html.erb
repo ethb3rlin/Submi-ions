@@ -14,11 +14,18 @@
     </div>
   </div>
 
-  <div class="buttons">
+  <div class="level">
     <% if policy(@judgement).complete? %>
-      <%= button_to complete_judgement_path(@judgement), class: "button is-success", data: { turbo_frame: dom_id(@judgement) } do %>
-        <%= lucide_icon "circle-check-big", class: "icon is-small" %>
-        <span>I'm done</span>
+      <div class="level-left">
+        <%= button_to complete_judgement_path(@judgement), class: "button is-success", data: { turbo_frame: dom_id(@judgement) } do %>
+          <%= lucide_icon "circle-check-big", class: "icon is-small" %>
+          <span>I'm done</span>
+        <% end %>
+      </div>
+
+      <%= button_to no_show_judgement_path(@judgement), class: "button is-danger", data: { turbo_confirm: "Are you sure?" } do %>
+        <%= lucide_icon "ban", class: "icon is-small" %>
+        <span>Mark as "No show"</span>
       <% end %>
     <% else %>
       <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
@@ -29,5 +36,7 @@
   </div>
 </div>
 
-<%= turbo_stream_from @judgement, :votes %>
-<%= turbo_stream_from @judging_team, :judgement_redirects %>
+<% if Setting.hackathon_stage == :judging && current_user.judge? %>
+  <%= turbo_stream_from @judgement, :votes %>
+  <%= turbo_stream_from @judging_team, :judgement_redirects %>
+<% end %>

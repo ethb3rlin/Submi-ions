@@ -16,10 +16,12 @@ class JudgementsController < ApplicationController
     @judgement = Judgement.new(submission: @submission, judging_team: @judging_team)
     authorize @judgement
 
-    @judgement.technical_vote = Vote.create!(user: @judging_team.technical_judge, mark: 50)
-    @judgement.product_vote = Vote.create!(user: @judging_team.product_judge, mark: 50)
-    @judgement.concept_vote = Vote.create!(user: @judging_team.concept_judge, mark: 50)
-    @judgement.save!
+    Judgement.transaction do
+      @judgement.technical_vote = Vote.create!(user: @judging_team.technical_judge, mark: 0)
+      @judgement.product_vote = Vote.create!(user: @judging_team.product_judge, mark: 0)
+      @judgement.concept_vote = Vote.create!(user: @judging_team.concept_judge, mark: 0)
+      @judgement.save!
+    end
 
     redirect_to @judgement
   end

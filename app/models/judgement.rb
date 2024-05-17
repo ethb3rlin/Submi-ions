@@ -105,9 +105,9 @@ class Judgement < ApplicationRecord
 
   def initialize_votes!
     transaction do
-      create_technical_vote!(user: judging_team.technical_judge, mark: 50) unless technical_vote.present?
-      create_product_vote!(user: judging_team.product_judge, mark: 50) unless product_vote.present?
-      create_concept_vote!(user: judging_team.concept_judge, mark: 50) unless concept_vote.present?
+      create_technical_vote!(user: judging_team.technical_judge, mark: 0) unless technical_vote.present?
+      create_product_vote!(user: judging_team.product_judge, mark: 0) unless product_vote.present?
+      create_concept_vote!(user: judging_team.concept_judge, mark: 0) unless concept_vote.present?
       save! if self.changed?
     end
   end

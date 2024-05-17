@@ -4,9 +4,10 @@
 #
 #  id              :bigint           not null, primary key
 #  description     :text
+#  pitchdeck_url   :string
+#  repo_url        :text
 #  title           :text
 #  track           :enum             default("infra"), not null
-#  url             :text
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  hacking_team_id :bigint

@@ -54,9 +54,22 @@
     <div class="control"><%= form.text_area :description, class: "textarea", placeholder: "A brief explanation of what's the project is about" %></div>
   </div>
 
-  <div class="field">
-    <%= form.label :url, class: "label" %>
-    <div class="control"><%= form.url_field :url, class: "input", placeholder: "Project's repo, e.g. on Github" %></div>
+  <div class="columns">
+    <div class="field column">
+      <%= form.label :repo_url, class: "label iconized" do %>
+        <%= lucide_icon "code", class: "icon is-small" %>
+        <span>Repo URL</span>
+      <% end %>
+      <div class="control"><%= form.url_field :repo_url, class: "input", placeholder: "Project's repo, e.g. on Github" %></div>
+    </div>
+
+    <div class="field column">
+      <%= form.label :pitchdeck_url, class: "label iconized" do %>
+        <%= lucide_icon "presentation", class: "icon is-small" %>
+        <span>Pitchdeck URL</span>
+      <% end %>
+      <div class="control"><%= form.url_field :pitchdeck_url, class: "input", placeholder: "Project's pitch, slides, live demo etc" %></div>
+    </div>
   </div>
 
   <div class="field is-grouped">

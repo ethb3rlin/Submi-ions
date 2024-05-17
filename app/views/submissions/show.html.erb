@@ -10,6 +10,11 @@
       <%= lucide_icon "edit", class: 'icon is-small' %>
       <span>Edit this submission</span>
     <% end %>
+  <% elsif current_user&.hacker? && Setting.hackathon_stage == :judging %>
+    <a class="button" disabled>
+      <%= lucide_icon "lock", class: 'icon is-small' %>
+      <span>Judging has already started, submissions cannot be edited anymore.</span>
+    </a>
   <% end %>
   <%= button_to "Destroy this submission", @submission, method: :delete, class: "button is-danger" if policy(@submission).destroy? %>
 </div>

@@ -31,11 +31,20 @@
         </div>
       <% end %>
 
-      <% if submission.url.present? %>
+      <% if submission.repo_url.present? %>
         <div class="card-footer-item">
-          <%= link_to submission.url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
+          <%= link_to submission.repo_url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
             <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
-            <span><%= submission.url %></span>
+            <span><%= truncate submission.repo_url, length: 45, separator: /[\/\?\&\+]/ %></span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if submission.pitchdeck_url.present? %>
+        <div class="card-footer-item">
+          <%= link_to submission.pitchdeck_url, target: "_blank", rel: "nofollow", class: "button is-ghost url" do %>
+            <%= lucide_icon 'presentation', class: 'icon is-small' %>
+            <span><%= truncate submission.pitchdeck_url, length: 45, separator: /[\/\?\&\+]/ %></span>
           <% end %>
         </div>
       <% end %>

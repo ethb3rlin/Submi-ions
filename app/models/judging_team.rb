@@ -50,7 +50,7 @@ class JudgingTeam < ApplicationRecord
           judgement.submission.title,
           judgement.time,
           judgement.submission.hacking_team.name,
-          judgement.submission.url,
+          judgement.submission.repo_url,
           judgement.technical_vote&.completed ? judgement.technical_vote.padded_mark : nil,
           judgement.product_vote&.completed ? judgement.product_vote.padded_mark : nil,
           judgement.concept_vote&.completed ? judgement.concept_vote.padded_mark : nil

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_16_213805) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_17_100307) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -152,11 +152,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_213805) do
   create_table "submissions", force: :cascade do |t|
     t.text "title"
     t.text "description"
-    t.text "url"
+    t.text "repo_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "hacking_team_id"
     t.enum "track", default: "infra", null: false, enum_type: "judging_track"
+    t.string "pitchdeck_url"
     t.index ["hacking_team_id"], name: "index_submissions_on_hacking_team_id"
     t.index ["track"], name: "index_submissions_on_track"
   end

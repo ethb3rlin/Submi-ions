@@ -1,7 +1,24 @@
 <tr id="<%= dom_id submission %>">
   <td class="submission-title"><strong><%= submission.title %></strong></td>
   <td class="description"><%= submission.description.truncate(350) %></td>
-  <td class="url"><%= link_to submission.url, submission.url, target: '_blank' %></td>
+  <td class="url is-size-7">
+    <% if submission.repo_url.present? %>
+      <p>
+        <%= link_to submission.repo_url, target: '_blank', class: 'nowrap' do %>
+          <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
+          <span><%= truncate(submission.repo_url, length: 40) %></span>
+        <% end %>
+      </p>
+    <% end %>
+    <% if submission.pitchdeck_url.present? %>
+      <p>
+        <%= link_to submission.pitchdeck_url, target: '_blank', class: 'nowrap' do %>
+          <%= lucide_icon 'presentation', class: 'icon is-small' %>
+          <span><%= truncate(submission.pitchdeck_url, length: 40) %></span>
+        <% end %>
+      </p>
+    <% end %>
+  </td>
   <td>
     <% if submission.judgement.present? %>
       <% if Setting.hackathon_stage == :finalizing %>

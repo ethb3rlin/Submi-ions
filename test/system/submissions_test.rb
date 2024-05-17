@@ -16,7 +16,7 @@ class SubmissionsTest < ApplicationSystemTestCase
 
     fill_in "Description", with: @submission.description
     fill_in "Title", with: @submission.title
-    fill_in "Url", with: @submission.url
+    fill_in "Url", with: @submission.repo_url
     click_on "Create Submission"
 
     assert_text "Submission was successfully created"
@@ -29,7 +29,7 @@ class SubmissionsTest < ApplicationSystemTestCase
 
     fill_in "Description", with: @submission.description
     fill_in "Title", with: @submission.title
-    fill_in "Url", with: @submission.url
+    fill_in "Url", with: @submission.repo_url
     click_on "Update Submission"
 
     assert_text "Submission was successfully updated"

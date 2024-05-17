@@ -91,13 +91,15 @@
                 <% end %>
               <% end %>
             <% end %>
-          <% elsif policy(Submission).create? %>
-            <div class="navbar-item">
-              <a class="button has-text-primary-dark has-text-weight-bold has-background-primary-light" href="<%= new_submission_path %>">
-                <%= lucide_icon 'badge-plus', class: "icon is-small" %>
-                <span>Submit a project</span>
-              </a>
-            </div>
+          <% else %>
+            <% if policy(Submission).create? %>
+              <div class="navbar-item">
+                <a class="button has-text-primary-dark has-text-weight-bold has-background-primary-light" href="<%= new_submission_path %>">
+                  <%= lucide_icon 'badge-plus', class: "icon is-small" %>
+                  <span>Submit a project</span>
+                </a>
+              </div>
+            <% end %>
             <a class="navbar-item is-tab <%= active_class(submissions_path) %>" href="<%= submissions_path %>">
               Browse projects
             </a>

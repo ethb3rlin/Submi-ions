@@ -23,7 +23,7 @@ class JudgementComment < ApplicationRecord
   include ActionView::RecordIdentifier # We need this for dom_id to work
 
   belongs_to :judgement, -> { with_no_show }, inverse_of: :comments
-  belongs_to :user, -> { where(kind: 'judge') }
+  belongs_to :user
 
   validates :text, presence: true
 

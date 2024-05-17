@@ -15,8 +15,16 @@
       <% end %>
     </div>
 
-    <% unless @user.approved? %>
-      <div class="column">
+    <div class="column is-4">
+      <% if @user.approved? %>
+        <h2 class="subtitle">Welcome to EthBerlin04!</h2>
+        Your account had been verified at <span><%= local_time @user.approved_at %></span>
+        <% if @user.approved_by.present? %>
+          by <%= @user.approved_by.name %>
+        <% elsif @ticket_invalidation.present? %>
+          by presenting a ZuPass ticket <pre><%= @ticket_invalidation.ticket_id %></pre>
+        <% end %>
+      <% else %>
         <h2 class="subtitle">You need to be an approved hacker to participate in EthBerlin.</h2>
         <p>You can confirm your EthBerlin ticket by clicking the button:</p>
         <a class="button is-primary is-large" target="popup"
@@ -28,9 +36,9 @@
           <span>Confirm my ticket<br/>via ZuPass</span>
         </a>
         <p>Alternatively, you can get in touch with EthBerlin team in-person, and we'll approve your profile.</p>
-      </div>
 
-      <%= turbo_stream_from @user %>
-    <% end %>
+        <%= turbo_stream_from @user %>
+      <% end %>
+    </div>
   </div>
 </div>

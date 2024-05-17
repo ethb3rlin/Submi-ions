@@ -22,6 +22,8 @@ class UsersController < ApplicationController
   def edit
     @user = User.unscoped.find(params[:id])
     authorize @user
+
+    @ticket_invalidation = TicketInvalidation.find_by(user: @user)
   end
 
   def verify_zupass_credentials
@@ -45,16 +47,29 @@ class UsersController < ApplicationController
 
     raise "Ticket #{ticket_id} has been revoked" unless pcd['claim']['partialTicket']['isRevoked'] == false
 
+    product_id = pcd['claim']['partialTicket']['productId']
+    user_role = case product_id
+      when "caa5cb88-19cc-4ee2-bf3d-6d379ce5e611" #productName: "Team"
+        :organizer
+      when "beb248b4-9ef8-422f-b475-e94234721dc1" #productName: "Reviewer"
+        :judge
+      when "e6a44839-76f5-4a47-8b3b-bb95ea6fc3cc", "a28bfaa9-2843-48b9-9200-f12dae4a483f" # "Hacker", "Reviewer"
+        :hacker
+      else
+        raise "Unknown product ID #{product_id} in ZuPass claim"
+      end
+
     validation_response = HTTParty.post(background_checker_url, body: pcd.to_json, headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json'})
 
     if validation_response.code == 200
       logger.info "ZuPass validation successful for user #{@user.id}"
       User.transaction do
-        @user.update!(approved_at: DateTime.now)
+        @user.update!(approved_at: DateTime.now, kind: user_role)
         TicketInvalidation.create!(ticket_id: ticket_id, user: @user)
       end
 
-      head :ok
+      ## This is going to be rendered in a popup, so everything we need is a 200 response which will show huge OK and then close itself in 2 seconds
+      render inline: '<h1>OK</h1><script>setTimeout(() => window.close(), 2000)</script>'
     else
       logger.warn "ZuPass validation failed for user #{@user.id}"
       logger.warn validation_response

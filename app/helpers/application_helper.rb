@@ -41,7 +41,7 @@ module ApplicationHelper
         "value"=>
          {"revealTicketId"=>true,
           "revealEventId"=>false,
-          "revealProductId"=>false,
+          "revealProductId"=>true,
           "revealTimestampConsumed"=>false,
           "revealTimestampSigned"=>false,
           "revealAttendeeSemaphoreId"=>false,
@@ -54,7 +54,7 @@ module ApplicationHelper
       "watermark"=>{"argumentType"=>"BigInt", "value"=>watermark, "userProvided"=>false}},
     "pcdType"=>"zk-eddsa-event-ticket-pcd",
     "options"=>{"genericProveScreen"=>true, "title"=>"EthBerlin04 Ticket", "description"=>"Please confirm that you've been issued a valid EthBerlin04 ticket."},
-    "postMessage"=>true}
+    "postMessage"=>false}
 
     'https://zupass.org/#/prove?request=' + ERB::Util.url_encode(payload.to_json)
   end

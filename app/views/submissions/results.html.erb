@@ -1,0 +1,26 @@
+<div class="content">
+  <div class="tabs is-toggle">
+    <ul>
+      <% Submission::HUMAN_READABLE_TRACKS.each do |key, track| %>
+        <li class="tab <%= 'is-active' if @track==key %>"><%= link_to track, results_submissions_path(track: key) %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <table>
+    <thead>
+       <th><abbr title="Position">Pos</abbr></th>
+       <th>Project</th>
+       <th>Team</th>
+       <th>Total score</th>
+    </thead>
+    <% @submissions.each_with_index do |submission, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= link_to submission.title, submission %></td>
+        <td><%= submission.hacking_team.name %></td>
+        <td><%= submission.judgement.total_score %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

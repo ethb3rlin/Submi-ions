@@ -32,6 +32,13 @@ class Submission < ApplicationRecord
 
   scope :unassigned, -> { Submission.left_outer_joins(:judgement).where(judgements: { id: nil }) }
 
+  scope :order_by_total_score, -> {
+    joins(:judgement).joins("LEFT JOIN votes AS technical_votes ON technical_votes.id = judgements.technical_vote_id")
+        .joins("LEFT JOIN votes AS product_votes ON product_votes.id = judgements.product_vote_id")
+        .joins("LEFT JOIN votes AS concept_votes ON concept_votes.id = judgements.concept_vote_id")
+        .select("submissions.*, (technical_votes.mark + product_votes.mark + concept_votes.mark) AS total_mark").order("total_mark DESC")
+  }
+
   HUMAN_READABLE_TRACKS = {
     transact: "Freedom to Transact",
     infra: "Infrastructure",

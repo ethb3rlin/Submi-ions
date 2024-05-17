@@ -3,6 +3,10 @@ class SubmissionPolicy < ApplicationPolicy
     true
   end
 
+  def results?
+    Setting.hackathon_stage == :finalizing
+  end
+
   def create?
     user.present? && user.approved? && ((user.hacker? && Setting.hackathon_stage == :hacking) || user.organizer?)
   end

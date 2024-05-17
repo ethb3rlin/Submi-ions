@@ -3,18 +3,25 @@
   <td class="description"><%= submission.description.truncate(350) %></td>
   <td class="url"><%= link_to submission.url, submission.url, target: '_blank' %></td>
   <td>
-    <% if submission.judgement %>
-      <%= link_to admin_judging_teams_path(id: submission.judgement.judging_team.id) do %>
-        <span><%= submission.judgement.judging_team %></span>
-        <br/>
-        <% if submission.judgement.no_show %>
-          <%= lucide_icon 'ban', class: 'icon is-small has-text-danger' %>
-          <span class="is-italic has-text-danger">no show at <%= local_time(submission.judgement.updated_at, "%H:%M") %></span>
-        <% elsif submission.judgement.completed? %>
-          <%= lucide_icon 'circle-check-big', class: 'icon is-small has-text-success' %>
-          <span class="is-italic">judged at <%= local_time(submission.judgement.updated_at, "%H:%M") %></span>
-        <% elsif submission.judgement.time %>
-          <span class="is-italic">scheduled for <%= submission.judgement.just_time %></span>
+    <% if submission.judgement.present? %>
+      <% if Setting.hackathon_stage == :finalizing %>
+        <strong><%= submission.judgement.total_score %></strong> from<br/>
+        <%= link_to admin_judging_teams_path(id: submission.judgement.judging_team.id) do %>
+          <span><%= submission.judgement.judging_team %></span>
+        <% end %>
+      <% else %>
+        <%= link_to admin_judging_teams_path(id: submission.judgement.judging_team.id) do %>
+          <span><%= submission.judgement.judging_team %></span>
+          <br/>
+          <% if submission.judgement.no_show %>
+            <%= lucide_icon 'ban', class: 'icon is-small has-text-danger' %>
+            <span class="is-italic has-text-danger">no show at <%= local_time(submission.judgement.updated_at, "%H:%M") %></span>
+          <% elsif submission.judgement.completed? %>
+            <%= lucide_icon 'circle-check-big', class: 'icon is-small has-text-success' %>
+            <span class="is-italic">judged at <%= local_time(submission.judgement.updated_at, "%H:%M") %></span>
+          <% elsif submission.judgement.time %>
+            <span class="is-italic">scheduled for <%= submission.judgement.just_time %></span>
+          <% end %>
         <% end %>
       <% end %>
     <% else %>

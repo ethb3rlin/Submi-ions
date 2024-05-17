@@ -58,6 +58,7 @@
 #                      admin_wipe_all_data DELETE /admin/wipe_all_data(.:format)                                                                    admin/admin#wipe_all_data
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
 #                                 sign_out DELETE /sign_out(.:format)                                                                               sessions#sign_out
+#                      results_submissions GET    /submissions/results(.:format)                                                                    submissions#results
 #                              submissions GET    /submissions(.:format)                                                                            submissions#index
 #                                          POST   /submissions(.:format)                                                                            submissions#create
 #                           new_submission GET    /submissions/new(.:format)                                                                        submissions#new
@@ -156,7 +157,11 @@ Rails.application.routes.draw do
   post 'sign_in' => 'sessions#sign_in'
   delete 'sign_out' => 'sessions#sign_out'
 
-  resources :submissions
+  resources :submissions do
+    collection do
+      get 'results'
+    end
+  end
 
   resources :hacking_teams, path: :teams do
     delete 'leave'

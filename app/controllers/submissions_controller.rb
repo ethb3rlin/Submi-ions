@@ -3,9 +3,23 @@ require 'securerandom'
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: %i[ show edit update destroy ]
 
+  skip_after_action :verify_authorized, only: %i[ index results show ]
+
   # GET /submissions or /submissions.json
   def index
+    return redirect_to results_submissions_url if Setting.hackathon_stage == :finalizing
     @submissions = Submission.includes(:hacking_team, :judgement).all
+    authorize @submissions
+  end
+
+  def results
+    @track = if params[:track].present? && Submission::HUMAN_READABLE_TRACKS[params[:track]].present?
+      params[:track]
+    else
+      Submission::HUMAN_READABLE_TRACKS.keys.first
+    end
+
+    @submissions = Submission.where(track: @track).includes(:hacking_team, :judgement).order_by_total_score
     authorize @submissions
   end
 

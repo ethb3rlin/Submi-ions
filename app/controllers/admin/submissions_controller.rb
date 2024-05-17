@@ -7,6 +7,10 @@ class Admin::SubmissionsController < ApplicationController
     end.includes(judgement: [:judging_team, :technical_vote, :product_vote, :concept_vote])
     authorize @submissions
 
+    if Setting.hackathon_stage == :finalizing
+      @submissions = @submissions.order_by_total_score
+    end
+
     @unassigned_count = Submission.unassigned.count
   end
 end

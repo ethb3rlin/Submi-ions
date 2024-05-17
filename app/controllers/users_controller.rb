@@ -2,6 +2,8 @@ class UsersController < ApplicationController
   skip_after_action :verify_authorized, only: [:home]
 
   def home
+    return render inline: '', layout: 'error', status: 500 if flash[:from_exception_handler]
+
     return redirect_to submissions_path unless current_user
     return redirect_to edit_user_path(current_user) unless current_user.approved?
     return redirect_to results_submissions_path if Setting.hackathon_stage == :finalizing

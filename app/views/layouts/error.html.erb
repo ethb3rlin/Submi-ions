@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Submissions</title>
+    <link
+      rel="shortcut icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1sYW5kLXBsb3QiPjxwYXRoIGQ9Im0xMiA4IDYtMy02LTN2MTAiLz48cGF0aCBkPSJtOCAxMS45OS01LjUgMy4xNGExIDEgMCAwIDAgMCAxLjc0bDguNSA0Ljg2YTIgMiAwIDAgMCAyIDBsOC41LTQuODZhMSAxIDAgMCAwIDAtMS43NEwxNiAxMiIvPjxwYXRoIGQ9Im02LjQ5IDEyLjg1IDExLjAyIDYuMyIvPjxwYXRoIGQ9Ik0xNy41MSAxMi44NSA2LjUgMTkuMTUiLz48L3N2Zz4="
+      >
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <nav class="navbar has-shadow role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" id="navbar-logo-header" data-turbo="false" href="/">
+          <%= lucide_icon "land-plot", size: 28, "stroke-width": 1.6 %>
+          <span>Submißions</span>
+        </a>
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <% flash.each do |type, msg| %>
+          <% if type != "from_exception_handler" %>
+            <div class="notification is-light <%= type == "notice" ? "is-success" : "is-danger" %>">
+              <button class="delete"></button>
+              <%= msg %>
+            </div>
+          <% end %>
+        <% end %>
+        <div class="content">
+          <div class="columns is-centered">
+            <div class="column is-narrow">
+              <%= link_to root_path, class: "button is-primary is-light is-large" do %>
+                <%= lucide_icon "home", size: 24, class: "icon" %>
+                <p>
+                  Take me to the home page
+                  <br/>
+                  and I'll try again
+                </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

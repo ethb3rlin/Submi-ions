@@ -1,6 +1,40 @@
 <div class="content" id="<%= dom_id @judgement %>">
-  <h1 class="title"><%= @submission.title %></h1>
-  <p><%= @submission.decorate.formatted_description %></p>
+  <div class="columns">
+    <div class="column">
+      <h1 class="title"><%= @submission.title %></h1>
+      <p><%= @submission.decorate.formatted_description %></p>
+
+      <% if @submission.repo_url.present? %>
+        <p>
+          <%= link_to @submission.repo_url, target: "_blank" do %>
+            <%= lucide_icon @submission.decorate.repo_icon_class, class: "icon is-small" %>
+            <span><%= @submission.repo_url %></span>
+          <% end %>
+        </p>
+      <% end %>
+      <% if @submission.pitchdeck_url.present? %>
+        <p>
+          <%= link_to @submission.pitchdeck_url, target: "_blank" do %>
+            <%= lucide_icon "presentation", class: "icon is-small" %>
+            <span><%= truncate @submission.pitchdeck_url, length: 60 %></span>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+
+    <div class="column is-3">
+      <div class="is-block">
+        <p>Submitted by:</p>
+        <p class="subtitle">
+          <%= link_to @submission.hacking_team.name, @submission.hacking_team %>
+        </p>
+        <% @submission.hacking_team.hackers.each do |hacker| %>
+          <p><%= hacker.name %></p>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
 
   <div class="grid" id="votes">
     <div class="cell <%= 'editable' if @judgement.technical_vote && policy(@judgement.technical_vote).update? %>">

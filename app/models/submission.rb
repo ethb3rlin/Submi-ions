@@ -35,10 +35,10 @@ class Submission < ApplicationRecord
 
   scope :order_by_total_score, -> {
     joins(:judgement).joins("LEFT JOIN votes AS technical_votes ON technical_votes.id = judgements.technical_vote_id")
-        .joins("LEFT JOIN votes AS product_votes ON product_votes.id = judgements.product_vote_id")
-        .joins("LEFT JOIN votes AS concept_votes ON concept_votes.id = judgements.concept_vote_id")
-        .select("submissions.*, (technical_votes.mark + product_votes.mark + concept_votes.mark) AS total_mark").order("total_mark DESC")
-  }
+      .joins("LEFT JOIN votes AS product_votes ON product_votes.id = judgements.product_vote_id")
+      .joins("LEFT JOIN votes AS concept_votes ON concept_votes.id = judgements.concept_vote_id")
+      .select("submissions.*, (COALESCE(technical_votes.mark, 0) + COALESCE(product_votes.mark, 0) + COALESCE(concept_votes.mark, 0)) AS total_mark").order("total_mark DESC")
+    }
 
   HUMAN_READABLE_TRACKS = {
     transact: "Freedom to Transact",

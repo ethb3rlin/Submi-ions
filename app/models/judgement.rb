@@ -113,7 +113,7 @@ class Judgement < ApplicationRecord
   end
 
   def total_score
-    technical_vote.mark + product_vote.mark + concept_vote.mark
+    (technical_vote&.mark||0) + (product_vote&.mark||0) + (concept_vote&.mark||0)
   end
 
   def self.schedule_missing!

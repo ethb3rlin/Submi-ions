@@ -21,13 +21,29 @@ td .maxi {
 .editable .display-mark {
   display: none !important;
 }
-
 .editable .edit-mark {
   display: block !important;
 }
 
-.mini .completion-button {
+.technical-judge .technical-vote .display-mark {
   display: none !important;
+}
+.technical-judge .technical-vote .edit-mark {
+  display: block !important;
+}
+
+.product-judge .product-vote .display-mark {
+  display: none !important;
+}
+.product-judge .product-vote .edit-mark {
+  display: block !important;
+}
+
+.concept-judge .concept-vote .display-mark {
+  display: none !important;
+}
+.concept-judge .concept-vote .edit-mark {
+  display: block !important;
 }
 
 .display-mark progress.progress {

@@ -47,7 +47,6 @@ class Vote < ApplicationRecord
   def suitable_judge?(judge)
     return false unless judge.try :judge?
     # User is a suitable judge if they areare either assigned to the team as the judge on the track, or the particular vote belongs to them
-    logger.warn "XXXXXX #{judge.id}, #{self.user.id}, #{self.judgement.judging_team.send(track.to_s+'_judge').id}"
     return judge == self.user || judge == self.judgement.judging_team.send("#{track}_judge")
   end
 
@@ -65,7 +64,7 @@ class Vote < ApplicationRecord
       {judgement: concept_vote_judgement, kind: :concept}
     end
 
-    broadcast_replace_to association[:judgement], :votes, locals: {kind: association[:kind]}
+    broadcast_replace_to association[:judgement], :votes, target: dom_id(self, :expanded), template: "votes/_vote_expanded", locals: {kind: association[:kind]}
   end
 
 end

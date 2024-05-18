@@ -13,7 +13,10 @@
         You have not judged any projects yet.
       </p>
     <% else %>
-      <table class="table is-fullwidth">
+      <table class="table is-fullwidth <%= class_names(
+          "technical-judge" => @judging_team.technical_judge == current_user,
+          "product-judge" => @judging_team.product_judge == current_user,
+          "concept-judge" => @judging_team.concept_judge == current_user ) %>">
         <thead>
           <tr>
             <th>Project</th>

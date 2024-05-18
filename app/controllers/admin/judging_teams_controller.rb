@@ -5,7 +5,7 @@ class Admin::JudgingTeamsController < ApplicationController
 
     @current_team = JudgingTeam.find(params[:id]) rescue @judging_teams.first
 
-    @judgements = @current_team&.judgements&.order(:created_at) # @current_team can be nil if there are no teams yet
+    @judgements = @current_team&.judgements&.unscoped&.order(:created_at) # @current_team can be nil if there are no teams yet
     @judgements = @judgements.includes(:submission, {technical_vote: :user, product_vote: :user, concept_vote: :user}) if @judgements
   end
 
@@ -19,7 +19,7 @@ class Admin::JudgingTeamsController < ApplicationController
   def show
     @judging_team = JudgingTeam.find(params[:id])
     authorize @judging_team
-    @judgements = @judging_team.judgements.order(:created_at)
+    @judgements = @judging_team.judgements.unscoped.order(:created_at)
 
     respond_to do |format|
       format.csv do

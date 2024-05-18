@@ -19,7 +19,7 @@ class SubmissionsController < ApplicationController
       Submission::HUMAN_READABLE_TRACKS.keys.first
     end
 
-    @submissions = Submission.where(track: @track).includes(:hacking_team, :judgement).order_by_total_score
+    @submissions = Submission.where(track: @track).includes(:hacking_team, :judgement).joins(:judgement).where('judgements.no_show': false).order_by_total_score
     authorize @submissions
   end
 

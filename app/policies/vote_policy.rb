@@ -20,7 +20,7 @@ class VotePolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && user.judge? && Setting.hackathon_stage == :judging && record.suitable_judge?(user)
+    user.present? && (user.judge? && Setting.hackathon_stage == :judging && record.suitable_judge?(user)) || (user.organizer? && Setting.hackathon_stage == :finalizing)
   end
 
   def destroy?

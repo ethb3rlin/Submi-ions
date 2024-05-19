@@ -33,7 +33,7 @@
   <% else %>
     <p>Judging is no longer possible.</p>
     <p>Here are the judgements of your <%= @judging_team %> team.</p>
-    <% # TODO: link to the Hackathon results page %>
+    <p>Preliminary results are available at <%= link_to "the results page", results_submissions_path %>.</p>
     <table class="table is-fullwidth">
       <thead>
         <tr>
@@ -51,7 +51,7 @@
   <% end %>
 </div>
 
-<% if Setting.hackathon_stage == :judging %>
+<% if %i[judging finalizing].include? Setting.hackathon_stage %>
   <%= turbo_stream_from @judging_team, :judgements %>
   <%= turbo_stream_from @judging_team, :judgement_redirects %>
 <% end %>

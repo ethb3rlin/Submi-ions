@@ -41,7 +41,7 @@
         <div class="navbar-start">
           <% if current_user&.organizer? %>
             <div class="navbar-item">
-              <a class="button is-info is-inverted <%= active_class(admin_root_path) %>" href="<%= admin_root_path %>">
+              <a class="button is-dark is-inverted <%= active_class(admin_root_path) %>" href="<%= admin_root_path %>">
                 <%= lucide_icon 'shield-check', class: "icon is-small" %>
                 <span>Admin dashboard</span>
               </a>

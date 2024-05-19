@@ -20,7 +20,7 @@
     <td class="product-vote"><%= render judgement.product_vote, kind: :product if judgement.product_vote %></td>
     <td class="concept-vote"><%= render judgement.concept_vote, kind: :concept if judgement.concept_vote %></td>
   <% end %>
-  <% if Setting.hackathon_stage == :finalizing %>
+  <% if %i[finalizing published].include? Setting.hackathon_stage %>
     <td><%= judgement.total_score %></td>
   <% end %>
 </tr>

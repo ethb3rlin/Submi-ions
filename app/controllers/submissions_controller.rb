@@ -7,7 +7,7 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions or /submissions.json
   def index
-    return redirect_to results_submissions_url if Setting.hackathon_stage == :finalizing
+    return redirect_to results_submissions_url if Setting.hackathon_stage == :published
     @submissions = Submission.includes(:hacking_team, :judgement).all
     authorize @submissions
   end

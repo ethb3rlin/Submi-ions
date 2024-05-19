@@ -4,7 +4,8 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def results?
-    Setting.hackathon_stage == :finalizing
+    return true if Setting.hackathon_stage == :published
+    (user&.organizer? || user&.judge?) && Setting.hackathon_stage == :finalizing
   end
 
   def create?

@@ -44,5 +44,11 @@
       <%= link_to "hacking teams", hacking_teams_path %>?
     </p>
   </div>
-<%# For finalizing stage, add "preliminary results" link here %>
+<% elsif Setting.hackathon_stage == :finalizing %>
+  <div class="navbar-item">
+    <%= link_to judgements_path, class: "button is-dark is-medium" do %>
+      <%= lucide_icon 'scale', size: 32, class: "icon" %>
+      <span>Your team's judgements</span>
+    <% end %>
+  </div>
 <% end %>

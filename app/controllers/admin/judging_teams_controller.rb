@@ -6,7 +6,8 @@ class Admin::JudgingTeamsController < ApplicationController
     @current_team = JudgingTeam.find(params[:id]) rescue @judging_teams.first
 
     @judgements = if @current_team # @current_team can be nil if there are no teams yet
-      @current_team.judgements.unscope(where: 'judgements.no_show').order(:created_at).includes(:submission, {technical_vote: :user, product_vote: :user, concept_vote: :user})
+      ordering = Setting.hackathon_stage == :hacking ? :created_at : :updated_at
+      @current_team.judgements.unscope(where: 'judgements.no_show').order(ordering).includes(:submission, {technical_vote: :user, product_vote: :user, concept_vote: :user})
     else
       []
     end

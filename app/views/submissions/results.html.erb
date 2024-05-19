@@ -1,4 +1,13 @@
 <div class="content">
+  <% if Setting.hackathon_stage == :finalizing %>
+    <article class="message is-warning">
+      <div class="message-body">
+        <p>These are <span class="is-underlined">preliminary</span> results, which might still change (e.g. due to one of the teams being disqualified).</p>
+        <p>Please don't share, communicate or discuss them, with an obvious exception of fellow judges and hackathon organizers.</p>
+      </div>
+    </article>
+  <% end %>
+
   <div class="tabs is-toggle">
     <ul>
       <% Submission::HUMAN_READABLE_TRACKS.each do |key, track| %>

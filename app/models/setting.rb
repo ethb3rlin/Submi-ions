@@ -20,7 +20,7 @@ class Setting < ApplicationRecord
     Setting.upsert({ key: key, value: value }, unique_by: :key)
   end
 
-  HACKATHON_STAGES = %i[registration hacking judging finalizing]
+  HACKATHON_STAGES = %i[registration hacking judging finalizing published]
 
   def self.hackathon_stage
     self.load_with_default(:hackathon_stage, HACKATHON_STAGES.first).value.to_sym

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
     return redirect_to submissions_path unless current_user
     return redirect_to edit_user_path(current_user) unless current_user.approved?
-    return redirect_to results_submissions_path if Setting.hackathon_stage == :finalizing
+    return redirect_to results_submissions_path if policy(Submission).results?
     return redirect_to admin_root_path if current_user.organizer?
     if current_user.judge?
       if Setting.hackathon_stage == :judging

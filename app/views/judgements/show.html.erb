@@ -70,7 +70,7 @@
   </div>
 </div>
 
-<% if Setting.hackathon_stage == :judging && current_user.judge? %>
+<% if %i[judging finalizing].include?(Setting.hackathon_stage) && (current_user.judge? || current_user.organizer?) %>
   <%= turbo_stream_from @judgement, :votes %>
   <%= turbo_stream_from @judging_team, :judgement_redirects %>
 <% end %>

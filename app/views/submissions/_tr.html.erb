@@ -21,7 +21,7 @@
   </td>
   <td>
     <% if submission.judgement.present? %>
-      <% if Setting.hackathon_stage == :finalizing %>
+      <% if %i[finalizing published].include? Setting.hackathon_stage %>
         <% if submission.judgement.no_show %>
           <%= lucide_icon 'ban', class: 'icon is-small has-text-danger' %>
           <span class="is-italic has-text-danger">no show at <%= local_time(submission.judgement.updated_at, "%H:%M") %></span>

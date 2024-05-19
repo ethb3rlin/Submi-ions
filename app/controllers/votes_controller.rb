@@ -9,7 +9,9 @@ class VotesController < ApplicationController
 
   def update
     @vote.user = current_user
-    @vote.update!(vote_params)
+    params = vote_params
+    params[:completed] = true if Setting.hackathon_stage == :finalizing
+    @vote.update!(params)
 
     @vote.judgement.update!(no_show: false)
   end

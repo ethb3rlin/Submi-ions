@@ -5,8 +5,11 @@ class Admin::JudgingTeamsController < ApplicationController
 
     @current_team = JudgingTeam.find(params[:id]) rescue @judging_teams.first
 
-    @judgements = @current_team&.judgements&.unscoped&.order(:created_at) # @current_team can be nil if there are no teams yet
-    @judgements = @judgements.includes(:submission, {technical_vote: :user, product_vote: :user, concept_vote: :user}) if @judgements
+    @judgements = if @current_team # @current_team can be nil if there are no teams yet
+      @current_team.judgements.unscope(where: 'judgements.no_show').order(:created_at).includes(:submission, {technical_vote: :user, product_vote: :user, concept_vote: :user})
+    else
+      []
+    end
   end
 
   def new

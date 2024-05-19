@@ -4,7 +4,10 @@
     <% if judgement.no_show %>
       <p class="is-size-7 is-italic">No show at: <b class="is-size-6"><%= local_time(judgement.updated_at, '%H:%M') %></b></p>
     <% elsif judgement.completed? %>
-      <p class="is-size-7 is-italic">Judged at: <b class="is-size-6"><%= local_time(judgement.updated_at, '%H:%M') %></b></p>
+      <p class="is-size-7 is-italic">
+        <%= lucide_icon 'check-circle', class: 'icon is-small has-text-success' %>
+        Judged at: <b class="is-size-6"><%= local_time(judgement.updated_at, '%H:%M') %></b>
+      </p>
     <% elsif judgement.time.present? %>
       <p class="is-size-7 is-italic">Scheduled at: <b class="is-size-6"><%= judgement.just_time %></b></p>
     <% end %>

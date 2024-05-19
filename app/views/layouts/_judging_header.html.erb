@@ -1,0 +1,48 @@
+<div class="navbar-item">
+  <p>
+    You're in the
+    <br/>
+    <span class="has-text-weight-medium"><%= team %></span> team
+    <% if team.location.present? %>
+      <br/>
+      located in <span class="has-text-weight-medium"><%= team.location %></span>
+    <% end %>
+  </p>
+</div>
+<% if Setting.hackathon_stage == :judging %>
+  <% if team.current_judgement.present? %>
+    <div class="navbar-item">
+      <%= link_to team.current_judgement, class: "button is-link" do %>
+        <%= lucide_icon 'scale', class: "icon" %>
+        <span>You're currently judging:<span>
+        <br/>
+        <span class="is-size-5"><%= team.current_judgement.submission.title %></span>
+      <% end %>
+    </div>
+    <div class="navbar-item">
+      <p>
+      <% if team.next_judgement.present? %>
+        Next up:
+        <%= link_to team.next_judgement do %>
+          <span class="has-text-weight-medium is-size-5"><%= team.next_judgement.submission.title %></span>
+        <% end %>
+        <br/>
+        scheduled for <span class="has-text-weight-bold"><%= team.next_judgement.time.strftime("%H:%M") %></span>
+        <br/>
+      <% end %>
+      <% if team.last_judgement.present? %>
+        Previously: <%= link_to team.last_judgement.submission.title, team.last_judgement, class: "has-text-weight-medium" %>
+      <% end %>
+      </p>
+    </div>
+  <% end %>
+<% elsif %i[registration hacking].include?(Setting.hackathon_stage) %>
+  <div class="navbar-item">
+    <p class="is-size-5">
+      The judging hasn't started yet.<br/>
+      Do you want to browse <%= link_to "projects", submissions_path %> or
+      <%= link_to "hacking teams", hacking_teams_path %>?
+    </p>
+  </div>
+<%# For finalizing stage, add "preliminary results" link here %>
+<% end %>

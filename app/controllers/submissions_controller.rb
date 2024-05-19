@@ -25,6 +25,15 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/1 or /submissions/1.json
   def show
+    if policy(SubmissionComment).show?
+      @new_comment = @submission.comments.build(user: current_user)
+    end
+  end
+
+  def add_comment
+    @submission_comment = SubmissionComment.new(comment_params)
+    authorize @submission_comment, :create?
+    @submission_comment.save!
   end
 
   # GET /submissions/new
@@ -87,5 +96,9 @@ class SubmissionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def submission_params
       params.require(:submission).permit(:title, :description, :repo_url, :pitchdeck_url, :track)
+    end
+
+    def comment_params
+      params.require(:submission_comment).permit(:text).merge(user: current_user, submission_id: params[:submission_id])
     end
 end

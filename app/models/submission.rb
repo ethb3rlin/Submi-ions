@@ -27,6 +27,8 @@ class Submission < ApplicationRecord
 
   belongs_to :hacking_team
 
+  has_many :comments, class_name: "SubmissionComment", dependent: :destroy
+
   enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }

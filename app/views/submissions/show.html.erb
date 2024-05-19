@@ -18,3 +18,17 @@
   <% end %>
   <%= button_to "Destroy this submission", @submission, method: :delete, class: "button is-danger" if policy(@submission).destroy? %>
 </div>
+
+<% if policy(SubmissionComment).show? %>
+  <div id="<%= dom_id(@submission, :comments) %>" class="panel is-light">
+    <p class="panel-heading">Comments <span class="has-text-weight-normal has-text-grey is-size-6">(only visible to other judges and hackathon organizers)</span></p>
+    <%= render @submission.comments %>
+
+    <% if policy(@new_comment).create? %>
+      <%= render "submission_comments/form", submission_comment: @new_comment %>
+    <% end %>
+  </div>
+
+
+  <%= turbo_stream_from @submission, :comments %>
+<% end %>

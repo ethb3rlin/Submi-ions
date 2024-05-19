@@ -11,7 +11,6 @@
 #                                          DELETE /votes/:id(.:format)                                                                              votes#destroy
 #                       complete_judgement POST   /judgements/:id/complete(.:format)                                                                judgements#complete
 #                        no_show_judgement POST   /judgements/:id/no_show(.:format)                                                                 judgements#no_show
-#                    add_comment_judgement POST   /judgements/:id/add_comment(.:format)                                                             judgements#add_comment
 #                               judgements GET    /judgements(.:format)                                                                             judgements#index
 #                                          POST   /judgements(.:format)                                                                             judgements#create
 #                            new_judgement GET    /judgements/new(.:format)                                                                         judgements#new
@@ -58,6 +57,7 @@
 #                      admin_wipe_all_data DELETE /admin/wipe_all_data(.:format)                                                                    admin/admin#wipe_all_data
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
 #                                 sign_out DELETE /sign_out(.:format)                                                                               sessions#sign_out
+#                   submission_add_comment POST   /submissions/:submission_id/add_comment(.:format)                                                 submissions#add_comment
 #                      results_submissions GET    /submissions/results(.:format)                                                                    submissions#results
 #                              submissions GET    /submissions(.:format)                                                                            submissions#index
 #                                          POST   /submissions(.:format)                                                                            submissions#create
@@ -120,7 +120,6 @@ Rails.application.routes.draw do
       post 'complete'
       post 'no_show'
 
-      post 'add_comment'
     end
   end
 
@@ -158,6 +157,8 @@ Rails.application.routes.draw do
   delete 'sign_out' => 'sessions#sign_out'
 
   resources :submissions do
+    post 'add_comment'
+
     collection do
       get 'results'
     end

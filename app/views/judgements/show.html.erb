@@ -75,15 +75,15 @@
   <%= turbo_stream_from @judging_team, :judgement_redirects %>
 <% end %>
 
-<% if policy(JudgementComment).show? %>
-  <div id="<%= dom_id(@judgement, :comments) %>" class="panel is-light">
+<% if policy(SubmissionComment).show? %>
+  <div id="<%= dom_id(@judgement.submission, :comments) %>" class="panel is-light">
     <p class="panel-heading">Comments <span class="has-text-weight-normal has-text-grey is-size-6">(only visible to other judges and hackathon organizers)</span></p>
-    <%= render @judgement.comments %>
+    <%= render @judgement.submission.comments %>
+
+    <% if policy(@new_comment).create? %>
+      <%= render "submission_comments/form", submission_comment: @new_comment %>
+    <% end %>
   </div>
 
-  <% if policy(@new_comment).create? %>
-    <%= render "judgement_comments/form", judgement_comment: @new_comment %>
-  <% end %>
-
-  <%= turbo_stream_from @judgement, :comments %>
+  <%= turbo_stream_from @judgement.submission, :comments %>
 <% end %>

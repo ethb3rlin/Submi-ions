@@ -39,3 +39,7 @@
 .admin-submissions-header {
   align-items: end;
 }
+
+#comment_form form {
+  width: 100%;
+}

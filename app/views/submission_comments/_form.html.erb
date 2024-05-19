@@ -1,0 +1,14 @@
+<div class="panel-block is-fullwidth" id="comment_form">
+  <%= form_for submission_comment, url: submission_add_comment_path(submission_comment.submission), class: 'is-fullwidth',
+      data: {turbo_frame: 'post', controller: 'comment-form', action: 'turbo:submit-end->comment-form#reset' } do |form| %>
+    <div class="field has-addons">
+      <div class="control is-expanded"><%= form.text_field :text, class: 'input', data: { action: 'keydown->comment-form#submitIfCtrlEnter' } %></div>
+      <div class="control">
+        <%= form.button class: "button is-link is-light" do %>
+          <%= lucide_icon "send-horizontal", class: 'icon is-small' %>
+          <span>Send</span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

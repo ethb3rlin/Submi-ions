@@ -38,11 +38,6 @@ class JudgementsController < ApplicationController
     @new_comment = @judgement.comments.build(user: current_user)
   end
 
-  def add_comment
-    @judgement_comment = JudgementComment.new(comment_params)
-    authorize @judgement_comment, :create?
-    @judgement_comment.save!
-  end
 
   def no_show # Don't get confused, this is an action which sets the no_show flag to true
     @judgement = Judgement.find(params[:id])
@@ -74,8 +69,4 @@ class JudgementsController < ApplicationController
     end
   end
 
-  private
-  def comment_params
-    params.require(:judgement_comment).permit(:text).merge(user: current_user, judgement_id: params[:id])
-  end
 end

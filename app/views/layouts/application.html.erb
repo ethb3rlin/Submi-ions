@@ -105,7 +105,10 @@
             <div class="navbar-item">
               <div class="buttons">
                 <div data-controller="ethereum">
-                  <button data-action="click->ethereum#signin" class="button is-primary">Log in with Ethereum</button>
+                  <button data-action="click->ethereum#signin" class="button is-primary">
+                    <%= lucide_icon 'key', size: 16, class: "icon is-small" %>
+                    <span>Log in with Ethereum</span>
+                  </button>
                 </div>
               </div>
             </div>

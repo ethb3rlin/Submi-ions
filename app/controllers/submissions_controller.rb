@@ -7,20 +7,17 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions or /submissions.json
   def index
-    return redirect_to results_submissions_url if Setting.hackathon_stage == :published
     @submissions = Submission.includes(:hacking_team, :judgement).all
     authorize @submissions
   end
 
   def results
-    @track = if params[:track].present? && Submission::HUMAN_READABLE_TRACKS[params[:track]].present?
-      params[:track]
-    else
-      Submission::HUMAN_READABLE_TRACKS.keys.first
+    @results = {}
+    Submission::HUMAN_READABLE_TRACKS.keys.each do |track|
+      submissions = Submission.where(track: track).includes(:hacking_team, :judgement).joins(:judgement).where('judgements.no_show': false).order_by_total_score.limit(3)
+      authorize submissions
+      @results[track] = submissions
     end
-
-    @submissions = Submission.where(track: @track).includes(:hacking_team, :judgement).joins(:judgement).where('judgements.no_show': false).order_by_total_score
-    authorize @submissions
   end
 
   # GET /submissions/1 or /submissions/1.json

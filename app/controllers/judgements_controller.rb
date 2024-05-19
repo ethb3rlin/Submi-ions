@@ -35,7 +35,7 @@ class JudgementsController < ApplicationController
     @judging_team = @judgement.judging_team
     @submission = @judgement.submission
 
-    @new_comment = @judgement.comments.build(user: current_user)
+    @new_comment = @submission.comments.build(user: current_user)
   end
 
 

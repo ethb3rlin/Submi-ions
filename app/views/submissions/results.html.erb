@@ -8,28 +8,35 @@
     </article>
   <% end %>
 
-  <div class="tabs is-toggle">
-    <ul>
-      <% Submission::HUMAN_READABLE_TRACKS.each do |key, track| %>
-        <li class="tab <%= 'is-active' if @track==key %>"><%= link_to track, results_submissions_path(track: key) %></li>
-      <% end %>
-    </ul>
-  </div>
+  <h1 class="title is-3">Winners</h1>
+  <p class="subtitle is-6 is-italic"><%= link_to "Browse all submissions", submissions_path %></p>
 
-  <table>
-    <thead>
-       <th><abbr title="Position">Pos</abbr></th>
-       <th>Project</th>
-       <th>Team</th>
-       <th>Total score</th>
-    </thead>
-    <% @submissions.each_with_index do |submission, i| %>
-      <tr>
-        <td><%= i + 1 %></td>
-        <td><%= link_to submission.title, submission %></td>
-        <td><%= submission.hacking_team.name %></td>
-        <td><%= submission.judgement.total_score %></td>
-      </tr>
-    <% end %>
-  </table>
+  <% @results.each do |track, winners| %>
+    <h2 class="title is-4"><%= Submission::HUMAN_READABLE_TRACKS[track] %></h2>
+    <div class="columns is-multiline">
+      <% winners.each_with_index do |submission, i| %>
+        <div class="column is-4">
+          <div class="card is-light">
+              <div class="card-header">
+                <div class="card-header-title %>"><%= i + 1 %>.&nbsp;
+                  <%= link_to submission.title, submission %>
+                </div>
+
+                <% if i == 0 %>
+                  <div class="card-header-icon">
+                    <%= lucide_icon 'medal' %>
+                  </div>
+                <% end %>
+              </div>
+            <div class="card-content">
+              <p class="subtitle is-6">
+                <%= lucide_icon 'users', size: 16 %>
+                <%= submission.hacking_team.name %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>

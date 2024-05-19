@@ -12,8 +12,8 @@
 <% if Setting.hackathon_stage == :judging %>
   <% if team.current_judgement.present? %>
     <div class="navbar-item">
-      <%= link_to team.current_judgement, class: "button is-link" do %>
-        <%= lucide_icon 'scale', class: "icon" %>
+      <%= link_to team.current_judgement, class: "button", id: "current-judgement" do %>
+        <%= lucide_icon 'scale', size: 32, class: "icon" %>
         <span>You're currently judging:<span>
         <br/>
         <span class="is-size-5"><%= team.current_judgement.submission.title %></span>

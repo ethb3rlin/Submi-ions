@@ -30,3 +30,8 @@
 @keyframes blink {
   50% { opacity: 0.2; }
 }
+
+#current-judgement .icon {
+  width: 2.5em;
+  height: 2em;
+}

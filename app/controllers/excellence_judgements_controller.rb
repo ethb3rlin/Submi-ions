@@ -1,11 +1,10 @@
 class ExcellenceJudgementsController < ApplicationController
   def index
-    @submissions = Submission.where(excellence_award_track: current_user.excellence_team.track).includes(:excellence_judgements).order(created_at: :desc)
+    @team = current_user.excellence_team || ExcellenceTeam.find_by(track: params[:track])
+    @submissions = Submission.where(excellence_award_track: @team.track).includes(:excellence_judgements).order(created_at: :desc)
     authorize @submissions
 
-    @teammates = current_user.excellence_team.users.order(:name) - [current_user]
-
-    @team = current_user.excellence_team # TODO: load this from params if the user is Org
+    @teammates = @team.users.order(:name) - [current_user]
   end
 
   def show

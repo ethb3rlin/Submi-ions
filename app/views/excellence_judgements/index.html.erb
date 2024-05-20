@@ -19,19 +19,23 @@
 
   <div>
     <table class="table is-fullwidth">
-      <colgroup>
-        <col span="1" style="width: 5%;">
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: <%= 85 - 3*@teammates.count %>%;">
-        <% @teammates.each do |_| %>
-          <col span="1" style="width: 3%;">
-        <% end %>
-      </colgroup>
+      <% if current_user.judge? %> <%# For orgs we will rely on auto-widths, since there are no sliders %>
+        <colgroup>
+          <col span="1" style="width: 8%;">
+          <col span="1" style="width: 12%;">
+          <col span="1" style="width: <%= 80 - 3*@teammates.count %>%;">
+          <% @teammates.each do |_| %>
+            <col span="1" style="width: 3%;">
+          <% end %>
+        </colgroup>
+      <% end %>
       <thead>
         <tr>
           <th>Project</th>
           <th>URLs</th>
-          <th>Your score</th>
+          <% if current_user.judge? %>
+            <th>Your score</th>
+          <% end %>
           <% @teammates.each do |teammate| %>
             <th><%= teammate.name %>'s score</th>
           <% end %>

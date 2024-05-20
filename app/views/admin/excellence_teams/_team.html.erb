@@ -1,6 +1,9 @@
 <div class="panel">
   <p class="panel-heading">
-    <%= track_title %>
+    <%= link_to excellence_judgements_path(track: track), class: "has-text-info is-underlined" do %>
+      <%= lucide_icon Submission::EXCELLENCE_TRACK_ICONS[track] %>
+      <%= Submission::HUMAN_READABLE_EXCELLENCE_TRACKS[track] %>
+    <% end %>
   </p>
   <% team.users.order(:name).decorate.each do |user| %>
     <div class="panel-block is-block">

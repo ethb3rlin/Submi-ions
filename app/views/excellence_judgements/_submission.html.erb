@@ -1,10 +1,4 @@
 <tr>
-<%#
-  <th>Project</th>
-  <th>URLs</th>
-  <th>Your score</th>
-    @teammates.each
-%>
   <td class="has-text-weight-bold"><%= link_to submission.title, submission %></td>
   <td class="url is-size-7">
     <% if submission.repo_url.present? %>
@@ -28,10 +22,12 @@
   <% judgements_by_user = submission.excellence_judgements.group_by(&:user_id) %><%# I hate this, but... %>
   <% current_judgement = judgements_by_user[current_user.id]&.first || ExcellenceJudgement.create!(user: current_user, submission: submission, score: 0) %>
 
-  <td data-controller="excellence" data-excellence-path-value="<%= excellence_judgement_path(current_judgement) %>">
-    <input type="range" class="slider is-fullwidth is-info" min="0" max="100" step="0.1" value="<%= judgements_by_user[current_user.id]&.first&.score %>" data-excellence-target="slider" data-action="input->excellence#updateNumber mouseup->excellence#submitValue">
-    <span data-excellence-target="field"><%= current_judgement.score %></span>
-  </td>
+  <% if current_user.judge? %>
+    <td data-controller="excellence" data-excellence-path-value="<%= excellence_judgement_path(current_judgement) %>">
+      <input type="range" class="slider is-fullwidth is-info" min="0" max="100" step="0.1" value="<%= judgements_by_user[current_user.id]&.first&.score %>" data-excellence-target="slider" data-action="input->excellence#updateNumber mouseup->excellence#submitValue">
+      <span data-excellence-target="field"><%= current_judgement.score %></span>
+    </td>
+  <% end %>
 
   <% teammates.map{|t| [t, judgements_by_user[t.id]&.first] }.each do |user, judgement| %>
     <td id="submission_<%= submission.id %>_judgement_by_<%= user.id %>"><%= judgement&.score %></td>

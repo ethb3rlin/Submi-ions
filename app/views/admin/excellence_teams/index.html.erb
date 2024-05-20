@@ -1,7 +1,7 @@
 <div class="columns">
-  <% Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.each do |track, track_title| %>
+  <% Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.keys.each do |track| %>
     <div class="column">
-      <%= render 'admin/excellence_teams/team', team: @excellence_teams_by_track[track], track_title: track_title, potential_judges: @potential_judges %>
+      <%= render 'admin/excellence_teams/team', team: @excellence_teams_by_track[track], track: track, potential_judges: @potential_judges %>
     </div>
   <% end %>
 </div>

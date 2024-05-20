@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_19_150608) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_20_144709) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "excellence_award_track", ["smart_contracts", "ux", "crypto"]
   create_enum "join_application_state", ["pending", "approved", "declined"]
   create_enum "judging_track", ["transact", "infra", "tooling", "social"]
   create_enum "user_kind", ["hacker", "judge", "organizer"]
@@ -27,6 +28,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_19_150608) do
     t.datetime "updated_at", null: false
     t.index ["address"], name: "index_ethereum_addresses_on_address"
     t.index ["user_id"], name: "index_ethereum_addresses_on_user_id"
+  end
+
+  create_table "excellence_team_memberships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "excellence_team_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["excellence_team_id"], name: "index_excellence_team_memberships_on_excellence_team_id"
+    t.index ["user_id", "excellence_team_id"], name: "idx_on_user_id_excellence_team_id_1dc1542532", unique: true
+    t.index ["user_id"], name: "index_excellence_team_memberships_on_user_id"
+  end
+
+  create_table "excellence_teams", force: :cascade do |t|
+    t.enum "track", null: false, enum_type: "excellence_award_track"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "hacking_teams", force: :cascade do |t|
@@ -158,6 +175,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_19_150608) do
     t.bigint "hacking_team_id"
     t.enum "track", default: "infra", null: false, enum_type: "judging_track"
     t.string "pitchdeck_url"
+    t.enum "excellence_award_track", enum_type: "excellence_award_track"
+    t.index ["excellence_award_track"], name: "index_submissions_on_excellence_award_track"
     t.index ["hacking_team_id"], name: "index_submissions_on_hacking_team_id"
     t.index ["track"], name: "index_submissions_on_track"
   end
@@ -194,6 +213,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_19_150608) do
   end
 
   add_foreign_key "ethereum_addresses", "users"
+  add_foreign_key "excellence_team_memberships", "excellence_teams"
+  add_foreign_key "excellence_team_memberships", "users"
   add_foreign_key "join_applications", "hacking_teams"
   add_foreign_key "join_applications", "users"
   add_foreign_key "join_applications", "users", column: "decided_by_id"

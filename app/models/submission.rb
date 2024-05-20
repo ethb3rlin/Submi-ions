@@ -2,20 +2,22 @@
 #
 # Table name: submissions
 #
-#  id              :bigint           not null, primary key
-#  description     :text
-#  pitchdeck_url   :string
-#  repo_url        :text
-#  title           :text
-#  track           :enum             default("infra"), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  hacking_team_id :bigint
+#  id                     :bigint           not null, primary key
+#  description            :text
+#  excellence_award_track :enum
+#  pitchdeck_url          :string
+#  repo_url               :text
+#  title                  :text
+#  track                  :enum             default("infra"), not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  hacking_team_id        :bigint
 #
 # Indexes
 #
-#  index_submissions_on_hacking_team_id  (hacking_team_id)
-#  index_submissions_on_track            (track)
+#  index_submissions_on_excellence_award_track  (excellence_award_track)
+#  index_submissions_on_hacking_team_id         (hacking_team_id)
+#  index_submissions_on_track                   (track)
 #
 # Foreign Keys
 #
@@ -32,6 +34,9 @@ class Submission < ApplicationRecord
   enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
+
+  enum :excellence_award_track, {smart_contracts: "smart_contracts", ux: "ux", crypto: "crypto"}
+  validates :excellence_award_track, inclusion: { in: excellence_award_tracks.keys }, allow_nil: true
 
   scope :unassigned, -> { Submission.left_outer_joins(:judgement).where(judgements: { id: nil }) }
 

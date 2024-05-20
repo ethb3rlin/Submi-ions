@@ -32,6 +32,9 @@ class User < ApplicationRecord
   has_one :product_judging_team, class_name: 'JudgingTeam', foreign_key: 'product_judge_id'
   has_one :concept_judging_team, class_name: 'JudgingTeam', foreign_key: 'concept_judge_id'
 
+  has_one :excellence_team_membership
+  has_one :excellence_team, through: :excellence_team_membership
+
   has_many :join_applications, inverse_of: :user
   has_many :accepted_join_applications, -> { where(state: :approved) }, class_name: 'JoinApplication'
 

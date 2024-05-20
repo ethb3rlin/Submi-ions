@@ -54,6 +54,12 @@ class Submission < ApplicationRecord
     social: "Social Tech"
   }.with_indifferent_access
 
+  HUMAN_READABLE_EXCELLENCE_TRACKS = {
+    smart_contracts: "Smart Contracts",
+    ux: "User Experience",
+    crypto: "Cryptography"
+  }
+
   TRACK_ICONS = {
     transact: "arrow-right-left",
     infra: "podcast",

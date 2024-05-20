@@ -63,7 +63,8 @@ class User < ApplicationRecord
   end
 
   def self.unassigned_judges
-    User.judge.where.not(id: JudgingTeam.pluck(:technical_judge_id).compact + JudgingTeam.pluck(:product_judge_id).compact + JudgingTeam.pluck(:concept_judge_id).compact).order(:name)
+    User.judge.where.not(id: JudgingTeam.pluck(:technical_judge_id).compact + JudgingTeam.pluck(:product_judge_id).compact +
+        JudgingTeam.pluck(:concept_judge_id).compact + ExcellenceTeamMembership.pluck(:user_id).compact ).order(:name)
   end
 
   private

@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_144709) do
     t.enum "track", null: false, enum_type: "excellence_award_track"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["track"], name: "index_excellence_teams_on_track", unique: true
   end
 
   create_table "hacking_teams", force: :cascade do |t|

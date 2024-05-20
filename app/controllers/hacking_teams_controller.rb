@@ -4,6 +4,7 @@ class HackingTeamsController < ApplicationController
     @teams = if current_user
       # Querying all hacking teams, but putting the ones for which JoinApplication with status "approved" exists first
       teams_table = HackingTeam.arel_table
+      # TODO We might query this into two different collections, so there will be no dependency on current_user in rendering of most of them
       order_clause = Arel.sql("CASE WHEN EXISTS (SELECT 1 FROM join_applications WHERE hacking_team_id = hacking_teams.id AND user_id = ? AND state = 'approved') THEN 0 ELSE 1 END", current_user.id)
       HackingTeam.all.order(order_clause)
     else

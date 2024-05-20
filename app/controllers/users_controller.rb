@@ -10,7 +10,13 @@ class UsersController < ApplicationController
     return redirect_to admin_root_path if current_user.organizer?
     if current_user.judge?
       if Setting.hackathon_stage == :judging
-        return redirect_to judgements_path
+        if current_user.judging_team.present?
+          return redirect_to judgements_path
+        elsif current_user.excellence_team.present?
+          return redirect_to excellence_judgements_path
+        else
+          return redirect_to submissions_path
+        end
       else
         return redirect_to submissions_path
       end

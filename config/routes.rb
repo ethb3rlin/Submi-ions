@@ -19,6 +19,14 @@
 #                                          PATCH  /judgements/:id(.:format)                                                                         judgements#update
 #                                          PUT    /judgements/:id(.:format)                                                                         judgements#update
 #                                          DELETE /judgements/:id(.:format)                                                                         judgements#destroy
+#                    excellence_judgements GET    /excellence_judgements(.:format)                                                                  excellence_judgements#index
+#                                          POST   /excellence_judgements(.:format)                                                                  excellence_judgements#create
+#                 new_excellence_judgement GET    /excellence_judgements/new(.:format)                                                              excellence_judgements#new
+#                edit_excellence_judgement GET    /excellence_judgements/:id/edit(.:format)                                                         excellence_judgements#edit
+#                     excellence_judgement GET    /excellence_judgements/:id(.:format)                                                              excellence_judgements#show
+#                                          PATCH  /excellence_judgements/:id(.:format)                                                              excellence_judgements#update
+#                                          PUT    /excellence_judgements/:id(.:format)                                                              excellence_judgements#update
+#                                          DELETE /excellence_judgements/:id(.:format)                                                              excellence_judgements#destroy
 #           user_verify_zupass_credentials GET    /users/:user_id/verify_zupass_credentials(.:format)                                               users#verify_zupass_credentials
 #                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
 #                                     user PATCH  /users/:id(.:format)                                                                              users#update
@@ -123,15 +131,17 @@
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 
 Rails.application.routes.draw do
+
   resources :votes
 
   resources :judgements do
     member do
       post 'complete'
       post 'no_show'
-
     end
   end
+
+  resources :excellence_judgements
 
   resources :users, only: %i[edit update] do
     get 'verify_zupass_credentials'

@@ -1,0 +1,39 @@
+<tr>
+<%#
+  <th>Project</th>
+  <th>URLs</th>
+  <th>Your score</th>
+    @teammates.each
+%>
+  <td class="has-text-weight-bold"><%= link_to submission.title, submission %></td>
+  <td class="url is-size-7">
+    <% if submission.repo_url.present? %>
+      <p>
+        <%= link_to submission.repo_url, target: '_blank', class: 'nowrap' do %>
+          <%= lucide_icon submission.decorate.repo_icon_class, class: 'icon is-small' %>
+          <span><%= truncate(submission.repo_url, length: 40) %></span>
+        <% end %>
+      </p>
+    <% end %>
+    <% if submission.pitchdeck_url.present? %>
+      <p>
+        <%= link_to submission.pitchdeck_url, target: '_blank', class: 'nowrap' do %>
+          <%= lucide_icon 'presentation', class: 'icon is-small' %>
+          <span><%= truncate(submission.pitchdeck_url, length: 40) %></span>
+        <% end %>
+      </p>
+    <% end %>
+  </td>
+
+  <% judgements_by_user = submission.excellence_judgements.group_by(&:user_id) %><%# I hate this, but... %>
+  <% current_judgement = judgements_by_user[current_user.id]&.first || ExcellenceJudgement.create!(user: current_user, submission: submission, score: 0) %>
+
+  <td data-controller="excellence" data-excellence-path-value="<%= excellence_judgement_path(current_judgement) %>">
+    <input type="range" class="slider is-fullwidth is-info" min="0" max="100" step="0.1" value="<%= judgements_by_user[current_user.id]&.first&.score %>" data-excellence-target="slider" data-action="input->excellence#updateNumber mouseup->excellence#submitValue">
+    <span data-excellence-target="field"><%= current_judgement.score %></span>
+  </td>
+
+  <% teammates.map{|t| [t, judgements_by_user[t.id]&.first] }.each do |user, judgement| %>
+    <td id="submission_<%= submission.id %>_judgement_by_<%= user.id %>"><%= judgement&.score %></td>
+  <% end %>
+</tr>

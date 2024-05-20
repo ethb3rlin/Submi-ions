@@ -51,6 +51,10 @@
               <%= render 'layouts/judging_header', team: current_user.judging_team %>
             <% end %>
 
+            <% if current_user.excellence_team.present? %>
+              <%= render 'layouts/excellence_header', track: current_user.excellence_team.track %>
+            <% end %>
+
           <% else %>
             <% if policy(Submission).create? %>
               <div class="navbar-item">

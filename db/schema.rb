@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_20_144709) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_20_211620) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_144709) do
     t.datetime "updated_at", null: false
     t.index ["address"], name: "index_ethereum_addresses_on_address"
     t.index ["user_id"], name: "index_ethereum_addresses_on_user_id"
+  end
+
+  create_table "excellence_judgements", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "submission_id", null: false
+    t.float "score", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["submission_id"], name: "index_excellence_judgements_on_submission_id"
+    t.index ["user_id", "submission_id"], name: "index_excellence_judgements_on_user_id_and_submission_id", unique: true
+    t.index ["user_id"], name: "index_excellence_judgements_on_user_id"
   end
 
   create_table "excellence_team_memberships", force: :cascade do |t|
@@ -214,6 +225,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_144709) do
   end
 
   add_foreign_key "ethereum_addresses", "users"
+  add_foreign_key "excellence_judgements", "submissions"
+  add_foreign_key "excellence_judgements", "users"
   add_foreign_key "excellence_team_memberships", "excellence_teams"
   add_foreign_key "excellence_team_memberships", "users"
   add_foreign_key "join_applications", "hacking_teams"

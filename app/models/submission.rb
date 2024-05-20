@@ -38,6 +38,8 @@ class Submission < ApplicationRecord
   enum :excellence_award_track, {smart_contracts: "smart_contracts", ux: "ux", crypto: "crypto"}
   validates :excellence_award_track, inclusion: { in: excellence_award_tracks.keys }, allow_nil: true
 
+  has_many :excellence_judgements, inverse_of: :submission
+
   scope :unassigned, -> { Submission.left_outer_joins(:judgement).where(judgements: { id: nil }) }
 
   scope :order_by_total_score, -> {

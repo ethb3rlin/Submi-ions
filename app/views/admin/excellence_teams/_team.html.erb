@@ -2,7 +2,7 @@
   <p class="panel-heading">
     <%= track_title %>
   </p>
-  <% team.users.decorate.each do |user| %>
+  <% team.users.order(:name).decorate.each do |user| %>
     <div class="panel-block is-block">
       <div class="level">
         <div class="level-left">

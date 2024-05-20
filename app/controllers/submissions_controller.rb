@@ -92,7 +92,7 @@ class SubmissionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def submission_params
-      params.require(:submission).permit(:title, :description, :repo_url, :pitchdeck_url, :track)
+      params.require(:submission).permit(:title, :description, :repo_url, :pitchdeck_url, :track, :excellence_award_track)
     end
 
     def comment_params

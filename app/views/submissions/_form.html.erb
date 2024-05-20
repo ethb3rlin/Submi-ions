@@ -40,11 +40,36 @@
     <div class="control"><%= form.text_field :title, class: "input", placeholder: "Project's title" %></div>
   </div>
 
-  <div class="field">
-    <%= form.label :track, class: "label" %>
-    <div class="control">
-      <div class="select">
-        <%= form.select :track, Submission::HUMAN_READABLE_TRACKS.map{|k,v| [v,k]}, class: "select" %>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <%= form.label :track, class: "label" do %>
+          <span>Track</span>
+          <abbr title="One of the main tracks your project is going to be judged on">
+            <%= lucide_icon "info", class: "icon is-small" %>
+          </abbr>
+        <% end %>
+        <div class="control">
+          <div class="select">
+            <%= form.select :track, Submission::HUMAN_READABLE_TRACKS.map{|k,v| [v,k]}, class: "select" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="field">
+        <%= form.label :excellence_award_track, class: "label" do %>
+          <span>Excellence Award Track</span>
+          <abbr title="In addition to the main tracks, you can pick one of the topic-specific Excellence Awards, and your project will be judged on it as well">
+            <%= lucide_icon "info", class: "icon is-small" %>
+          </abbr>
+        <% end %>
+        <div class="control">
+          <div class="select">
+            <%= form.select :excellence_award_track, Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.map{|k,v| [v,k]}, {include_blank: true}, class: "select" %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

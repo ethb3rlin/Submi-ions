@@ -58,13 +58,19 @@ class Submission < ApplicationRecord
     smart_contracts: "Smart Contracts",
     ux: "User Experience",
     crypto: "Cryptography"
-  }
+  }.with_indifferent_access
 
   TRACK_ICONS = {
     transact: "arrow-right-left",
     infra: "podcast",
     tooling: "pocket-knife",
     social: "hand-heart"
+  }.with_indifferent_access
+
+  EXCELLENCE_TRACK_ICONS = {
+    smart_contracts: "receipt-text",
+    ux: "tablet-smartphone",
+    crypto: "earth-lock"
   }.with_indifferent_access
 
   after_initialize :set_default_description, unless: :persisted?

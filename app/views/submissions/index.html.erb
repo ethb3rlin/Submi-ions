@@ -13,9 +13,12 @@
       </span>
     </div>
 
-    <div class="list">
-      <%= render @submissions %>
-    </div>
+    <% cache @submissions do %>
+      <div class="list">
+        <%= render @submissions %>
+      </div>
+    <% end %>
+
   </div>
 <% end %>
 

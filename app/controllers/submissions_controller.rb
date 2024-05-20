@@ -7,7 +7,7 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions or /submissions.json
   def index
-    @submissions = Submission.includes(:hacking_team, :judgement).all
+    @submissions = Submission.includes(:hacking_team, :judgement).order(created_at: :desc).all
     authorize @submissions
   end
 

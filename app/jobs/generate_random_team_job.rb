@@ -8,6 +8,6 @@ class GenerateRandomTeamJob < Que::Job
       user.ethereum_addresses.create!(address: Faker::Blockchain::Ethereum.address)
     end
 
-    team.submissions.create!(title: Faker::Company.catch_phrase, description: Faker::Company.bs, url: Faker::Internet.url, track: Submission.tracks.keys.sample)
+    team.submissions.create!(title: Faker::Company.catch_phrase, description: Faker::Company.bs, repo_url: Faker::Internet.url, pitchdeck_url: Faker::Internet.url, track: Submission.tracks.keys.sample)
   end
 end

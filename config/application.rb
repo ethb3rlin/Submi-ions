@@ -28,5 +28,7 @@ module Submissions
     config.action_view.prefix_partial_path_with_controller_namespace = false
 
     config.active_job.queue_adapter = :que # In tests we would just configure Que::Job.run_synchronously = true
+
+    config.active_record.schema_format = :sql
   end
 end

@@ -15,9 +15,6 @@ export default class extends Controller {
     // If we're on /judgements/<id> URL, reset `completed` to false
     // Otherwise keep the value as it is
     var vote_data = { mark: this.sliderTarget.value } ;
-    if (window.location.pathname.match(/^\/judgements\/\d+/)) {
-      vote_data.completed = false;
-    }
 
     fetch(this.pathValue, {
       method: 'PATCH',

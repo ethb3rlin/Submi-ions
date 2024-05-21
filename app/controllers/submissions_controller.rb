@@ -18,6 +18,13 @@ class SubmissionsController < ApplicationController
       authorize submissions
       @results[track] = submissions
     end
+
+    @excellence_awards = {}
+    Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.keys.each do |track|
+      submission = Submission.order_by_excellence_score(track).first
+      authorize submission if submission
+      @excellence_awards[track] = submission
+    end
   end
 
   # GET /submissions/1 or /submissions/1.json

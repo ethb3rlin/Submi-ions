@@ -7,7 +7,7 @@ class ExcellenceJudgementsController < ApplicationController
     end
 
     @submissions = Submission.where(excellence_award_track: @team.track).includes(:excellence_judgements).order(created_at: :desc)
-    authorize @submissions
+    authorize ExcellenceJudgement
 
     if %i[finalizing published].include?(Setting.hackathon_stage)
       @submissions = @submissions.sort_by { |s| -s.excellence_judgements.sum(&:score) }

@@ -39,4 +39,32 @@
       <% end %>
     </div>
   <% end %>
+
+  <hr>
+
+  <h2 class="title is-4">Excellence Awards</h2>
+  <% @excellence_awards.each do |track, submission| %>
+    <h3 class="title is-5"><%= Submission::HUMAN_READABLE_EXCELLENCE_TRACKS[track] %></h3>
+    <% if submission.present? %>
+      <div class="columns">
+        <div class="column is-4">
+          <div class="card is-light">
+            <div class="card-header">
+              <div class="card-header-title"><%= link_to submission.title, submission %></div>
+              <div class="card-header-icon">
+                <%= lucide_icon 'award' %>
+              </div>
+            </div>
+            <div class="card-content">
+              <p class="subtitle is-6">
+                <%= lucide_icon 'users', size: 16 %>
+                <%= submission.hacking_team.name %>
+              </p></div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <p class="subtitle is-6">No award given.</p>
+    <% end %>
+  <% end %>
 </div>

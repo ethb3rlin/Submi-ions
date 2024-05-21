@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_20_211620) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_21_013859) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,7 +18,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_211620) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "excellence_award_track", ["smart_contracts", "ux", "crypto"]
   create_enum "join_application_state", ["pending", "approved", "declined"]
-  create_enum "judging_track", ["transact", "infra", "tooling", "social"]
+  create_enum "judging_track", ["transact", "infra", "tooling", "social", "meta"]
   create_enum "user_kind", ["hacker", "judge", "organizer"]
 
   create_table "ethereum_addresses", force: :cascade do |t|

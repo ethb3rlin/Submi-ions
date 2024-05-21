@@ -31,7 +31,7 @@ class Submission < ApplicationRecord
 
   has_many :comments, class_name: "SubmissionComment", dependent: :destroy
 
-  enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
+  enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social", meta: "meta"}
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
 
@@ -63,7 +63,8 @@ class Submission < ApplicationRecord
     transact: "Freedom to Transact",
     infra: "Infrastructure",
     tooling: "Defensive Tooling",
-    social: "Social Tech"
+    social: "Social Tech",
+    meta: "Meta-award"
   }.with_indifferent_access
 
   HUMAN_READABLE_EXCELLENCE_TRACKS = {
@@ -76,7 +77,8 @@ class Submission < ApplicationRecord
     transact: "arrow-right-left",
     infra: "podcast",
     tooling: "pocket-knife",
-    social: "hand-heart"
+    social: "hand-heart",
+    meta: "land-plot"
   }.with_indifferent_access
 
   EXCELLENCE_TRACK_ICONS = {

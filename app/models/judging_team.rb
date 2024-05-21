@@ -33,7 +33,7 @@ class JudgingTeam < ApplicationRecord
 
   has_many :judgements
 
-  enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social"}
+  enum :track, {transact: "transact", infra: "infra", tooling: "tooling", social: "social", meta: "meta"}
 
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }

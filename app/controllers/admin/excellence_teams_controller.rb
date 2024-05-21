@@ -1,10 +1,10 @@
 class Admin::ExcellenceTeamsController < ApplicationController
   def index
-    @excellence_teams = ExcellenceTeam.order(:id).includes(:users).all
-    authorize @excellence_teams
+    authorize ExcellenceTeam
     @excellence_teams_by_track = {}.with_indifferent_access
-    @excellence_teams.each do |excellence_team| # There will be only three of them, so we're fine doing dumb iterations
-      @excellence_teams_by_track[excellence_team.track] = excellence_team
+    Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.keys.each do |track| # There will be only three of them, so we're fine doing dumb iterations
+      excellence_team = ExcellenceTeam.find_or_create_by(track: track)
+      @excellence_teams_by_track[track] = excellence_team
     end
 
     @potential_judges = User.unassigned_judges.order(:name)

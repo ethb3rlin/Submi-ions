@@ -18,6 +18,13 @@ class SubmissionsController < ApplicationController
       authorize submissions
       @results[track] = submissions
     end
+
+    @excellence_awards = {}
+    Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.keys.each do |track|
+      submission = Submission.order_by_excellence_score(track).first
+      authorize submission if submission
+      @excellence_awards[track] = submission
+    end
   end
 
   # GET /submissions/1 or /submissions/1.json
@@ -92,7 +99,7 @@ class SubmissionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def submission_params
-      params.require(:submission).permit(:title, :description, :repo_url, :pitchdeck_url, :track)
+      params.require(:submission).permit(:title, :description, :repo_url, :pitchdeck_url, :track, :excellence_award_track)
     end
 
     def comment_params

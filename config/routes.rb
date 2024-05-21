@@ -19,6 +19,14 @@
 #                                          PATCH  /judgements/:id(.:format)                                                                         judgements#update
 #                                          PUT    /judgements/:id(.:format)                                                                         judgements#update
 #                                          DELETE /judgements/:id(.:format)                                                                         judgements#destroy
+#                    excellence_judgements GET    /excellence_judgements(.:format)                                                                  excellence_judgements#index
+#                                          POST   /excellence_judgements(.:format)                                                                  excellence_judgements#create
+#                 new_excellence_judgement GET    /excellence_judgements/new(.:format)                                                              excellence_judgements#new
+#                edit_excellence_judgement GET    /excellence_judgements/:id/edit(.:format)                                                         excellence_judgements#edit
+#                     excellence_judgement GET    /excellence_judgements/:id(.:format)                                                              excellence_judgements#show
+#                                          PATCH  /excellence_judgements/:id(.:format)                                                              excellence_judgements#update
+#                                          PUT    /excellence_judgements/:id(.:format)                                                              excellence_judgements#update
+#                                          DELETE /excellence_judgements/:id(.:format)                                                              excellence_judgements#destroy
 #           user_verify_zupass_credentials GET    /users/:user_id/verify_zupass_credentials(.:format)                                               users#verify_zupass_credentials
 #                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
 #                                     user PATCH  /users/:id(.:format)                                                                              users#update
@@ -53,6 +61,16 @@
 #                                          PATCH  /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#update
 #                                          PUT    /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#update
 #                                          DELETE /admin/judging_teams/:id(.:format)                                                                admin/judging_teams#destroy
+#               admin_excellence_team_user POST   /admin/excellence_teams/:excellence_team_id/user(.:format)                                        admin/excellence_teams#add_user
+#        admin_excellence_team_remove_user DELETE /admin/excellence_teams/:excellence_team_id/user/:user_id(.:format)                               admin/excellence_teams#remove_user
+#                   admin_excellence_teams GET    /admin/excellence_teams(.:format)                                                                 admin/excellence_teams#index
+#                                          POST   /admin/excellence_teams(.:format)                                                                 admin/excellence_teams#create
+#                new_admin_excellence_team GET    /admin/excellence_teams/new(.:format)                                                             admin/excellence_teams#new
+#               edit_admin_excellence_team GET    /admin/excellence_teams/:id/edit(.:format)                                                        admin/excellence_teams#edit
+#                    admin_excellence_team GET    /admin/excellence_teams/:id(.:format)                                                             admin/excellence_teams#show
+#                                          PATCH  /admin/excellence_teams/:id(.:format)                                                             admin/excellence_teams#update
+#                                          PUT    /admin/excellence_teams/:id(.:format)                                                             admin/excellence_teams#update
+#                                          DELETE /admin/excellence_teams/:id(.:format)                                                             admin/excellence_teams#destroy
 #                 admin_generate_fake_data POST   /admin/generate_fake_data(.:format)                                                               admin/admin#generate_fake_data
 #                      admin_wipe_all_data DELETE /admin/wipe_all_data(.:format)                                                                    admin/admin#wipe_all_data
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
@@ -113,15 +131,17 @@
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 
 Rails.application.routes.draw do
+
   resources :votes
 
   resources :judgements do
     member do
       post 'complete'
       post 'no_show'
-
     end
   end
+
+  resources :excellence_judgements
 
   resources :users, only: %i[edit update] do
     get 'verify_zupass_credentials'
@@ -148,6 +168,11 @@ Rails.application.routes.draw do
 
     resources :submissions, only: :index
     resources :judging_teams
+
+    resources :excellence_teams do
+      post 'user' => 'excellence_teams#add_user'
+      delete 'user/:user_id' => 'excellence_teams#remove_user', as: :remove_user
+    end
 
     post 'generate_fake_data' => 'admin#generate_fake_data'
     delete 'wipe_all_data' => 'admin#wipe_all_data'

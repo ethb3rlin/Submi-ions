@@ -25,6 +25,11 @@
         <%= lucide_icon 'group', class: 'icon is-large' %>
         <span><%= pluralize JudgingTeam.count, 'Judging Team' %></span>
       <% end %>
+
+      <%= link_to admin_excellence_teams_path, class: ['button', 'is-link', 'is-light', 'is-large', 'block'] do %>
+        <%= lucide_icon 'award', class: 'icon is-large' %>
+        <span><%= pluralize ExcellenceTeam.count, 'Excellence Awards' %></span>
+      <% end %>
     </div>
   </div>
 

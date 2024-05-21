@@ -32,6 +32,9 @@ class User < ApplicationRecord
   has_one :product_judging_team, class_name: 'JudgingTeam', foreign_key: 'product_judge_id'
   has_one :concept_judging_team, class_name: 'JudgingTeam', foreign_key: 'concept_judge_id'
 
+  has_one :excellence_team_membership
+  has_one :excellence_team, through: :excellence_team_membership
+
   has_many :join_applications, inverse_of: :user
   has_many :accepted_join_applications, -> { where(state: :approved) }, class_name: 'JoinApplication'
 
@@ -60,7 +63,8 @@ class User < ApplicationRecord
   end
 
   def self.unassigned_judges
-    User.judge.where.not(id: JudgingTeam.pluck(:technical_judge_id).compact + JudgingTeam.pluck(:product_judge_id).compact + JudgingTeam.pluck(:concept_judge_id).compact).order(:name)
+    User.judge.where.not(id: JudgingTeam.pluck(:technical_judge_id).compact + JudgingTeam.pluck(:product_judge_id).compact +
+        JudgingTeam.pluck(:concept_judge_id).compact + ExcellenceTeamMembership.pluck(:user_id).compact ).order(:name)
   end
 
   private

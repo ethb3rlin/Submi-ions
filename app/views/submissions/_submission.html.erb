@@ -4,9 +4,16 @@
     <header class="card-header">
       <p class="card-header-title title submission-title">
         <span><%= submission.title %></span>
-        <span class="is-size-5 is-italic submission-track has-text-weight-normal">
-          <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
+        <span class="is-size-5 is-italic submission-track has-text-weight-normal has-text-success-dark">
+          <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon' %>
           <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
+          <% if submission.excellence_award_track.present? %>
+            <br/>
+            <span class="is-size-6 has-text-weight-normal has-text-info">
+              <%= lucide_icon Submission::EXCELLENCE_TRACK_ICONS[submission.excellence_award_track], size: 12, class: 'icon is-small' %>
+              <%= Submission::HUMAN_READABLE_EXCELLENCE_TRACKS[submission.excellence_award_track] %>
+            </span>
+          <% end %>
         </span>
         <% if submission&.judgement&.time.present? && %i[hacking judging].include?(Setting.hackathon_stage) %>
           <span class="is-size-6 ml-6 has-text-weight-normal">

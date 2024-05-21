@@ -2,20 +2,22 @@
 #
 # Table name: submissions
 #
-#  id              :bigint           not null, primary key
-#  description     :text
-#  pitchdeck_url   :string
-#  repo_url        :text
-#  title           :text
-#  track           :enum             default("infra"), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  hacking_team_id :bigint
+#  id                     :bigint           not null, primary key
+#  description            :text
+#  excellence_award_track :enum
+#  pitchdeck_url          :string
+#  repo_url               :text
+#  title                  :text
+#  track                  :enum             default("infra"), not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  hacking_team_id        :bigint
 #
 # Indexes
 #
-#  index_submissions_on_hacking_team_id  (hacking_team_id)
-#  index_submissions_on_track            (track)
+#  index_submissions_on_excellence_award_track  (excellence_award_track)
+#  index_submissions_on_hacking_team_id         (hacking_team_id)
+#  index_submissions_on_track                   (track)
 #
 # Foreign Keys
 #
@@ -33,6 +35,11 @@ class Submission < ApplicationRecord
   validates :track, presence: true
   validates :track, inclusion: { in: tracks.keys }
 
+  enum :excellence_award_track, {smart_contracts: "smart_contracts", ux: "ux", crypto: "crypto"}
+  validates :excellence_award_track, inclusion: { in: excellence_award_tracks.keys }, allow_nil: true
+
+  has_many :excellence_judgements, inverse_of: :submission
+
   scope :unassigned, -> { Submission.left_outer_joins(:judgement).where(judgements: { id: nil }) }
 
   scope :order_by_total_score, -> {
@@ -42,6 +49,16 @@ class Submission < ApplicationRecord
       .select("submissions.*, (COALESCE(technical_votes.mark, 0) + COALESCE(product_votes.mark, 0) + COALESCE(concept_votes.mark, 0)) AS total_mark").order("total_mark DESC")
     }
 
+  scope :order_by_excellence_score, ->(track) {
+    selector = self.attribute_names.map { |attr| "submissions.#{attr}" }.join(", ")
+
+    where(excellence_award_track: track)
+    .joins(:excellence_judgements)
+    .select(selector, 'SUM(excellence_judgements.score) AS total_score')
+    .group(selector)
+    .order("total_score DESC")
+  }
+
   HUMAN_READABLE_TRACKS = {
     transact: "Freedom to Transact",
     infra: "Infrastructure",
@@ -49,11 +66,23 @@ class Submission < ApplicationRecord
     social: "Social Tech"
   }.with_indifferent_access
 
+  HUMAN_READABLE_EXCELLENCE_TRACKS = {
+    smart_contracts: "Smart Contracts",
+    ux: "User Experience",
+    crypto: "Cryptography"
+  }.with_indifferent_access
+
   TRACK_ICONS = {
     transact: "arrow-right-left",
     infra: "podcast",
     tooling: "pocket-knife",
     social: "hand-heart"
+  }.with_indifferent_access
+
+  EXCELLENCE_TRACK_ICONS = {
+    smart_contracts: "receipt-text",
+    ux: "tablet-smartphone",
+    crypto: "earth-lock"
   }.with_indifferent_access
 
   after_initialize :set_default_description, unless: :persisted?
@@ -71,6 +100,10 @@ class Submission < ApplicationRecord
         end
       end
     end
+  end
+
+  def excellence_score
+    excellence_judgements.sum(:score)
   end
 
   private

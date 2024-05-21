@@ -1,0 +1,92 @@
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <div class="block">
+        <p class="title"><%= Submission::HUMAN_READABLE_EXCELLENCE_TRACKS[@team.track] %></p>
+        <p class="subtitle">Excellence Award</p>
+      </div>
+    </div>
+  </div>
+  <% if %i[finalizing published].include?(Setting.hackathon_stage) %>
+    <div class="level-right">
+      <div class="level-item">
+        <div class="tabs is-toggle">
+          <ul>
+            <% Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.each do |track, name| %>
+              <li class="<%= 'is-active' if track == @team.track %>">
+                <%= link_to excellence_judgements_path(track: track) do %>
+                  <%= lucide_icon Submission::EXCELLENCE_TRACK_ICONS[track] %>
+                  <%= name %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if %i[registration hacking].include?(Setting.hackathon_stage) %>
+  <div class>
+    <p>
+      The hackathon is still ongoing.
+    </p>
+    <p>
+      You will be able to judge projects as soon as the judging phase begins.
+    </p>
+    <p>
+      In the meantime, you can <%= link_to "browse projects", submissions_path %> and <%= link_to "hacking teams", hacking_teams_path %>.
+    </p>
+  </div>
+<% elsif Setting.hackathon_stage == :judging %>
+
+  <div>
+    <table class="table is-fullwidth">
+      <% if current_user.judge? %> <%# For orgs we will rely on auto-widths, since there are no sliders %>
+        <colgroup>
+          <col span="1" style="width: 8%;">
+          <col span="1" style="width: 12%;">
+          <col span="1" style="width: <%= 80 - 3*@teammates.count %>%;">
+          <% @teammates.each do |_| %>
+            <col span="1" style="width: 3%;">
+          <% end %>
+        </colgroup>
+      <% end %>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>URLs</th>
+          <% if current_user.judge? %>
+            <th>Your score</th>
+          <% end %>
+          <% @teammates.each do |teammate| %>
+            <th><%= teammate.name %>'s score</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render collection: @submissions, partial: 'excellence_judgements/submission', locals: { user: (current_user.judge? && current_user), teammates: @teammates } %>
+      </tbody>
+    </table>
+  </div>
+
+  <%= turbo_stream_from @team %>
+
+<% else %>
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>URLs</th>
+        <% @teammates.each do |user| %>
+          <th><%= user.readable_name %>'s vote</th>
+        <% end %>
+        <th>Final score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render collection: @submissions, partial: 'excellence_judgements/submission', locals: { user: nil, teammates: @teammates } %>
+    </tbody>
+  </table>
+<% end %>

@@ -20,16 +20,21 @@
   </td>
 
   <% judgements_by_user = submission.excellence_judgements.group_by(&:user_id) %><%# I hate this, but... %>
-  <% current_judgement = judgements_by_user[current_user.id]&.first || ExcellenceJudgement.create!(user: current_user, submission: submission, score: 0) %>
 
-  <% if current_user.judge? %>
+  <% if user && user.judge? %>
+    <% current_judgement = judgements_by_user[user&.id]&.first || ExcellenceJudgement.create!(user: user, submission: submission, score: 0) %>
+
     <td data-controller="excellence" data-excellence-path-value="<%= excellence_judgement_path(current_judgement) %>">
-      <input type="range" class="slider is-fullwidth is-info" min="0" max="100" step="0.1" value="<%= judgements_by_user[current_user.id]&.first&.score %>" data-excellence-target="slider" data-action="input->excellence#updateNumber mouseup->excellence#submitValue">
-      <span data-excellence-target="field"><%= current_judgement.score %></span>
+      <input type="range" class="slider is-fullwidth is-info" min="0" max="100" step="0.1" value="<%= current_judgement.padded_score %>" data-excellence-target="slider" data-action="input->excellence#updateNumber mouseup->excellence#submitValue">
+      <span data-excellence-target="field"><%= current_judgement.padded_score %></span>
     </td>
   <% end %>
 
   <% teammates.map{|t| [t, judgements_by_user[t.id]&.first] }.each do |user, judgement| %>
-    <td id="submission_<%= submission.id %>_judgement_by_<%= user.id %>"><%= judgement&.score %></td>
+    <td id="submission_<%= submission.id %>_judgement_by_<%= user.id %>"><%= judgement&.padded_score %></td>
+  <% end %>
+
+  <% if %i[finalizing published].include?(Setting.hackathon_stage) %>
+    <td><%= format("%.1f", submission.excellence_judgements.sum(&:score)) %></td>
   <% end %>
 </tr>

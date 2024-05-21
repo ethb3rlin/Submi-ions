@@ -1,10 +1,23 @@
 class ExcellenceJudgementsController < ApplicationController
   def index
-    @team = current_user.excellence_team || ExcellenceTeam.find_by(track: params[:track])
+    @team = if current_user.judge? && Setting.hackathon_stage == :judging
+      current_user.excellence_team
+    else
+      ExcellenceTeam.find_by(track: params[:track] || Submission::HUMAN_READABLE_EXCELLENCE_TRACKS.keys.first)
+    end
+
     @submissions = Submission.where(excellence_award_track: @team.track).includes(:excellence_judgements).order(created_at: :desc)
     authorize @submissions
 
-    @teammates = @team.users.order(:name) - [current_user]
+    if %i[finalizing published].include?(Setting.hackathon_stage)
+      @submissions = @submissions.sort_by { |s| -s.excellence_judgements.sum(&:score) }
+    end
+
+    @teammates = @team.users.order(:name)
+    if current_user.judge? && Setting.hackathon_stage == :judging
+      @teammates = @teammates.where.not(id: current_user.id)
+    end
+    @teammates = @teammates.decorate
   end
 
   def show

@@ -29,15 +29,21 @@ class ExcellenceJudgement < ApplicationRecord
   validates :score, presence: true
   validates :score, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
+  default_scope { joins(:user).order("users.name")}
+
   after_save_commit :broadcast_score
 
   def dom_id
     "submission_#{submission.id}_judgement_by_#{user.id}"
   end
 
+  def padded_score
+    format("%.1f", self.score)
+  end
+
   private
   def broadcast_score
     broadcast_replace_to excellence_team, target: self.dom_id,
-      html: "<td id=\"#{self.dom_id}\">#{format("%.1f", self.score)}</td>"
+      html: "<td id=\"#{self.dom_id}\">#{self.padded_score}</td>"
   end
 end

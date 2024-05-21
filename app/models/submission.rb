@@ -49,6 +49,16 @@ class Submission < ApplicationRecord
       .select("submissions.*, (COALESCE(technical_votes.mark, 0) + COALESCE(product_votes.mark, 0) + COALESCE(concept_votes.mark, 0)) AS total_mark").order("total_mark DESC")
     }
 
+  scope :order_by_excellence_score, ->(track) {
+    selector = self.attribute_names.map { |attr| "submissions.#{attr}" }.join(", ")
+
+    where(excellence_award_track: track)
+    .joins(:excellence_judgements)
+    .select(selector, 'SUM(excellence_judgements.score) AS total_score')
+    .group(selector)
+    .order("total_score DESC")
+  }
+
   HUMAN_READABLE_TRACKS = {
     transact: "Freedom to Transact",
     infra: "Infrastructure",
@@ -90,6 +100,10 @@ class Submission < ApplicationRecord
         end
       end
     end
+  end
+
+  def excellence_score
+    excellence_judgements.sum(:score)
   end
 
   private

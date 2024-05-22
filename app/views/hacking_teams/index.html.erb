@@ -17,13 +17,15 @@
     </div>
 
     <div class="teams-list list">
-      <% @teams.each do |team| %>
-        <div class="team block" id="<%= dom_id team %>">
-          <%= link_to team.name, team, class: class_names(name:true, "is-size-3" => true, "has-text-success" => @approved_application_ids.include?(team.id)) %>
-          <div class="agenda">
-            <%= team.decorate.formatted_agenda %>
-          </div>
+      <% if @own_teams.present? %>
+        <h2 class="is-size-4">Your teams</h2>
+        <div class="own">
+          <%= render @own_teams %>
         </div>
+        <h2 class="is-size-4">All other teams</h2>
+      <% end %>
+      <% cache @teams do %>
+        <%= render @teams %>
       <% end %>
     </div>
   </div>

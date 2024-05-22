@@ -1,0 +1,8 @@
+<% cache hacking_team do %>
+  <div class="team block" id="<%= dom_id hacking_team %>">
+    <%= link_to hacking_team.name, hacking_team, class: "name is-size-3" %>
+    <div class="agenda">
+      <%= hacking_team.decorate.formatted_agenda %>
+    </div>
+  </div>
+<% end %>

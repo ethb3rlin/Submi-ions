@@ -4,6 +4,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  description            :text
+#  draft                  :boolean          default(FALSE)
 #  excellence_award_track :enum
 #  pitchdeck_url          :string
 #  repo_url               :text
@@ -41,6 +42,9 @@ class Submission < ApplicationRecord
   has_many :excellence_judgements, inverse_of: :submission
 
   scope :unassigned, -> { Submission.left_outer_joins(:judgement).where(judgements: { id: nil }) }
+
+  default_scope { where(draft: false) }
+  scope :with_drafts, -> { unscope(where: :draft) }
 
   scope :order_by_total_score, -> {
     joins(:judgement).joins("LEFT JOIN votes AS technical_votes ON technical_votes.id = judgements.technical_vote_id")

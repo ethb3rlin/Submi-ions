@@ -32,6 +32,27 @@ class SubmissionsController < ApplicationController
     if policy(SubmissionComment).show?
       @new_comment = @submission.comments.build(user: current_user)
     end
+
+    @published_submission = @submission.hacking_team.submissions.find_by(draft: false)
+  end
+
+  def publish
+    @submission = Submission.with_drafts.find(params[:submission_id])
+    authorize @submission
+
+    Submission.transaction do
+      @submission.update!(draft: false)
+      @submission.hacking_team.submissions.where.not(id: @submission.id).update_all(draft: true, updated_at: DateTime.now) unless current_user.organizer?
+    end
+    redirect_to submission_url(@submission), notice: "Submission was successfully published."
+  end
+
+  def draft
+    @submission = Submission.with_drafts.find(params[:submission_id])
+    authorize @submission
+
+    @submission.update!(draft: true)
+    redirect_to submission_url(@submission), notice: "Submission was successfully drafted."
   end
 
   def add_comment
@@ -66,6 +87,12 @@ class SubmissionsController < ApplicationController
       @submission = team.submissions.new(submission_params)
       authorize @submission
 
+      published_submission = team.submissions.find_by(draft: false)
+      if published_submission.present?
+        @submission.draft = true
+        flash[:alert] = "You have already published a '#{published_submission.title}' submission. This project will be saved as a draft. You can change which one is published at any moment while the hackathon is still ongoing — but you will only be judged on a single published submission."
+      end
+
 
       if @submission.save
         redirect_to submission_url(@submission), notice: "Submission #{@submission.title} was successfully created."
@@ -93,7 +120,7 @@ class SubmissionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_submission
-      @submission = Submission.find(params[:id]).decorate
+      @submission = Submission.with_drafts.find(params[:id]).decorate
       authorize @submission
     end
 

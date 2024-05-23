@@ -76,6 +76,8 @@
 #                                  sign_in POST   /sign_in(.:format)                                                                                sessions#sign_in
 #                                 sign_out DELETE /sign_out(.:format)                                                                               sessions#sign_out
 #                   submission_add_comment POST   /submissions/:submission_id/add_comment(.:format)                                                 submissions#add_comment
+#                       submission_publish PATCH  /submissions/:submission_id/publish(.:format)                                                     submissions#publish
+#                         submission_draft PATCH  /submissions/:submission_id/draft(.:format)                                                       submissions#draft
 #                      results_submissions GET    /submissions/results(.:format)                                                                    submissions#results
 #                              submissions GET    /submissions(.:format)                                                                            submissions#index
 #                                          POST   /submissions(.:format)                                                                            submissions#create
@@ -183,6 +185,9 @@ Rails.application.routes.draw do
 
   resources :submissions do
     post 'add_comment'
+
+    patch 'publish'
+    patch 'draft'
 
     collection do
       get 'results'

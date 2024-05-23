@@ -1,5 +1,14 @@
 <tr id="<%= dom_id submission %>">
-  <td class="submission-title"><strong><%= link_to submission.title, submission %></strong></td>
+  <td class="submission-title">
+    <% if !submission.draft? %>
+      <strong><%= link_to submission.title, submission %></strong>
+    <% else %>
+      <abbr title="This submission has been marked as draft by the team, and won't be judged unless published">
+        <%= lucide_icon 'eye-off', class: 'icon is-small has-text-grey' %>
+        <span class="has-text-grey"><%= submission.title %></span>
+      </abbr>
+    <% end %>
+  </td>
   <td class="description"><%= submission.description.truncate(350) %></td>
   <td class="url is-size-7">
     <% if submission.repo_url.present? %>

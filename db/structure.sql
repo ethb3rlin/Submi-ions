@@ -694,7 +694,8 @@ CREATE TABLE public.submissions (
     hacking_team_id bigint,
     track public.judging_track DEFAULT 'infra'::public.judging_track NOT NULL,
     pitchdeck_url character varying,
-    excellence_award_track public.excellence_award_track
+    excellence_award_track public.excellence_award_track,
+    draft boolean DEFAULT false
 );
 
 
@@ -1518,6 +1519,7 @@ ALTER TABLE ONLY public.join_applications
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240523120939'),
 ('20240521013859'),
 ('20240520211620'),
 ('20240520144709'),

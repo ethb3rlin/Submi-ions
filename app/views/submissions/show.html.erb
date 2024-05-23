@@ -1,22 +1,52 @@
 <div class="submission-display"><%= render @submission %></div>
 
 <div class="buttons mt-5">
-  <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
-    <%= lucide_icon "arrow-big-left", class: 'icon is-small' %>
-    <span>Back</span>
-  <% end %>
-  <% if policy(@submission).update? %>
-    <%= link_to edit_submission_path(@submission), class: "button is-light is-link" do %>
-      <%= lucide_icon "edit", class: 'icon is-small' %>
-      <span>Edit this submission</span>
-    <% end %>
-  <% elsif current_user&.hacker? && %i[judging finalizing].include?(Setting.hackathon_stage) %>
-    <a class="button" disabled>
-      <%= lucide_icon "lock", class: 'icon is-small' %>
-      <span>Judging has already started, submissions cannot be edited anymore.</span>
-    </a>
-  <% end %>
-  <%= button_to "Destroy this submission", @submission, method: :delete, class: "button is-danger" if policy(@submission).destroy? %>
+  <div class="columns is-flex-grow-1">
+    <div class="column">
+      <%= link_to "javascript:navigateBackOrUp()", class: "button is-light" do %>
+        <%= lucide_icon "arrow-big-left", class: 'icon is-small' %>
+        <span>Back</span>
+      <% end %>
+      <% if policy(@submission).update? %>
+        <%= link_to edit_submission_path(@submission), class: "button is-light is-link" do %>
+          <%= lucide_icon "edit", class: 'icon is-small' %>
+          <span>Edit this submission</span>
+        <% end %>
+      <% elsif current_user&.hacker? && %i[judging finalizing].include?(Setting.hackathon_stage) %>
+        <a class="button" disabled>
+          <%= lucide_icon "lock", class: 'icon is-small' %>
+          <span>Judging has already started, submissions cannot be edited anymore.</span>
+        </a>
+      <% end %>
+    </div>
+    <div class="column is-narrow">
+      <% if @submission.draft %>
+        <% if policy(@submission).publish? %>
+          <% if @published_submission.present? %>
+            <%= link_to submission_publish_path(@submission), data: {turbo_method: :patch, turbo_confirm: "Publishing this submission will unpublish your currently published '#{@published_submission.title}' one. Do you want to continue?"}, class: "button is-warning" do %>
+              <%= lucide_icon "upload", class: 'icon is-small' %>
+              <span>Publish</span>
+            <% end %>
+
+          <% else %>
+            <%= link_to submission_publish_path(@submission), data: {turbo_method: :patch}, class: "button is-success" do %>
+              <%= lucide_icon "upload", class: 'icon is-small' %>
+              <span>Publish</span>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <% if policy(@submission).draft? %>
+          <%= link_to submission_draft_path(@submission), data: {turbo_method: :patch}, class: "button is-warning" do %>
+            <%= lucide_icon "notepad-text-dashed", class: 'icon is-small' %>
+            <span>Convert to draft</span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+
 </div>
 
 <% if policy(SubmissionComment).show? %>

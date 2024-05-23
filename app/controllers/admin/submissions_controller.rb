@@ -4,7 +4,7 @@ class Admin::SubmissionsController < ApplicationController
       Submission.where(track: params[:track])
     else
       Submission.all
-    end.includes(judgement: [:judging_team, :technical_vote, :product_vote, :concept_vote])
+    end.with_drafts.includes(judgement: [:judging_team, :technical_vote, :product_vote, :concept_vote]).order(:created_at)
     authorize @submissions
 
     if %i[finalizing published].include?(Setting.hackathon_stage)

@@ -6,7 +6,7 @@
     <% end %>
   <% end %>
 
-  <% if current_user&& current_user.hacking_teams.include?(@team) && policy(@team).leave? %>
+  <% if current_user && current_user.hacking_teams.include?(@team) && policy(@team).leave? %>
     <%= button_to hacking_team_leave_path(@team), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "button is-danger is-pulled-right" do %>
       <%= lucide_icon "door-open", class: 'icon is-small' %>
       <span>Leave this team</span>
@@ -137,8 +137,8 @@
     <% end %>
   <% end %>
 
-  <% if @team.submissions.present? %>
+  <% if @submissions.any? %>
     <h2 class="is-size-4">Team's submissions</h2>
-    <%= render @team.submissions %>
+    <%= render @submissions %>
   <% end %>
 </div>

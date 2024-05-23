@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
     @teams = current_user.hacking_teams
     @current_team = HackingTeam.find_by(id: params[:team_id]) || @teams.first
-    @submissions = @current_team.submissions.order(created_at: :desc) rescue []
+    @submissions = @current_team.submissions.with_drafts.order(created_at: :desc) rescue []
   end
 
   def edit

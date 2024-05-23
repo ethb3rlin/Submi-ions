@@ -1,6 +1,6 @@
 <div class="content admin-submissions-ui" data-controller="filterable-submissions">
   <div class="columns admin-submissions-header">
-    <div class="column is-7">
+    <div class="column">
       <div class="tabs is-toggle">
         <ul>
           <li class="tab <%= 'is-active' unless params[:track].present? %>"><%= link_to 'All', admin_submissions_path %></li>
@@ -10,7 +10,7 @@
         </ul>
       </div>
     </div>
-    <div class="column is-4 is-offset-1">
+    <div class="column is-3">
       <div class="control has-icons-left">
         <input class="filter-input input search" type="text" placeholder="Filter" data-action="filterable-submissions#filter"/>
         <span class="icon is-left">

@@ -34,7 +34,7 @@ class HackingTeamsController < ApplicationController
     @already_applied = @current_user_application&.pending?
     @already_rejected = @current_user_application&.declined? && (@current_user_application.decided_by != current_user)
 
-    @submissions = @team.submissions.order(created_at: :desc)
+    @submissions = @team.submissions.order(draft: :asc, created_at: :desc)
     @submissions = @submissions.with_drafts if @current_user_application&.approved?
   end
 

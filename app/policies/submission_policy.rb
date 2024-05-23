@@ -17,7 +17,21 @@ class SubmissionPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    return true unless record.draft # Everyone can see non-draft submissions
+    return false unless user.present? # No one can see draft submissions if they're not logged in
+    return true if user.organizer? # Organizers can see all draft submissions
+    return true if user.approved? && user.hacking_teams.include?(record.hacking_team) # Hackers can see their own draft submissions
+    false
+  end
+
+  def publish?
+    return false unless user.present?
+    return true if user.organizer?
+    user.hacking_teams.include?(record.hacking_team) && Setting.hackathon_stage == :hacking
+  end
+
+  def draft?
+    publish?
   end
 
   def update?

@@ -2,11 +2,8 @@ class HackingTeamsController < ApplicationController
   def index
     @own_teams = current_user&.hacking_teams
 
-    @teams = HackingTeam
-      .joins(:join_applications).where.not('join_applications.state': :approved, 'join_applications.user_id': current_user&.id)
-      .distinct
-      .order(created_at: :desc)
-    authorize @teams
+    @teams = HackingTeam.all - (@own_teams||[])
+    authorize HackingTeam
   end
 
   def new
@@ -36,6 +33,9 @@ class HackingTeamsController < ApplicationController
 
     @already_applied = @current_user_application&.pending?
     @already_rejected = @current_user_application&.declined? && (@current_user_application.decided_by != current_user)
+
+    @submissions = @team.submissions.order(created_at: :desc)
+    @submissions = @submissions.with_drafts if @current_user_application&.approved?
   end
 
   def edit

@@ -1,11 +1,15 @@
 <div class="content">
   <div class="columns">
     <div class="column">
-      <%= link_to admin_submissions_path, class: ['button', 'is-info', 'is-light', 'is-large'] do %>
+      <%= link_to admin_submissions_path, class: ['button', 'is-info', 'is-light', 'is-large', 'block'] do %>
         <%= lucide_icon 'square-stack', class: 'icon is-large' %>
         <span><%= pluralize Submission.count, 'Submission' %></span>
       <% end %>
+      <div class="is-size-7 block">
+        <p class="is-italic">Plus <%= pluralize Submission.drafted.count, 'drafted ones' %></p>
+      </div>
     </div>
+
     <div class="column">
       <%= link_to admin_users_path(role: :hacker), class: ['button', 'is-light', 'is-large', 'block'] do %>
         <%= lucide_icon 'users', class: 'icon is-large' %>
@@ -20,6 +24,7 @@
         <span><%= pluralize HackingTeam.count, 'Hacking Team' %></span>
       <% end %>
     </div>
+
     <div class="column">
       <%= link_to admin_judging_teams_path, class: ['button', 'is-warning', 'is-light', 'is-large', 'block'] do %>
         <%= lucide_icon 'group', class: 'icon is-large' %>

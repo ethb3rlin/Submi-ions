@@ -49,12 +49,12 @@ class Judgement < ApplicationRecord
 
   scope :empty, -> { where(technical_vote_id: nil, product_vote_id: nil, concept_vote_id: nil) }
   scope :incomplete, -> {
-      # Querying Judgements where any vote (technical, product, concept) is incomplete
+      # Querying Judgements where any vote (technical, product, concept) is incomplete or NULL
       incomplete_votes_query = Vote.where(completed: false)
 
-      judgements_with_incomplete_technical_votes = Judgement.joins(:technical_vote).merge(incomplete_votes_query)
-      judgements_with_incomplete_product_votes = Judgement.joins(:product_vote).merge(incomplete_votes_query)
-      judgements_with_incomplete_concept_votes = Judgement.joins(:concept_vote).merge(incomplete_votes_query)
+      judgements_with_incomplete_technical_votes = Judgement.left_outer_joins(:technical_vote).merge(incomplete_votes_query).or(Judgement.where(technical_vote: nil))
+      judgements_with_incomplete_product_votes = Judgement.left_outer_joins(:product_vote).merge(incomplete_votes_query).or(Judgement.where(product_vote: nil))
+      judgements_with_incomplete_concept_votes = Judgement.left_outer_joins(:concept_vote).merge(incomplete_votes_query).or(Judgement.where(concept_vote: nil))
 
       # Combining the queries using UNION; inelegant, but easy to follow
       from("(#{judgements_with_incomplete_technical_votes.to_sql} UNION #{judgements_with_incomplete_product_votes.to_sql} UNION #{judgements_with_incomplete_concept_votes.to_sql}) AS judgements")

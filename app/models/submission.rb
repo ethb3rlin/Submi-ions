@@ -45,6 +45,7 @@ class Submission < ApplicationRecord
 
   default_scope { where(draft: false) }
   scope :with_drafts, -> { unscope(where: :draft) }
+  scope :drafted, -> { unscope(where: :draft).where(draft: true) }
 
   scope :order_by_total_score, -> {
     joins(:judgement).joins("LEFT JOIN votes AS technical_votes ON technical_votes.id = judgements.technical_vote_id")

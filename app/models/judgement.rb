@@ -71,6 +71,8 @@ class Judgement < ApplicationRecord
       from("(#{judgements_with_completed_technical_votes.to_sql} INTERSECT #{judgements_with_completed_product_votes.to_sql} INTERSECT #{judgements_with_completed_concept_votes.to_sql}) AS judgements")
   }
 
+  JUDGING_DURATION = 10.minutes
+
   def just_time
     self[:time]&.strftime("%H:%M")
   end
@@ -120,7 +122,7 @@ class Judgement < ApplicationRecord
         latest_time = Judgement.where(judging_team_id: team_id).where.not(time: nil).order(time: :desc).limit(1).pluck(:time).last
 
         scheduled_time = if latest_time.present?
-          latest_time + 9.minutes
+          latest_time + JUDGING_DURATION
         else
           # FIXME: This parsing uses local date and timezone, while "natural" deserializing from Postgres
           # uses UTC and 01 Jan 2000 as the date. This is a workaround for that.
@@ -141,7 +143,7 @@ class Judgement < ApplicationRecord
           end
 
           judgement.update!(time: scheduled_time.strftime("%H:%M"))
-          scheduled_time = scheduled_time + 9.minutes
+          scheduled_time = scheduled_time + JUDGING_DURATION
         end
       end
     end

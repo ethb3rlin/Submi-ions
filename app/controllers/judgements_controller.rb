@@ -2,7 +2,7 @@ class JudgementsController < ApplicationController
   def index
     @judging_team = current_user.judging_team
 
-    @judgements = Judgement.with_no_show.where(judging_team: @judging_team).order(:created_at)
+    @judgements = Judgement.with_no_show.where(judging_team: @judging_team).order(:time)
     authorize @judgements
 
     @there_are_more_to_judge = Submission.unassigned.any?

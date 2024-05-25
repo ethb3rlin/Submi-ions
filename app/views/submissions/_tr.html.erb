@@ -66,6 +66,13 @@
         <%= lucide_icon Submission::TRACK_ICONS[submission.track], class: 'icon is-small' %>
         <%= Submission::HUMAN_READABLE_TRACKS[submission.track] %>
       </span>
+      <% if submission.excellence_award_track.present? %>
+        <br/>
+        <span class="is-size-7 has-text-weight-normal has-text-info">
+          <%= lucide_icon Submission::EXCELLENCE_TRACK_ICONS[submission.excellence_award_track], class: 'icon is-small' %>
+          <%= Submission::HUMAN_READABLE_EXCELLENCE_TRACKS[submission.excellence_award_track] %>
+        </span>
+      <% end %>
     <% end %>
   </td>
   <td><%= link_to 'Show',

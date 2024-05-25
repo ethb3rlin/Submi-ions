@@ -16,7 +16,7 @@ SET row_security = off;
 CREATE TYPE public.excellence_award_track AS ENUM (
     'smart_contracts',
     'ux',
-    'crypto'
+    'social_impact'
 );
 
 
@@ -1519,6 +1519,7 @@ ALTER TABLE ONLY public.join_applications
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240525100607'),
 ('20240523120939'),
 ('20240521013859'),
 ('20240520211620'),

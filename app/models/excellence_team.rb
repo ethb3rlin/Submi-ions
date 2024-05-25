@@ -17,6 +17,6 @@ class ExcellenceTeam < ApplicationRecord
 
   has_many :excellence_judgements, through: :users
 
-  enum :track, { smart_contracts: 'smart_contracts', ux: 'ux', crypto: 'crypto' }
+  enum :track, { smart_contracts: 'smart_contracts', ux: 'ux', social_impact: 'social_impact' }
   validates :track, presence: true, inclusion: { in: tracks.keys }
 end

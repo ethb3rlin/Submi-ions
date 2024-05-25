@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     end
 
     def handle_exception(exception)
-      logger.error "Exception: #{exception.class.name} - #{exception.message} - #{exception.backtrace}"
+      logger.error "Exception: #{exception.class.name} - #{exception.message} - #{Rails.backtrace_cleaner.clean(exception.backtrace)}"
 
       flash.keep
       flash[:error] = "An error occurred: #{exception.message}"

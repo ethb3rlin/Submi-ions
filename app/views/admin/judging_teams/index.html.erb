@@ -31,21 +31,21 @@
           </div>
         </div>
       </div>
+
+      <% if @judgements.present? %>
+        <table class="table is-fullwidth">
+          <tbody id="<%= dom_id(@current_team, :judgements) %>">
+            <%= render @judgements %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="panel-block">
+          <p class="has-text-centered">This team hadn't judged any submissions yet</p>
+        </div>
+      <% end %>
     <% else %>
       <div class="panel-block">
         <p class="has-text-centered">No judging teams created yet</p>
-      </div>
-    <% end %>
-
-    <% if @judgements.present? %>
-      <table class="table is-fullwidth">
-        <tbody id="<%= dom_id(@current_team, :judgements) %>">
-          <%= render @judgements %>
-        </tbody>
-      </table>
-    <% else %>
-      <div class="panel-block">
-        <p class="has-text-centered">This team hadn't judged any submissions yet</p>
       </div>
     <% end %>
   </div>

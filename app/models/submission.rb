@@ -89,7 +89,7 @@ class Submission < ApplicationRecord
   EXCELLENCE_TRACK_ICONS = {
     smart_contracts: "receipt-text",
     ux: "tablet-smartphone",
-    social_impact: "hand-heart"
+    social_impact: "handshake"
   }.with_indifferent_access
 
   after_initialize :set_default_description, unless: :persisted?

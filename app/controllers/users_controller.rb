@@ -61,7 +61,12 @@ class UsersController < ApplicationController
         :organizer
       when "beb248b4-9ef8-422f-b475-e94234721dc1" #productName: "Reviewer"
         :judge
-      when "e6a44839-76f5-4a47-8b3b-bb95ea6fc3cc", "a28bfaa9-2843-48b9-9200-f12dae4a483f", "eeb248b4-9ef8-422f-b475-e94234721dc5" # "Hacker", "Mentor", "Volunteer"
+      when "e6a44839-76f5-4a47-8b3b-bb95ea6fc3cc", # Hacker
+          "a28bfaa9-2843-48b9-9200-f12dae4a483f", # Mentor
+          "eeb248b4-9ef8-422f-b475-e94234721dc3", # Speaker
+          "eeb248b4-9ef8-422f-b475-e94234721dc5", # Volunteer
+          "beb248b4-9ef8-422f-b475-e94234721dc2", # Student
+          "eeb248b4-9ef8-422f-b475-e94234721dc4" # Experiences
         :hacker
       else
         raise "Unknown product ID #{product_id} in ZuPass claim"

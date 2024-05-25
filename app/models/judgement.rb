@@ -35,7 +35,7 @@ class Judgement < ApplicationRecord
   include Rails.application.routes.url_helpers # Add route helpers
 
   belongs_to :judging_team
-  belongs_to :submission
+  belongs_to :submission, -> { with_drafts }
 
   belongs_to :technical_vote, class_name: "Vote", dependent: :destroy, optional: true
   belongs_to :product_vote, class_name: "Vote", dependent: :destroy, optional: true

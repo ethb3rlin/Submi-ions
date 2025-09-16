@@ -19,41 +19,38 @@ namespace :export do
     # We're also using Zola taxonomies for tracks and excellence_award_tracks
 
     HackingTeam.includes(:submissions).find_each do |team|
+      # submissions should be a valid array in TOML in the following format:
+      # submissions = [ {url = "/submissions/388", title = "DisrUptIng eThBeRlIn tHrOuGh aGgrEsSivE nOn-cOmPliaNcE ⚡️"} ]
       File.write(teams_dir.join("#{team.id}.md"), <<~MARKDOWN)
         +++
         title = "#{team.name}"
-        +++
-        # #{team.name}
 
+        [extra]
+        name = "#{team.name}"
+        submissions = [ #{ team.submissions.map { |s|
+          "{ url = \"/submissions/#{s.id}\", title = \"#{s.title.gsub('"', '\"')}\" }"
+        }.join(", ") } ]
+        +++
 
         #{team.agenda}
-
-
-        ### Submissions
-        #{ team.submissions.map { |s| "- [#{s.title}](@/submissions/#{s.id}.md)" }.join("\n") }
       MARKDOWN
 
       team.submissions.find_each do |submission|
         File.write(submissions_dir.join("#{submission.id}.md"), <<~MARKDOWN)
           +++
           title = "#{submission.title}"
+
+          [extra]
+
           track = "#{submission.track}"
           excellence_award_track = "#{submission.excellence_award_track}" # Can be empty
-          team = "/teams/#{team.id}"
+          team_name = "#{team.name}"
+          team_link = "/teams/#{team.id}"
+          repo_url = "#{submission.repo_url}"
+          pitchdeck_url = "#{submission.pitchdeck_url}"
           +++
 
-          # #{submission.title}
-
-          ### Track: #{submission.track}
-          #{ submission.excellence_award_track.present? ? "#### Excellence Award Track: #{submission.excellence_award_track}" : "" }
-
-          ### Team: [#{team.name}](@/teams/#{team.id}.md)
-
           #{submission.description}
-
-          #### Links
-          - [Repository](#{submission.repo_url})
-          #{ submission.pitchdeck_url.present? ? "- [Pitch Deck](#{submission.pitchdeck_url})" : "" }
         MARKDOWN
       end
     end
